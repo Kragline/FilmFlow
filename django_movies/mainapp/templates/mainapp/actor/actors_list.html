@@ -1,0 +1,75 @@
+{% extends 'mainapp/base.html' %}
+{% load mainapp_tags %}
+{% load static %}
+
+{% block wallpaper %}
+    <img src="{% static 'mainapp/img/actors_list_wallpaper.jpg' %}" class="img-fluid">
+{% endblock %}
+
+{% block search %}
+    <div class="search position-absolute">
+        <h3 class="actor-bold">Search for actor</h3>
+
+        <form role="search" action="{% url 'actors' %}" method="GET">
+            <div class="mb-2">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="actor-search">
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="create_time" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    By Default
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="name" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    By Name
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                    </svg>A
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="-name" id="flexRadioDefault3">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    By Name
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                    </svg>A
+                </label>
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary mt-2" type="submit">Find actor</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="actor-bold">{{ title }}</h1>
+
+
+    {% for actor in actors %}
+
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if actor.photo %}
+                        <img class="img-fluid rounded-start" src="{{ actor.photo.url }}">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h2 class="card-title"><a class="actor-link" href="{{ actor.get_absolute_url }}">{{ actor.name }}</a></h2>
+                        <p class="card-text">{{ actor.bio|truncatewords:240 }}</p>
+                        <p class="card-text"><small class="text-body-secondary"><b class="actor-movies actor-bold">Movies</b> {% get_models_movies model=actor %}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

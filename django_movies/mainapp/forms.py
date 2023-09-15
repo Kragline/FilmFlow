@@ -1,0 +1,93 @@
+from django import forms
+
+from .models import *
+
+
+form_control = {'class': 'form-select'}
+
+text_attrs = {'type': 'text', 'class': 'form-control'}
+text_box_attrs = {'type': 'text', 'class': 'form-control', 'cols': 70}
+file_attrs = {'type': 'file', 'class': 'form-control'}
+
+date_attrs = {'type': 'date', 'class': 'form-control'}
+number_attrs = {'type': 'number', 'class': 'form-control'}
+year_attrs = {'type': 'number', 'class': 'form-control'}
+
+comment_attrs = {'type': 'text', 'class': 'form-control', 'cols': 70, 'rows': 1, 'placeholder': 'Add your comment'}
+
+
+class ActorForm(forms.ModelForm):
+    class Meta:
+        model = Actor
+        fields = ('name', 'bio', 'photo', 'slug')
+
+        widgets = {
+            'name': forms.TextInput(attrs=text_attrs),
+            'bio': forms.Textarea(attrs=text_box_attrs),
+            'slug': forms.TextInput(attrs=text_attrs),
+            'photo': forms.FileInput(attrs=file_attrs),
+        }
+
+
+class DirectorForm(forms.ModelForm):
+    class Meta:
+        model = Director
+        fields = ('name', 'bio', 'photo', 'slug')
+
+        widgets = {
+            'name': forms.TextInput(attrs=text_attrs),
+            'bio': forms.Textarea(attrs=text_box_attrs),
+            'slug': forms.TextInput(attrs=text_attrs),
+            'photo': forms.FileInput(attrs=file_attrs),
+        }
+
+
+class MovieForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['genre'].empty_label = 'Choose genre'
+
+    class Meta:
+        model = Movie
+        fields = ('title', 'tagline', 'about', 'year', 'country', 'world_premiere', 'poster', 'trailer',
+                  'actors', 'directors', 'genres', 'rating', 'budget', 'fees_in_usa', 'fees_in_world', 'slug')
+
+        widgets = {
+            'title': forms.TextInput(attrs=text_attrs),
+            'about': forms.Textarea(attrs=text_box_attrs),
+            'year': forms.NumberInput(attrs=number_attrs),
+            'country': forms.TextInput(attrs=text_attrs),
+            'world_premiere': forms.DateInput(attrs=date_attrs),
+            'poster': forms.FileInput(attrs=file_attrs),
+            'trailer': forms.FileInput(attrs=file_attrs),
+            'actors': forms.SelectMultiple(attrs=form_control),
+            'directors': forms.SelectMultiple(attrs=form_control),
+            'genres': forms.SelectMultiple(attrs=form_control),
+            'rating': forms.NumberInput(attrs=number_attrs),
+            'budget': forms.NumberInput(attrs=number_attrs),
+            'fees_in_usa': forms.NumberInput(attrs=number_attrs),
+            'fees_in_world': forms.NumberInput(attrs=number_attrs),
+            'slug': forms.TextInput(attrs=text_attrs)
+        }
+
+
+class GenreForm(forms.ModelForm):
+    class Meta:
+        model = Genre
+        fields = ('name', 'slug')
+
+        widgets = {
+            'name': forms.TextInput(attrs=text_attrs),
+            'description': forms.Textarea(attrs=text_box_attrs),
+            'slug': forms.TextInput(attrs=text_attrs)
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
+
+        widgets = {
+            'text': forms.Textarea(attrs=comment_attrs)
+        }

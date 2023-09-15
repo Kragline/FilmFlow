@@ -1,0 +1,37 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+
+    <h1 class="actor-bold">{{ title }}</h1>
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if actor.photo %}
+                    <img class="img-fluid rounded-start" src="{{ actor.photo.url }}">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-header">
+                    <h2 class="card-title actor-bold">{{ actor.name }}</h2>
+                    <p class="card-text"><small class="text-body-secondary"><b class="actor-movies actor-bold">Movies</b></small></p>
+                    {% for movie in actor.movies.all %}
+                        <p><a class="actor-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></p>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    {% if user.is_superuser %}
+                        <p>
+                            <a class="actor-link" href="{{ actor.get_absolute_url_for_update }}">Update</a> |
+                            <a class="actor-link" href="{{ actor.get_absolute_url_for_delete }}">Delete</a>
+                        </p>
+                    {% endif %}
+                    <p class="card-text">{{ actor.bio|linebreaks }}</p>
+                </div>
+                <div class="card-footer text-end">
+                    <small class="text-body-secondary">Was created at: {{ actor.create_time|date:"d.m.Y" }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

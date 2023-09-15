@@ -1,0 +1,117 @@
+.content {
+    left: 20%;
+    top: 70%;
+    border-radius: 10px;
+    width: 60%;
+    background-color: white;
+    margin: 0 auto;
+    padding: 15px;
+    padding-top: 10px;
+}
+
+.search {
+    float: left;
+    margin: 20px 0 0 20px;
+}
+
+.pagination {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.actor-link {
+    text-decoration: none;
+    color: rgb(45, 107, 189);
+}
+
+.actor-bold {
+    color: rgb(38, 86, 150);
+}
+
+.movie-link {
+    text-decoration: none;
+    color: rgb(39, 151, 39);
+}
+
+.movie-bold {
+    color: rgb(32, 119, 32);
+}
+
+.director-link {
+    text-decoration: none;
+    color: rgb(67, 204, 222);
+}
+
+.director-bold {
+    color: rgb(47, 165, 181);
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.not-centered {
+    width: 100%;
+}
+
+.username-in-comment {
+    margin-bottom: 0px;
+}
+
+.reg-login-div {
+    width: 70%;
+    margin: auto;
+}
+
+@media (max-width: 1200px) {
+    .search {
+        left: 5%;
+        top: 70%;
+        border-radius: 10px;
+        width: 90%;
+        background-color: white;
+        margin: 0 auto;
+        padding: 15px;
+    }
+
+    .content {
+        top: 125%;
+        left: 5%;
+        width: 90%;
+    }
+}
+
+@media (max-width: 1055px) {
+    .content {
+        top: 140%;
+    }
+}
+
+@media (max-width: 855px) {
+    .content {
+        top: 155%;
+    }
+}
+
+@media (max-width: 705px) {
+    .content {
+        top: 170%;
+    }
+}
+
+@media (max-width: 605px) {
+    .content {
+        top: 185%;
+    }
+}
+
+@media (max-width: 515px) {
+    .content {
+        top: 200%;
+    }
+}

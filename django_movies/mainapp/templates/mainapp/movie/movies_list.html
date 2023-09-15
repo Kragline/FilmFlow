@@ -1,0 +1,117 @@
+{% extends 'mainapp/base.html' %}
+{% load mainapp_tags %}
+{% load static %}
+
+{% block wallpaper %}
+    <img src="{% static 'mainapp/img/movies_list_wallpaper.jpeg' %}" class="img-fluid">
+{% endblock %}
+
+{% block search %}
+    <div class="search position-absolute">
+        <form role="search" action="{% url 'home' %}" method="GET">
+            <div class="mb-2">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="movie-search">
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="create_time" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                    By Default
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="title" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    By Title
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                    </svg>A
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="-title" id="flexRadioDefault3">
+                <label class="form-check-label" for="flexRadioDefault3">
+                    By Title
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                    </svg>A
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="rating" id="flexRadioDefault4">
+                <label class="form-check-label" for="flexRadioDefault4">
+                    By Rating
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                    </svg>
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="-rating" id="flexRadioDefault5">
+                <label class="form-check-label" for="flexRadioDefault5">
+                    By Rating
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                    </svg>
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="release_date" id="flexRadioDefault6">
+                <label class="form-check-label" for="flexRadioDefault6">
+                    Oldest
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="search-mode" value="-release_date" id="flexRadioDefault7">
+                <label class="form-check-label" for="flexRadioDefault7">
+                    Newest
+                </label>
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-success mt-2" type="submit">Find movie</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1 class="movie-bold">{{ title }}</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+        {% for movie in movies %}
+            <div class="col">
+                <div class="card text-center h-100">
+                    {% if movie.poster %}
+                        <img class="card-img-top" src="{{ movie.poster.url }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="centered-content">
+                            <h2 class="card-title"><a class="movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h2>
+                            <div class="not-centered">
+                                {% colored_stars_range number=movie.rating as rating_range %}
+                                {% for star in rating_range %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-star" viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                    </svg>
+                                {% endfor %}
+                                {% if movie.rating != 10 %}
+                                    {% other_stars_range number=movie.rating as other_range %}
+                                    {% for star in other_range %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                    </svg>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <p class="card-text"><b class="movie-bold">{{ movie.rating }}</b> / 10</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">{{ movie.release_date }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
