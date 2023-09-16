@@ -28,11 +28,6 @@
                             {% endfor %}
                         {% endif %}
                         <p class="card-text"><b class="movie-bold">{{ movie.rating }}</b> / 10</p>
-                        <p class="card-text"><b class="movie-bold">Release date:</b> {{ movie.release_date }}</p>
-                        <p class="card-text"><small class="text-body-secondary"><b class="movie-bold">Cast</b></small></p>
-                        {% for actor in movie.actors.all %}
-                            <p class="card-text"><a class="movie-link" href="{{ actor.get_absolute_url }}">{{ actor.name }}</a></p>
-                        {% endfor %}
                     </div>
                     <div class="card-body">
                         {% if request.user.is_superuser %}
@@ -46,7 +41,58 @@
                                 <source src="{{ movie.trailer.url }}" type="video/mp4">
                             </video>
                         {% endif %}
+
+                        <p class="card-text"><b class="movie-bold">World premiere:</b> {{ movie.world_premiere }}</p>
+
+                        <p class="card-text"><b class="movie-bold">Budget:</b> {{ movie.budget }}$</p>
+                        <p class="card-text"><b class="movie-bold">Fees:</b> {{ movie.fees }}$</p>
+
+                        <p class="card-text"><b class="movie-bold">Genres:</b></p>
+                        {% for genre in movie.genres.all %}
+                            <p class="card-text"><a class="movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></p>
+                        {% endfor %}
+
                         <p class="card-text">{{ movie.about|linebreaks }}</p>
+
+                        <hr>
+                        <h4 class="card-text"><small class="text-body-secondary"><b class="actor-bold">Stars</b></small></h4>
+                        <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                            {% get_movie_actors movie=movie as movie_acts %}
+                            {% for actor in movie_acts %}
+                                <div class="col">
+                                    <div class="card text-center h-100">
+                                        {% if actor.photo %}
+                                            <img class="card-img-top" src="{{ actor.photo.url }}">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <div class="centered-content">
+                                                <h5 class="card-title"><a class="actor-link" href="{{ actor.get_absolute_url }}">{{ actor.name }}</a></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <hr>
+                        <h4 class="card-text"><small class="text-body-secondary"><b class="director-bold">Director</b></small></h4>
+                        <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                            {% for director in movie.directors.all %}
+                                <div class="col">
+                                    <div class="card text-center h-100">
+                                        {% if director.photo %}
+                                            <img class="card-img-top" src="{{ director.photo.url }}">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <div class="centered-content">
+                                                <h5 class="card-title"><a class="director-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
                         {% if request.user.is_authenticated %}
                             <form method="post">
                                 {% csrf_token %}

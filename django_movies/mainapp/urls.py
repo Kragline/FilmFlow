@@ -17,6 +17,7 @@ urlpatterns = [
     path('actor/<slug:actor_slug>/update/', UpdateActorView.as_view(), name='update_actor'),
     path('actor/<slug:actor_slug>/delete/', DeleteActorView.as_view(), name='delete_actor'),
 
+    # Director
     path('directors/', DirectorsListView.as_view(), name='directors'),
     path('add_director/', AddDirectorView.as_view(), name='add_director'),
     path('director/<slug:director_slug>/', AboutDirectorView.as_view(), name='about_director'),

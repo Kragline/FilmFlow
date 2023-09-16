@@ -156,7 +156,7 @@ class AddActorView(LoginRequiredMixin, DataMixin, CreateView):
     form_class = ActorForm
     template_name = 'mainapp/actor/add_actor.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('actors')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -243,7 +243,7 @@ class AddDirectorView(LoginRequiredMixin, DataMixin, CreateView):
     form_class = DirectorForm
     template_name = 'mainapp/director/add_director.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('directors')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -290,29 +290,29 @@ class DeleteDirectorView(LoginRequiredMixin, DataMixin, DeleteView):
 
 class GenreListView(DataMixin, ListView):
     model = Movie
-    template_name = 'mainapp/comment/comment.html'
+    template_name = 'mainapp/genre/show_genre.html'
     context_object_name = 'movies'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Genre ' + context['movies'][0].category.name)
+        mixin_context = self.get_user_context(title='Genre ' + Genre.objects.get(slug=self.kwargs['genre_slug']).name)
 
         return dict(list(context.items()) + list(mixin_context.items()))
 
     def get_queryset(self):
-        return Movie.objects.filter(category__slug=self.kwargs['genre_slug']).order_by('create_time')
+        return Movie.objects.filter(genres__slug=self.kwargs['genre_slug']).order_by('create_time')
 
 
 class AddGenreView(LoginRequiredMixin, DataMixin, CreateView):
     form_class = GenreForm
-    template_name = 'mainapp/comment/add_genre.html'
+    template_name = 'mainapp/genre/add_genre.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('genre')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Add comment')
+        mixin_context = self.get_user_context(title='Add genre')
 
         return dict(list(context.items()) + list(mixin_context.items()))
 

@@ -16,44 +16,49 @@ year_attrs = {'type': 'number', 'class': 'form-control'}
 comment_attrs = {'type': 'text', 'class': 'form-control', 'cols': 70, 'rows': 1, 'placeholder': 'Add your comment'}
 
 
-class ActorForm(forms.ModelForm):
+class PersonForm(forms.ModelForm):
+    class Meta:
+        abstract = True
+        fields = ('name', 'bio', 'photo', 'slug')
+
+        widgets = {
+            'name': forms.TextInput(attrs=text_attrs),
+            'bio': forms.Textarea(attrs=text_box_attrs),
+            'photo': forms.FileInput(attrs=file_attrs),
+            'slug': forms.TextInput(attrs=text_attrs),
+        }
+
+
+class ActorForm(PersonForm):
+
     class Meta:
         model = Actor
-        fields = ('name', 'bio', 'photo', 'slug')
+        fields = PersonForm.Meta.fields
 
-        widgets = {
-            'name': forms.TextInput(attrs=text_attrs),
-            'bio': forms.Textarea(attrs=text_box_attrs),
-            'slug': forms.TextInput(attrs=text_attrs),
-            'photo': forms.FileInput(attrs=file_attrs),
-        }
+        widgets = PersonForm.Meta.widgets
 
 
-class DirectorForm(forms.ModelForm):
+class DirectorForm(PersonForm):
+
     class Meta:
         model = Director
-        fields = ('name', 'bio', 'photo', 'slug')
+        fields = PersonForm.Meta.fields
 
-        widgets = {
-            'name': forms.TextInput(attrs=text_attrs),
-            'bio': forms.Textarea(attrs=text_box_attrs),
-            'slug': forms.TextInput(attrs=text_attrs),
-            'photo': forms.FileInput(attrs=file_attrs),
-        }
+        widgets = PersonForm.Meta.widgets
 
 
 class MovieForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['genre'].empty_label = 'Choose genre'
 
     class Meta:
         model = Movie
         fields = ('title', 'tagline', 'about', 'year', 'country', 'world_premiere', 'poster', 'trailer',
-                  'actors', 'directors', 'genres', 'rating', 'budget', 'fees_in_usa', 'fees_in_world', 'slug')
+                  'actors', 'directors', 'genres', 'rating', 'budget', 'fees', 'slug')
 
         widgets = {
             'title': forms.TextInput(attrs=text_attrs),
+            'tagline': forms.TextInput(attrs=text_attrs),
             'about': forms.Textarea(attrs=text_box_attrs),
             'year': forms.NumberInput(attrs=number_attrs),
             'country': forms.TextInput(attrs=text_attrs),
@@ -65,8 +70,7 @@ class MovieForm(forms.ModelForm):
             'genres': forms.SelectMultiple(attrs=form_control),
             'rating': forms.NumberInput(attrs=number_attrs),
             'budget': forms.NumberInput(attrs=number_attrs),
-            'fees_in_usa': forms.NumberInput(attrs=number_attrs),
-            'fees_in_world': forms.NumberInput(attrs=number_attrs),
+            'fees': forms.NumberInput(attrs=number_attrs),
             'slug': forms.TextInput(attrs=text_attrs)
         }
 
@@ -74,7 +78,7 @@ class MovieForm(forms.ModelForm):
 class GenreForm(forms.ModelForm):
     class Meta:
         model = Genre
-        fields = ('name', 'slug')
+        fields = ('name', 'description', 'slug')
 
         widgets = {
             'name': forms.TextInput(attrs=text_attrs),

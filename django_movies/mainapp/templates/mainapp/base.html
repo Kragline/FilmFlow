@@ -32,7 +32,7 @@
                                      <ul class="dropdown-menu">
                                          {% for genre in genres %}
                                             {% if genre.movies_count > 0 %}
-                                                <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ genre.name }}</a></li>
+                                                <li><a class="dropdown-item" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
                                             {% endif %}
                                          {% endfor %}
                                      </ul>

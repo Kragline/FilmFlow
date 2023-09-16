@@ -22,14 +22,14 @@
                         <h5 class="card-title actor-bold">Staff</h5>
                     {% endif %}
                     {% if request.user == user_info %}
-                        <hr>
                         <p class="card-text">
                             <a class="actor-link" href="{% url 'change_profile_pic' user_info.custom_profile.pk %}">Change profile pic</a> |
                             <a class="actor-link" href="{% url 'update_user' user_info.username %}">Update</a> |
                             <a class="actor-link" href="{% url 'delete_user' user_info.username %}">Delete</a>
                         </p>
-                        {% if user_info.is_staff or user_info.is_superuser %}
+                        {% if user_info.is_superuser %}
                             <hr>
+                            <h5 class="card-title actor-bold">Admin tools</h5>
                             <p class="card-text">
                                 <a class="actor-link" href="{% url 'add_movie' %}">Add movie</a> |
                                 <a class="actor-link" href="{% url 'add_actor' %}">Add actor</a> |

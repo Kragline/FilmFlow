@@ -5,12 +5,18 @@ from django.contrib.auth.models import User
 import datetime
 
 
-class Actor(models.Model):
+class Person(models.Model):
     name = models.CharField(max_length=100)
     bio = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='actor_photos')
     create_time = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
+
+    class Meta:
+        abstract = True
+
+
+class Actor(Person):
+    photo = models.ImageField(upload_to='actor_photos')
 
     def __str__(self):
         return self.name
@@ -29,12 +35,8 @@ class Actor(models.Model):
         verbose_name_plural = 'Actors'
 
 
-class Director(models.Model):
-    name = models.CharField(max_length=100)
-    bio = models.TextField(blank=True)
+class Director(Person):
     photo = models.ImageField(upload_to='director_photos')
-    create_time = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(max_length=255, unique=True, db_index=True)
 
     def __str__(self):
         return self.name
@@ -83,8 +85,7 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre, related_name='movies')
     rating = models.PositiveSmallIntegerField(default=1, blank=True)
     budget = models.PositiveIntegerField(default=0, help_text='Budget in US dollars')
-    fees_in_usa = models.PositiveIntegerField(blank=True)
-    fees_in_world = models.PositiveIntegerField(default=0)
+    fees = models.PositiveIntegerField(default=0)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     create_time = models.DateTimeField(auto_now_add=True)
 

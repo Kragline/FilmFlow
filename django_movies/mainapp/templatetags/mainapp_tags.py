@@ -5,16 +5,6 @@ register = template.Library()
 
 
 @register.simple_tag()
-def get_movies_actors(movie):
-    actors = movie.actors.all()
-    cast = ''
-    for actor in actors:
-        cast += actor.name + ', '
-
-    return cast.rstrip(', ')
-
-
-@register.simple_tag()
 def get_models_movies(model):
     movies = model.movies.all()
     actor_movies = ''
@@ -22,6 +12,11 @@ def get_models_movies(model):
         actor_movies += movie.title + ', '
 
     return actor_movies.rstrip(', ')
+
+
+@register.simple_tag()
+def get_movie_actors(movie):
+    return movie.actors.all()[:3]
 
 
 @register.simple_tag()

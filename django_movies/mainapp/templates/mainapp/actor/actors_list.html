@@ -63,7 +63,7 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h2 class="card-title"><a class="actor-link" href="{{ actor.get_absolute_url }}">{{ actor.name }}</a></h2>
-                        <p class="card-text">{{ actor.bio|truncatewords:240 }}</p>
+                        <p class="card-text">{{ actor.bio|truncatewords:180 }}</p>
                         <p class="card-text"><small class="text-body-secondary"><b class="actor-movies actor-bold">Movies</b> {% get_models_movies model=actor %}</small></p>
                     </div>
                 </div>
