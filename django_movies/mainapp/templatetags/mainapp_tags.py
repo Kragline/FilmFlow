@@ -16,7 +16,7 @@ def get_models_movies(model):
 
 @register.simple_tag()
 def get_movie_actors(movie):
-    return movie.actors.all()[:3]
+    return movie.actors.all()[:4]
 
 
 @register.simple_tag()

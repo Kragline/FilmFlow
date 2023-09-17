@@ -7,37 +7,53 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 
 from .forms import *
-from .utils import *
+
 
 '''                 ****    Movie   ****                   '''
 
 
-class MovieListView(DataMixin, ListView):
+class GenreYear:
+    def get_genres(self):
+        return Genre.objects.annotate(movies_count=Count('movies'))
+
+    def get_years(self):
+        return Movie.objects.all()
+
+
+class MovieListView(GenreYear, ListView):
     model = Movie
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
+    paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Movies')
+        context['title'] = 'Movies'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_queryset(self):
+        queryset = Movie.objects.order_by('pk')
+
         query = self.request.GET.get('movie-search')
+        years = self.request.GET.getlist('year')
+        genres = self.request.GET.getlist('genre')
         search_mode = self.request.GET.get('search-mode')
-        queryset = Movie.objects.order_by('create_time')
 
         if self.request.method == 'GET':
             if query is not None:
-                queryset = queryset.filter(title__contains=query)
+                queryset = queryset.filter(title__icontains=query)
+            if years:
+                queryset = queryset.filter(year__in=years)
+            if genres:
+                queryset = queryset.filter(genres__in=genres)
             if search_mode:
-                queryset = queryset.order_by(search_mode)
+                queryset = queryset.order_by(self.request.GET.get('search-mode'))
 
         return queryset
 
 
-class AboutMovieView(DataMixin, DetailView):
+class AboutMovieView(GenreYear, DetailView):
     model = Movie
     template_name = 'mainapp/movie/about_movie.html'
     context_object_name = 'movie'
@@ -60,12 +76,14 @@ class AboutMovieView(DataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(form=CommentForm(), comments=self.object.comments.order_by('-create_time'))
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        context['form'] = CommentForm()
+        context['comments'] = self.object.comments.order_by('-create_time')
+
+        return context
 
 
-class AddMovieView(LoginRequiredMixin, DataMixin, CreateView):
+class AddMovieView(LoginRequiredMixin, CreateView):
     form_class = MovieForm
     template_name = 'mainapp/movie/add_movie.html'
     context_object_name = 'form'
@@ -74,12 +92,12 @@ class AddMovieView(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Add movie')
+        context['title'] = 'Add movie'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class UpdateMovieView(LoginRequiredMixin, DataMixin, UpdateView):
+class UpdateMovieView(LoginRequiredMixin, UpdateView):
     model = Movie
     form_class = MovieForm
     template_name = 'mainapp/movie/update_movie.html'
@@ -88,15 +106,15 @@ class UpdateMovieView(LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Update movie')
+        context['title'] = 'Update movie'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_success_url(self):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.slug})
 
 
-class DeleteMovieView(LoginRequiredMixin, DataMixin, DeleteView):
+class DeleteMovieView(LoginRequiredMixin, DeleteView):
     model = Movie
     template_name = 'mainapp/movie/delete_movie.html'
     context_object_name = 'movie'
@@ -106,53 +124,28 @@ class DeleteMovieView(LoginRequiredMixin, DataMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Delete movie')
+        context['title'] = 'Delete movie'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
 '''                 ****    Actor   ****                   '''
 
 
-class ActorsListView(DataMixin, ListView):
-    model = Actor
-    template_name = 'mainapp/actor/actors_list.html'
-    context_object_name = 'actors'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Actors')
-
-        return dict(list(context.items()) + list(mixin_context.items()))
-
-    def get_queryset(self):
-        query = self.request.GET.get('actor-search')
-        search_mode = self.request.GET.get('search-mode')
-        queryset = Actor.objects.order_by('create_time')
-
-        if self.request.method == 'GET':
-            if query is not None:
-                queryset = queryset.filter(name__contains=query)
-            if search_mode:
-                queryset = queryset.order_by(search_mode)
-
-        return queryset
-
-
-class AboutActorView(DataMixin, DetailView):
+class AboutActorView(DetailView):
     model = Actor
     template_name = 'mainapp/actor/about_actor.html'
     context_object_name = 'actor'
-    slug_url_kwarg = 'actor_slug'  # changing default slug name to what we need
+    slug_url_kwarg = 'actor_slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='About ' + str(context['actor'].name))
+        context['title'] = 'About ' + str(context['actor'].name)
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class AddActorView(LoginRequiredMixin, DataMixin, CreateView):
+class AddActorView(LoginRequiredMixin, CreateView):
     form_class = ActorForm
     template_name = 'mainapp/actor/add_actor.html'
     context_object_name = 'form'
@@ -161,12 +154,12 @@ class AddActorView(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Add actor')
+        context['title'] = 'Add actor'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class UpdateActorView(LoginRequiredMixin, DataMixin, UpdateView):
+class UpdateActorView(LoginRequiredMixin, UpdateView):
     model = Actor
     form_class = ActorForm
     template_name = 'mainapp/actor/update_actor.html'
@@ -175,15 +168,15 @@ class UpdateActorView(LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Update actor')
+        context['title'] = 'Update actor'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_success_url(self):
         return reverse_lazy('about_actor', kwargs={'actor_slug': self.object.slug})
 
 
-class DeleteActorView(LoginRequiredMixin, DataMixin, DeleteView):
+class DeleteActorView(LoginRequiredMixin, DeleteView):
     model = Actor
     template_name = 'mainapp/actor/delete_actor.html'
     context_object_name = 'actor'
@@ -193,40 +186,15 @@ class DeleteActorView(LoginRequiredMixin, DataMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Delete actor')
+        context['title'] = 'delete actor'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
-
-
-'''                 ****    Actor   ****                   '''
+        return context
 
 
-class DirectorsListView(DataMixin, ListView):
-    model = Director
-    template_name = 'mainapp/director/directors_list.html'
-    context_object_name = 'directors'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Directors')
-
-        return dict(list(context.items()) + list(mixin_context.items()))
-
-    def get_queryset(self):
-        query = self.request.GET.get('director-search')
-        search_mode = self.request.GET.get('search-mode')
-        queryset = Director.objects.order_by('create_time')
-
-        if self.request.method == 'GET':
-            if query is not None:
-                queryset = queryset.filter(name__contains=query)
-            if search_mode:
-                queryset = queryset.order_by(search_mode)
-
-        return queryset
+'''                 ****    Director   ****                   '''
 
 
-class AboutDirectorView(DataMixin, DetailView):
+class AboutDirectorView(DetailView):
     model = Director
     template_name = 'mainapp/director/about_director.html'
     context_object_name = 'director'
@@ -234,12 +202,12 @@ class AboutDirectorView(DataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='About ' + str(context['director'].name))
+        context['title'] = 'About ' + str(context['director'].name)
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class AddDirectorView(LoginRequiredMixin, DataMixin, CreateView):
+class AddDirectorView(LoginRequiredMixin, CreateView):
     form_class = DirectorForm
     template_name = 'mainapp/director/add_director.html'
     context_object_name = 'form'
@@ -248,12 +216,12 @@ class AddDirectorView(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Add director')
+        context['title'] = 'Add director'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class UpdateDirectorView(LoginRequiredMixin, DataMixin, UpdateView):
+class UpdateDirectorView(LoginRequiredMixin, UpdateView):
     model = Director
     form_class = ActorForm
     template_name = 'mainapp/director/update_director.html'
@@ -262,15 +230,15 @@ class UpdateDirectorView(LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Update director')
+        context['title'] = 'Update director'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_success_url(self):
         return reverse_lazy('about_director', kwargs={'director_slug': self.object.slug})
 
 
-class DeleteDirectorView(LoginRequiredMixin, DataMixin, DeleteView):
+class DeleteDirectorView(LoginRequiredMixin, DeleteView):
     model = Director
     template_name = 'mainapp/director/delete_director.html'
     context_object_name = 'director'
@@ -280,30 +248,30 @@ class DeleteDirectorView(LoginRequiredMixin, DataMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Delete director')
+        context['title'] = 'Delete director'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
 '''                 ****    Genre   ****                   '''
 
 
-class GenreListView(DataMixin, ListView):
+class GenreListView(GenreYear, ListView):
     model = Movie
     template_name = 'mainapp/genre/show_genre.html'
     context_object_name = 'movies'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Genre ' + Genre.objects.get(slug=self.kwargs['genre_slug']).name)
+        context['title'] = 'Genre ' + Genre.objects.get(slug=self.kwargs['genre_slug']).name
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_queryset(self):
         return Movie.objects.filter(genres__slug=self.kwargs['genre_slug']).order_by('create_time')
 
 
-class AddGenreView(LoginRequiredMixin, DataMixin, CreateView):
+class AddGenreView(LoginRequiredMixin, CreateView):
     form_class = GenreForm
     template_name = 'mainapp/genre/add_genre.html'
     context_object_name = 'form'
@@ -312,15 +280,15 @@ class AddGenreView(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Add genre')
+        context['title'] = 'Add genre'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
 '''                 ****    Comment   ****                   '''
 
 
-class UpdateCommentView(LoginRequiredMixin, DataMixin, UpdateView):
+class UpdateCommentView(LoginRequiredMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     template_name = 'mainapp/comment/update_comment.html'
@@ -331,15 +299,15 @@ class UpdateCommentView(LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Update comment')
+        context['title'] = 'Update comment'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_success_url(self):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})
 
 
-class DeleteCommentView(LoginRequiredMixin, DataMixin, DeleteView):
+class DeleteCommentView(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'mainapp/comment/delete_comment.html'
     context_object_name = 'comment'
@@ -349,9 +317,9 @@ class DeleteCommentView(LoginRequiredMixin, DataMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Delete comment')
+        context['title'] = 'Delete director'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_success_url(self):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})

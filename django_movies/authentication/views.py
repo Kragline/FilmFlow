@@ -10,10 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegisterUserForm, LoginUserForm, UpdateUserForm, CustomProfileForm
 from .models import CustomProfile
 
-from mainapp.utils import *
 
-
-class RegisterUserView(DataMixin, CreateView):
+class RegisterUserView(CreateView):
     form_class = RegisterUserForm
     template_name = 'authentication/auth/register.html'
 
@@ -27,12 +25,12 @@ class RegisterUserView(DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Registration')
+        context['title'] = 'Registration'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class LoginUserView(DataMixin, LoginView):
+class LoginUserView(LoginView):
     form_class = LoginUserForm
     template_name = 'authentication/auth/login.html'
 
@@ -41,9 +39,9 @@ class LoginUserView(DataMixin, LoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Login')
+        context['title'] = 'Login'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
 def logout_user(request):
@@ -51,7 +49,7 @@ def logout_user(request):
     return redirect('login')
 
 
-class ProfilePageView(DataMixin, LoginRequiredMixin, DetailView):
+class ProfilePageView(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'authentication/user/profile_page.html'
     context_object_name = 'user_info'
@@ -62,9 +60,9 @@ class ProfilePageView(DataMixin, LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title=f'User {self.object.username}')
+        context['title'] = f'User {self.object.username}'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
 @login_required(login_url='home')
@@ -84,7 +82,7 @@ def update_user_view(request, username):
     return render(request, 'authentication/user/update_user.html', context=context)
 
 
-class UserDeleteView(DataMixin, LoginRequiredMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = User
     context_object_name = 'current_user'
     template_name = 'authentication/user/delete_user.html'
@@ -95,12 +93,12 @@ class UserDeleteView(DataMixin, LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title=f'Delete account {self.object.username}')
+        context['title'] = f'Delete account {self.object.username}'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-class ChangeProfilePicView(DataMixin, LoginRequiredMixin, UpdateView):
+class ChangeProfilePicView(LoginRequiredMixin, UpdateView):
     model = CustomProfile
     form_class = CustomProfileForm
     template_name = 'authentication/user/change_profile_pic.html'
@@ -110,9 +108,9 @@ class ChangeProfilePicView(DataMixin, LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Change profile pic')
+        context['title'] = 'Change profile pic'
 
-        return dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
     def get_success_url(self):
         return reverse_lazy('profile_page', kwargs={'username': self.object.user.username})

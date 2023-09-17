@@ -1,4 +1,5 @@
 .content {
+    position: absolute;
     left: 20%;
     top: 70%;
     border-radius: 10px;
@@ -11,7 +12,8 @@
 
 .search {
     float: left;
-    margin: 20px 0 0 20px;
+    margin: 15px 0 0 20px;
+    width: 18%;
 }
 
 .pagination {
@@ -70,48 +72,17 @@
 
 @media (max-width: 1200px) {
     .search {
-        left: 5%;
-        top: 70%;
-        border-radius: 10px;
+        float: none;
+        position: static;
         width: 90%;
         background-color: white;
-        margin: 0 auto;
-        padding: 15px;
+        margin: 15px auto 0 auto;
     }
 
     .content {
-        top: 125%;
-        left: 5%;
+        float: none;
+        position: static;
         width: 90%;
-    }
-}
-
-@media (max-width: 1055px) {
-    .content {
-        top: 140%;
-    }
-}
-
-@media (max-width: 855px) {
-    .content {
-        top: 155%;
-    }
-}
-
-@media (max-width: 705px) {
-    .content {
-        top: 170%;
-    }
-}
-
-@media (max-width: 605px) {
-    .content {
-        top: 185%;
-    }
-}
-
-@media (max-width: 515px) {
-    .content {
-        top: 200%;
+        padding: 0;
     }
 }

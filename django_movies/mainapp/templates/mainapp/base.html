@@ -9,91 +9,17 @@
         <link rel="stylesheet" href="{% static 'mainapp/css/style.css' %}">
     </head>
     <body>
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                            <a class="navbar-brand" href="{% url 'home' %}">Django Movies</a>
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="{% url 'actors' %}">Actors</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="{% url 'directors' %}">Directors</a>
-                                </li>
-                                {% if genres %}
-                                    <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Genres
-                                    </a>
-                                     <ul class="dropdown-menu">
-                                         {% for genre in genres %}
-                                            {% if genre.movies_count > 0 %}
-                                                <li><a class="dropdown-item" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
-                                            {% endif %}
-                                         {% endfor %}
-                                     </ul>
-                                {% endif %}
-                                </li>
-                                {% if request.user.is_authenticated %}
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="{% url 'profile_page' request.user.username %}">{{ request.user.username }} | Profile</a>
-                                    </li>
-                                {% else %}
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Register</a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-
-                    </div>
-                </div>
-            </nav>
-        </header>
+        {% include 'mainapp/includes/header.html' %}
         <main>
-            <div class="main-div position-relative">
-            {% block wallpaper %}
-            {% endblock %}
-            {% block search %}
-            {% endblock %}
-                <div class="content position-absolute">
+            <div class="main-div">
+                <img src="{% static 'mainapp/img/main_page_img.jpeg' %}" class="img-fluid">
+                {% include 'mainapp/includes/sidebar.html' %}
+                <div class="content">
                     {% block content %}
                     {% endblock %}
-
-                    {% if page_obj.has_other_pages %}
-                        <nav aria-label="..." class="pagination">
-                            <ul class="pagination pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=1">First</a>
-                                </li>
-                                {% for p in paginator.page_range %}
-                                    {% if page_obj.number == p %}
-                                        <li class="page-item active">
-                                            <a class="page-link">{{ p }}</a>
-                                        </li>
-                                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ paginator.num_pages }}">Last</a>
-                                </li>
-                          </ul>
-                        </nav>
-                    {% endif %}
                 </div>
             </div>
+            {% include 'mainapp/includes/footer.html' %}
         </main>
     </body>
 </html>
