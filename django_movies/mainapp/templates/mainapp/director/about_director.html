@@ -1,4 +1,5 @@
 {% extends 'mainapp/base.html' %}
+{% load mainapp_tags %}
 
 {% block content %}
 
@@ -13,10 +14,6 @@
             <div class="col-md-8">
                 <div class="card-header">
                     <h2 class="card-title director-bold">{{ director.name }}</h2>
-                    <p class="card-text"><small class="text-body-secondary"><b class="director-movies director-bold">Movies</b></small></p>
-                    {% for movie in director.movies.all %}
-                        <p><a class="director-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></p>
-                    {% endfor %}
                 </div>
                 <div class="card-body">
                     {% if user.is_superuser %}
@@ -26,10 +23,28 @@
                         </p>
                     {% endif %}
                     <p class="card-text">{{ director.bio|linebreaks }}</p>
+                    <h4 class="card-text"><small class="text-body-secondary"><b class="movie-bold">Movies</b></small></h4>
+                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                        {% get_actors_or_directors_movies model=director as dirs_movies %}
+                        {% for movie in dirs_movies %}
+                        <div class="col">
+                            <div class="card text-center h-100">
+                                {% if movie.poster %}
+                                    <img class="card-img-top" src="{{ movie.poster.url }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h2 class="card-title">
+                                        <a class="movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
                 </div>
-                <div class="card-footer text-end">
-                    <small class="text-body-secondary">Was created at: {{ director.create_time|date:"d.m.Y" }}</small>
-                </div>
+            </div>
+            <div class="card-footer text-end">
+                <small class="text-body-secondary">Was created at: {{ director.create_time|date:"d.m.Y" }}</small>
             </div>
         </div>
     </div>

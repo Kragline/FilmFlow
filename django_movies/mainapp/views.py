@@ -28,9 +28,18 @@ class MovieListView(GenreYear, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Movies'
+        context['title'] = 'Django Movies'
 
         return context
+
+    def get_queryset(self):
+        return Movie.objects.order_by('pk')
+
+
+class FilterMoviesView(GenreYear, ListView):
+    model = Movie
+    template_name = 'mainapp/movie/filter_movies_list.html'
+    context_object_name = 'movies'
 
     def get_queryset(self):
         queryset = Movie.objects.order_by('pk')
@@ -87,7 +96,6 @@ class AddMovieView(LoginRequiredMixin, CreateView):
     form_class = MovieForm
     template_name = 'mainapp/movie/add_movie.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('home')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -95,6 +103,9 @@ class AddMovieView(LoginRequiredMixin, CreateView):
         context['title'] = 'Add movie'
 
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.slug})
 
 
 class UpdateMovieView(LoginRequiredMixin, UpdateView):
@@ -149,7 +160,6 @@ class AddActorView(LoginRequiredMixin, CreateView):
     form_class = ActorForm
     template_name = 'mainapp/actor/add_actor.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('actors')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -157,6 +167,9 @@ class AddActorView(LoginRequiredMixin, CreateView):
         context['title'] = 'Add actor'
 
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('about_actor', kwargs={'actor_slug': self.object.slug})
 
 
 class UpdateActorView(LoginRequiredMixin, UpdateView):
@@ -211,7 +224,6 @@ class AddDirectorView(LoginRequiredMixin, CreateView):
     form_class = DirectorForm
     template_name = 'mainapp/director/add_director.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('directors')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -219,6 +231,9 @@ class AddDirectorView(LoginRequiredMixin, CreateView):
         context['title'] = 'Add director'
 
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('about_director', kwargs={'director_slug': self.object.slug})
 
 
 class UpdateDirectorView(LoginRequiredMixin, UpdateView):
@@ -275,7 +290,6 @@ class AddGenreView(LoginRequiredMixin, CreateView):
     form_class = GenreForm
     template_name = 'mainapp/genre/add_genre.html'
     context_object_name = 'form'
-    success_url = reverse_lazy('genre')
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -283,6 +297,9 @@ class AddGenreView(LoginRequiredMixin, CreateView):
         context['title'] = 'Add genre'
 
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('genre', kwargs={'genre_slug': self.object.slug})
 
 
 '''                 ****    Comment   ****                   '''

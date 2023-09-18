@@ -11,15 +11,15 @@
     <body>
         {% include 'mainapp/includes/header.html' %}
         <main>
+            {% block wallpaper %}
+            {% endblock %}
             <div class="main-div">
-                <img src="{% static 'mainapp/img/main_page_img.jpeg' %}" class="img-fluid">
                 {% include 'mainapp/includes/sidebar.html' %}
                 <div class="content">
                     {% block content %}
                     {% endblock %}
                 </div>
             </div>
-            {% include 'mainapp/includes/footer.html' %}
         </main>
     </body>
 </html>

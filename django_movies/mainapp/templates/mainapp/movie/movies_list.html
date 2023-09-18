@@ -2,6 +2,10 @@
 {% load mainapp_tags %}
 {% load static %}
 
+{% block wallpaper %}
+    <img src="{% static 'mainapp/img/main_page_img.jpeg' %}" class="img-fluid home-wallpaper">
+{% endblock %}
+
 {% block content %}
     <h1 class="movie-bold">{{ title }}</h1>
 

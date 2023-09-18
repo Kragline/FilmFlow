@@ -5,18 +5,27 @@ register = template.Library()
 
 
 @register.simple_tag()
-def get_models_movies(model):
-    movies = model.movies.all()
-    actor_movies = ''
-    for movie in movies:
-        actor_movies += movie.title + ', '
+def get_movie_actors(movie):
+    data = movie.actors.all()
 
-    return actor_movies.rstrip(', ')
+    if len(data) >= 4:
+        return data[:4]
+    elif len(data) == 2:
+        return data[:2]
+
+    return data
 
 
 @register.simple_tag()
-def get_movie_actors(movie):
-    return movie.actors.all()[:4]
+def get_actors_or_directors_movies(model):
+    data = model.movies.all()
+
+    if len(data) >= 3:
+        return data[:3]
+    elif len(data) == 2:
+        return data[:2]
+
+    return data
 
 
 @register.simple_tag()
