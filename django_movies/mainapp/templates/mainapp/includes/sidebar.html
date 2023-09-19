@@ -12,11 +12,11 @@
                 </h4>
                 <div class="collapse mb-2" id="collapseExample">
                     <div class="card card-body">
-                        {% for movie in view.get_years %}
+                        {% for year_dict in view.get_years %}
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ movie.year }}" name="year">
+                                <input class="form-check-input" type="checkbox" value="{{ year_dict.year }}" name="year">
                                 <label class="form-check-label">
-                                    {{ movie.year }}
+                                    {{ year_dict.year }}
                                 </label>
                             </div>
                         {% endfor %}

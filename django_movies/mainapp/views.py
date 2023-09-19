@@ -13,11 +13,17 @@ from .forms import *
 
 
 class GenreYear:
-    def get_genres(self):
+    @classmethod
+    def get_genres(cls):
         return Genre.objects.annotate(movies_count=Count('movies'))
 
-    def get_years(self):
+    @classmethod
+    def get_movies(cls):
         return Movie.objects.all()
+
+    @classmethod
+    def get_years(cls):
+        return cls.get_movies().values('year').order_by('-year')
 
 
 class MovieListView(GenreYear, ListView):
@@ -32,8 +38,9 @@ class MovieListView(GenreYear, ListView):
 
         return context
 
-    def get_queryset(self):
-        return Movie.objects.order_by('pk')
+    @classmethod
+    def get_queryset(cls):
+        return GenreYear.get_movies().order_by('pk')
 
 
 class FilterMoviesView(GenreYear, ListView):
@@ -42,7 +49,7 @@ class FilterMoviesView(GenreYear, ListView):
     context_object_name = 'movies'
 
     def get_queryset(self):
-        queryset = Movie.objects.order_by('pk')
+        queryset = GenreYear.get_movies()
 
         query = self.request.GET.get('movie-search')
         years = self.request.GET.getlist('year')
