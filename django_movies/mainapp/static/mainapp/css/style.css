@@ -41,15 +41,6 @@ body {
     color: rgb(32, 119, 32);
 }
 
-.director-link {
-    text-decoration: none;
-    color: rgb(67, 204, 222);
-}
-
-.director-bold {
-    color: rgb(47, 165, 181);
-}
-
 .centered-content {
   display: flex;
   flex-direction: column;

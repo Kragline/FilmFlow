@@ -17,7 +17,7 @@ def get_movie_actors(movie):
 
 
 @register.simple_tag()
-def get_actors_or_directors_movies(model):
+def get_persons_movies(model):
     data = model.movies.all()
 
     if len(data) >= 3:

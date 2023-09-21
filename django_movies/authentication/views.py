@@ -10,14 +10,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegisterUserForm, LoginUserForm, UpdateUserForm, CustomProfileForm
 from .models import CustomProfile
 
+from mainapp.views import SidebarData
 
-class RegisterUserView(CreateView):
+
+class RegisterUserView(SidebarData, CreateView):
     form_class = RegisterUserForm
     template_name = 'authentication/auth/register.html'
 
     def form_valid(self, form):
         user = form.save()
-        # that pic is in projects media directory
         CustomProfile.objects.create(user=user, profile_pic='default_profile_pic.jpg')
         login(self.request, user)
 
@@ -30,7 +31,7 @@ class RegisterUserView(CreateView):
         return context
 
 
-class LoginUserView(LoginView):
+class LoginUserView(SidebarData, LoginView):
     form_class = LoginUserForm
     template_name = 'authentication/auth/login.html'
 
@@ -49,7 +50,7 @@ def logout_user(request):
     return redirect('login')
 
 
-class ProfilePageView(LoginRequiredMixin, DetailView):
+class ProfilePageView(SidebarData, LoginRequiredMixin, DetailView):
     model = User
     template_name = 'authentication/user/profile_page.html'
     context_object_name = 'user_info'
@@ -65,24 +66,26 @@ class ProfilePageView(LoginRequiredMixin, DetailView):
         return context
 
 
-@login_required(login_url='home')
-def update_user_view(request, username):
-    current_user = User.objects.get(username=request.user.username)
-    form = UpdateUserForm(request.POST or None, instance=current_user)
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('profile_page', username=request.POST['username'])
+class UpdateUserView(SidebarData, LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UpdateUserForm
+    context_object_name = 'form'
+    template_name = 'authentication/user/update_user.html'
+    login_url = reverse_lazy('home')
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
-    context = {
-        'title': f'Update {current_user.username}\'s info',
-        'form': form
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Update {self.object.username}\'s info'
 
-    return render(request, 'authentication/user/update_user.html', context=context)
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('profile_page', kwargs={'username': self.object.username})
 
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+class UserDeleteView(SidebarData, LoginRequiredMixin, DeleteView):
     model = User
     context_object_name = 'current_user'
     template_name = 'authentication/user/delete_user.html'
@@ -98,7 +101,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
 
-class ChangeProfilePicView(LoginRequiredMixin, UpdateView):
+class ChangeProfilePicView(SidebarData, LoginRequiredMixin, UpdateView):
     model = CustomProfile
     form_class = CustomProfileForm
     template_name = 'authentication/user/change_profile_pic.html'

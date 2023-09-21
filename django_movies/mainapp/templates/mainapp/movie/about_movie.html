@@ -75,7 +75,7 @@
                         </div>
 
                         <hr>
-                        <h4 class="card-text"><small class="text-body-secondary"><b class="director-bold">Director</b></small></h4>
+                        <h4 class="card-text"><small class="text-body-secondary"><b class="actor-bold">Director</b></small></h4>
                         <div class="row row-cols-1 row-cols-md-4 g-4 mb-3">
                             {% for director in movie.directors.all %}
                                 <div class="col">
@@ -85,7 +85,7 @@
                                         {% endif %}
                                         <div class="card-body">
                                             <div class="centered-content">
-                                                <h5 class="card-title"><a class="director-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a></h5>
+                                                <h5 class="card-title"><a class="actor-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a></h5>
                                             </div>
                                         </div>
                                     </div>

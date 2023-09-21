@@ -12,7 +12,7 @@ from .forms import *
 '''                 ****    Movie   ****                   '''
 
 
-class GenreYear:
+class SidebarData:
     @classmethod
     def get_genres(cls):
         return Genre.objects.annotate(movies_count=Count('movies'))
@@ -26,7 +26,7 @@ class GenreYear:
         return cls.get_movies().values('year').order_by('-year')
 
 
-class MovieListView(GenreYear, ListView):
+class MovieListView(SidebarData, ListView):
     model = Movie
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
@@ -40,16 +40,16 @@ class MovieListView(GenreYear, ListView):
 
     @classmethod
     def get_queryset(cls):
-        return GenreYear.get_movies().order_by('pk')
+        return SidebarData.get_movies().order_by('pk')
 
 
-class FilterMoviesView(GenreYear, ListView):
+class FilterMoviesView(SidebarData, ListView):
     model = Movie
     template_name = 'mainapp/movie/filter_movies_list.html'
     context_object_name = 'movies'
 
     def get_queryset(self):
-        queryset = GenreYear.get_movies()
+        queryset = SidebarData.get_movies()
 
         query = self.request.GET.get('movie-search')
         years = self.request.GET.getlist('year')
@@ -69,7 +69,7 @@ class FilterMoviesView(GenreYear, ListView):
         return queryset
 
 
-class AboutMovieView(GenreYear, DetailView):
+class AboutMovieView(SidebarData, DetailView):
     model = Movie
     template_name = 'mainapp/movie/about_movie.html'
     context_object_name = 'movie'
@@ -152,26 +152,27 @@ class DeleteMovieView(LoginRequiredMixin, DeleteView):
 
 class AboutActorView(DetailView):
     model = Actor
-    template_name = 'mainapp/actor/about_actor.html'
-    context_object_name = 'actor'
+    template_name = 'mainapp/person/about_person.html'
+    context_object_name = 'person'
     slug_url_kwarg = 'actor_slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'About ' + str(context['actor'].name)
+        context['title'] = 'About ' + str(context['person'].name)
 
         return context
 
 
 class AddActorView(LoginRequiredMixin, CreateView):
     form_class = ActorForm
-    template_name = 'mainapp/actor/add_actor.html'
+    template_name = 'mainapp/person/add_person.html'
     context_object_name = 'form'
     login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add actor'
+        context['form_action'] = '/add_actor/'
 
         return context
 
@@ -182,7 +183,7 @@ class AddActorView(LoginRequiredMixin, CreateView):
 class UpdateActorView(LoginRequiredMixin, UpdateView):
     model = Actor
     form_class = ActorForm
-    template_name = 'mainapp/actor/update_actor.html'
+    template_name = 'mainapp/person/update_person.html'
     login_url = reverse_lazy('home')
     slug_url_kwarg = 'actor_slug'
 
@@ -198,15 +199,15 @@ class UpdateActorView(LoginRequiredMixin, UpdateView):
 
 class DeleteActorView(LoginRequiredMixin, DeleteView):
     model = Actor
-    template_name = 'mainapp/actor/delete_actor.html'
-    context_object_name = 'actor'
+    template_name = 'mainapp/person/delete_person.html'
+    context_object_name = 'person'
     login_url = reverse_lazy('home')
     success_url = reverse_lazy('home')
     slug_url_kwarg = 'actor_slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'delete actor'
+        context['title'] = 'Delete actor'
 
         return context
 
@@ -214,28 +215,18 @@ class DeleteActorView(LoginRequiredMixin, DeleteView):
 '''                 ****    Director   ****                   '''
 
 
-class AboutDirectorView(DetailView):
+class AboutDirectorView(AboutActorView):
     model = Director
-    template_name = 'mainapp/director/about_director.html'
-    context_object_name = 'director'
     slug_url_kwarg = 'director_slug'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'About ' + str(context['director'].name)
 
-        return context
-
-
-class AddDirectorView(LoginRequiredMixin, CreateView):
+class AddDirectorView(AddActorView):
     form_class = DirectorForm
-    template_name = 'mainapp/director/add_director.html'
-    context_object_name = 'form'
-    login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add director'
+        context['form_action'] = '/add_director/'
 
         return context
 
@@ -243,11 +234,9 @@ class AddDirectorView(LoginRequiredMixin, CreateView):
         return reverse_lazy('about_director', kwargs={'director_slug': self.object.slug})
 
 
-class UpdateDirectorView(LoginRequiredMixin, UpdateView):
+class UpdateDirectorView(UpdateActorView):
     model = Director
-    form_class = ActorForm
-    template_name = 'mainapp/director/update_director.html'
-    login_url = reverse_lazy('home')
+    form_class = DirectorForm
     slug_url_kwarg = 'director_slug'
 
     def get_context_data(self, **kwargs):
@@ -260,12 +249,8 @@ class UpdateDirectorView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_director', kwargs={'director_slug': self.object.slug})
 
 
-class DeleteDirectorView(LoginRequiredMixin, DeleteView):
+class DeleteDirectorView(DeleteActorView):
     model = Director
-    template_name = 'mainapp/director/delete_director.html'
-    context_object_name = 'director'
-    login_url = reverse_lazy('home')
-    success_url = reverse_lazy('home')
     slug_url_kwarg = 'director_slug'
 
     def get_context_data(self, **kwargs):
@@ -278,7 +263,7 @@ class DeleteDirectorView(LoginRequiredMixin, DeleteView):
 '''                 ****    Genre   ****                   '''
 
 
-class GenreListView(GenreYear, ListView):
+class GenreListView(SidebarData, ListView):
     model = Movie
     template_name = 'mainapp/genre/show_genre.html'
     context_object_name = 'movies'
