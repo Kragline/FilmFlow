@@ -30,34 +30,23 @@
                         <b class="actor-bold">{{ person.name }}'s movies</b>
                     </small>
                 </h4>
-                <div id="carouselExample" class="carousel carousel-movie slide">
-                    <div class="carousel-inner">
-                        {% for movie in person.movies.all %}
-                        {% if forloop.first %}
-                        <div class="carousel-item active">
-                            {% else %}
-                            <div class="carousel-item">
+                <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                    {% for movie in person.movies.all %}
+                        <div class="col">
+                            <div class="card text-center h-100">
+                                {% if movie.poster %}
+                                    <img class="card-img-top" src="{{ movie.poster.url }}">
                                 {% endif %}
-                                <img src="{{ movie.poster.url }}" class="w-100" alt="">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>
-                                        <a class="carousel-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
-                                    </h5>
+                                <div class="card-body">
+                                    <div class="centered-content">
+                                        <h5 class="card-title">
+                                            <a class="actor-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+                                        </h5>
+                                    </div>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                                data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                                data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="card-footer text-end">

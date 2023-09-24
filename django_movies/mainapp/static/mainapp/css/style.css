@@ -29,6 +29,15 @@ body {
     text-shadow: 2px 2px 2px black;
 }
 
+.hover-movie-link {
+    text-decoration: none;
+    color: black;
+}
+
+.hover-movie-link:hover {
+    color: rgb(39, 151, 39);
+}
+
 .actor-link {
     text-decoration: none;
     color: rgb(45, 107, 189);
@@ -47,14 +56,6 @@ body {
     color: rgb(32, 119, 32);
 }
 
-.carousel-movie {
-    width: 50%;
-}
-
-.carousel-person {
-    width: 40%;
-}
-
 .centered-content {
   display: flex;
   flex-direction: column;
@@ -65,6 +66,21 @@ body {
 
 .not-centered {
     width: 100%;
+}
+
+.all-info-div {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.info-card {
+    width: 50%;
+}
+
+.actors-card {
+    width: 50%;
+    margin-left: 10px;
 }
 
 .comment-profile-info {
@@ -108,7 +124,17 @@ body {
         padding: 0;
     }
 
-    .carousel-movie {
-        width: 80%;
+    .all-info-div {
+        display: block;
+    }
+
+    .info-card {
+        width: 100%;
+    }
+
+    .actors-card {
+        width: 100%;
+        margin-left: 0px;
+        margin-top: 10px;
     }
 }

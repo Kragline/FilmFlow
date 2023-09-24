@@ -99,7 +99,7 @@ class AboutMovieView(SidebarData, DetailView):
         return context
 
 
-class AddMovieView(LoginRequiredMixin, CreateView):
+class AddMovieView(SidebarData, LoginRequiredMixin, CreateView):
     form_class = MovieForm
     template_name = 'mainapp/movie/add_movie.html'
     context_object_name = 'form'
@@ -115,7 +115,7 @@ class AddMovieView(LoginRequiredMixin, CreateView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.slug})
 
 
-class UpdateMovieView(LoginRequiredMixin, UpdateView):
+class UpdateMovieView(SidebarData, LoginRequiredMixin, UpdateView):
     model = Movie
     form_class = MovieForm
     template_name = 'mainapp/movie/update_movie.html'
@@ -132,7 +132,7 @@ class UpdateMovieView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.slug})
 
 
-class DeleteMovieView(LoginRequiredMixin, DeleteView):
+class DeleteMovieView(SidebarData, LoginRequiredMixin, DeleteView):
     model = Movie
     template_name = 'mainapp/movie/delete_movie.html'
     context_object_name = 'movie'
@@ -150,7 +150,7 @@ class DeleteMovieView(LoginRequiredMixin, DeleteView):
 '''                 ****    Actor   ****                   '''
 
 
-class AboutActorView(DetailView):
+class AboutActorView(SidebarData, DetailView):
     model = Actor
     template_name = 'mainapp/person/about_person.html'
     context_object_name = 'person'
@@ -163,7 +163,7 @@ class AboutActorView(DetailView):
         return context
 
 
-class AddActorView(LoginRequiredMixin, CreateView):
+class AddActorView(SidebarData, LoginRequiredMixin, CreateView):
     form_class = ActorForm
     template_name = 'mainapp/person/add_person.html'
     context_object_name = 'form'
@@ -180,7 +180,7 @@ class AddActorView(LoginRequiredMixin, CreateView):
         return reverse_lazy('about_actor', kwargs={'actor_slug': self.object.slug})
 
 
-class UpdateActorView(LoginRequiredMixin, UpdateView):
+class UpdateActorView(SidebarData, LoginRequiredMixin, UpdateView):
     model = Actor
     form_class = ActorForm
     template_name = 'mainapp/person/update_person.html'
@@ -197,7 +197,7 @@ class UpdateActorView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_actor', kwargs={'actor_slug': self.object.slug})
 
 
-class DeleteActorView(LoginRequiredMixin, DeleteView):
+class DeleteActorView(SidebarData, LoginRequiredMixin, DeleteView):
     model = Actor
     template_name = 'mainapp/person/delete_person.html'
     context_object_name = 'person'
@@ -278,7 +278,7 @@ class GenreListView(SidebarData, ListView):
         return Movie.objects.filter(genres__slug=self.kwargs['genre_slug']).order_by('create_time')
 
 
-class AddGenreView(LoginRequiredMixin, CreateView):
+class AddGenreView(SidebarData, LoginRequiredMixin, CreateView):
     form_class = GenreForm
     template_name = 'mainapp/genre/add_genre.html'
     context_object_name = 'form'
@@ -297,7 +297,7 @@ class AddGenreView(LoginRequiredMixin, CreateView):
 '''                 ****    Comment   ****                   '''
 
 
-class UpdateCommentView(LoginRequiredMixin, UpdateView):
+class UpdateCommentView(SidebarData, LoginRequiredMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     template_name = 'mainapp/comment/update_comment.html'
@@ -316,7 +316,7 @@ class UpdateCommentView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})
 
 
-class DeleteCommentView(LoginRequiredMixin, DeleteView):
+class DeleteCommentView(SidebarData, LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'mainapp/comment/delete_comment.html'
     context_object_name = 'comment'

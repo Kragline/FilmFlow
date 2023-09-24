@@ -3,155 +3,177 @@
 
 {% block content %}
 
-        <div class="card mb-3">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    {% if movie.poster %}
-                        <img class="img-fluid rounded-start" src="{{ movie.poster.url }}">
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4">
+            {% if movie.poster %}
+                <img class="img-fluid rounded-start" src="{{ movie.poster.url }}">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-header">
+                <h2 class="card-title movie-bold">{{ movie.title }}</h2>
+                    {% colored_stars_range number=movie.rating as rating_range %}
+                    {% for star in rating_range %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-star" viewBox="0 0 16 16">
+                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                        </svg>
+                    {% endfor %}
+                {% if movie.rating != 10 %}
+                    {% other_stars_range number=movie.rating as other_range %}
+                    {% for star in other_range %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                        </svg>
+                    {% endfor %}
+                {% endif %}
+                <p class="card-text">
+                    <b class="movie-bold">{{ movie.rating }}</b> / 10
+                </p>
+            </div>
+            <div class="card-body">
+
+                <div class="all-info-div">
+                    <div class="card info-card">
+                        <div class="card-body">
+                            <h4 class="card-text">
+                                <small class="text-body-secondary">
+                                    <b class="movie-bold">Info</b>
+                                </small>
+                            </h4>
+                            <p class="card-text"><b class="movie-bold">World premiere:</b> {{ movie.world_premiere }}
+                            </p>
+
+                            <p class="card-text"><b class="movie-bold">Budget:</b> {{ movie.budget }}$</p>
+                            <p class="card-text"><b class="movie-bold">Fees:</b> {{ movie.fees }}$</p>
+
+                            <p class="card-text">
+                                <b class="movie-bold">Genres:</b>
+                                {% for genre in movie.genres.all %}
+                                    <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
+                                {% endfor %}
+                            </p>
+
+                            <p class="card-text">
+                                <b class="movie-bold">Director:</b>
+                                {% for director in movie.directors.all %}
+                                    <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card actors-card">
+                        <div class="card-body">
+                            <h4 class="card-text">
+                                <small class="text-body-secondary">
+                                    <b class="movie-bold">Actors</b>
+                                </small>
+                            </h4>
+                            <div id="carouselExample" class="carousel carousel-person slide">
+                                <div class="carousel-inner">
+                                    {% for actor in movie.actors.all %}
+                                    {% if forloop.first %}
+                                    <div class="carousel-item active">
+                                        {% else %}
+                                        <div class="carousel-item">
+                                            {% endif %}
+                                            <img src="{{ actor.photo.url }}" class="w-100" alt="">
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5>
+                                                    <a class="carousel-link" href="{{ actor.get_absolute_url }}">{{ actor.name }}</a>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                            data-bs-target="#carouselExample"
+                                            data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                            data-bs-target="#carouselExample"
+                                            data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if request.user.is_superuser %}
+                        <a class="btn btn-outline-success" role="button" href="{{ movie.get_absolute_url_for_update }}">Update</a>
+                        <a class="btn btn-outline-danger" role="button" href="{{ movie.get_absolute_url_for_delete }}">Delete</a>
+                    {% endif %}
+
+                    <p class="card-text">{{ movie.about|linebreaks }}</p>
+
+                    {% if movie.video %}
+                    <video controls width="100%">
+                        <source src="{{ movie.trailer.url }}" type="video/mp4">
+                    </video>
+                    {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-warning post mt-2" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            {{ form.text }}
+                            {% if form.errors %}
+                            <div class="alert alert-warning post mt-2" role="alert">
+                                {{ form.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-outline-success">Send</button>
+                    </form>
+                    {% endif %}
+
+                    {% if comments %}
+                        {% for comment in comments %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <div class="comment-profile-info">
+                                    {% if comment.author.custom_profile.profile_pic %}
+                                    <div class="comment-profile-div">
+                                        <img class="comment-profile-pic"
+                                             src="{{ comment.author.custom_profile.profile_pic.url }}">
+                                    </div>
+                                    {% endif %}
+                                    <h5 class="card-title username-in-comment">
+                                        <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">{{ comment.author }}</a>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ comment.text }}</p>
+                                {% if request.user == comment.author %}
+                                    <a class="btn btn-outline-success btn-sm" role="button" href="{{ comment.get_absolute_url_for_update }}">Update</a>
+                                    <a class="btn btn-outline-danger btn-sm" role="button" href="{{ comment.get_absolute_url_for_delete }}">Delete</a>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-end">
+                                <small class="text-body-secondary">{{ comment.create_time|date:"d.m.Y" }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
                     {% endif %}
                 </div>
-                <div class="col-md-8">
-                    <div class="card-header">
-                        <h2 class="card-title movie-bold">{{ movie.title }}</h2>
-                        {% colored_stars_range number=movie.rating as rating_range %}
-                        {% for star in rating_range %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                            </svg>
-                        {% endfor %}
-                        {% if movie.rating != 10 %}
-                            {% other_stars_range number=movie.rating as other_range %}
-                            {% for star in other_range %}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                            </svg>
-                            {% endfor %}
-                        {% endif %}
-                        <p class="card-text"><b class="movie-bold">{{ movie.rating }}</b> / 10</p>
-                    </div>
-                    <div class="card-body">
-                        {% if request.user.is_superuser %}
-                            <p class="card-text">
-                                <a class="movie-link" href="{{ movie.get_absolute_url_for_update }}">Update</a> |
-                                <a class="movie-link" href="{{ movie.get_absolute_url_for_delete }}">Delete</a>
-                            </p>
-                        {% endif %}
 
-                        <p class="card-text"><b class="movie-bold">World premiere:</b> {{ movie.world_premiere }}</p>
+            </div>
 
-                        <p class="card-text"><b class="movie-bold">Budget:</b> {{ movie.budget }}$</p>
-                        <p class="card-text"><b class="movie-bold">Fees:</b> {{ movie.fees }}$</p>
-
-                        <p class="card-text"><b class="movie-bold">Genres:</b></p>
-                        {% for genre in movie.genres.all %}
-                            <p class="card-text"><a class="movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></p>
-                        {% endfor %}
-
-                        <p class="card-text"><b class="movie-bold">Director(s):</b></p>
-                        {% for director in movie.directors.all %}
-                            <p class="card-text"><a class="movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a></p>
-                        {% endfor %}
-                        <hr>
-
-                        <p class="card-text">{{ movie.about|linebreaks }}</p>
-                        {% if movie.video %}
-                            <video controls width="100%">
-                                <source src="{{ movie.trailer.url }}" type="video/mp4">
-                            </video>
-                        {% endif %}
-
-                        <hr>
-                        <h4 class="card-text">
-                            <small class="text-body-secondary">
-                                <b class="movie-bold">Actors</b>
-                            </small>
-                        </h4>
-                        <div id="carouselExample" class="carousel carousel-person slide mb-3">
-                        <div class="carousel-inner">
-                            {% for actor in movie.actors.all %}
-                            {% if forloop.first %}
-                            <div class="carousel-item active">
-                                {% else %}
-                                <div class="carousel-item">
-                                    {% endif %}
-                                    <img src="{{ actor.photo.url }}" class="w-100" alt="">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5>
-                                            <a class="carousel-link" href="{{ actor.get_absolute_url }}">{{ actor.name }}</a>
-                                        </h5>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                                    data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                                    data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-
-
-                        {% if request.user.is_authenticated %}
-                            <form method="post">
-                                {% csrf_token %}
-                                {% if form.non_field_errors %}
-                                <div class="alert alert-warning post mt-2" role="alert">
-                                    {{ form.non_field_errors }}
-                                </div>
-                                {% endif %}
-                                <div class="mb-3">
-                                    {{ form.text }}
-                                    {% if form.errors %}
-                                    <div class="alert alert-warning post mt-2" role="alert">
-                                        {{ form.errors }}
-                                    </div>
-                                    {% endif %}
-                                </div>
-                                <button type="submit" class="btn btn-outline-success">Send</button>
-                            </form>
-                        {% endif %}
-                        {% if comments %}
-                            {% for comment in comments %}
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        <div class="comment-profile-info">
-                                            {% if comment.author.custom_profile.profile_pic %}
-                                                <div class="comment-profile-div">
-                                                    <img class="comment-profile-pic" src="{{ comment.author.custom_profile.profile_pic.url }}">
-                                                </div>
-                                            {% endif %}
-                                            <h5 class="card-title username-in-comment">
-                                                <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">{{ comment.author }}</a>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-text">{{ comment.text }}</p>
-                                        <p class="card-text">
-                                            {% if request.user == comment.author %}
-                                                <a class="movie-link" href="{{ comment.get_absolute_url_for_update }}">Update</a> |
-                                                <a class="movie-link" href="{{ comment.get_absolute_url_for_delete }}">Delete</a>
-                                            {% endif %}
-                                        </p>
-                                    </div>
-                                    <div class="card-footer text-end">
-                                        <small class="text-body-secondary">{{ comment.create_time|date:"d.m.Y" }}</small>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="card-footer text-end">
-                        <small class="text-body-secondary">Was created at: {{ movie.create_time|date:"d.m.Y" }}</small>
-                    </div>
-                </div>
+            <div class="card-footer text-end">
+                <small class="text-body-secondary">Was created at: {{ movie.create_time|date:"d.m.Y" }}</small>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
