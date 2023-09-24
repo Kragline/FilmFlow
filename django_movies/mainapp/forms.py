@@ -53,7 +53,7 @@ class MovieForm(forms.ModelForm):
 
     class Meta:
         model = Movie
-        fields = ('title', 'tagline', 'about', 'year', 'country', 'world_premiere', 'poster', 'trailer',
+        fields = ('title', 'tagline', 'about', 'year', 'country', 'world_premiere', 'poster', 'video',
                   'actors', 'directors', 'genres', 'rating', 'budget', 'fees', 'slug')
 
         widgets = {
@@ -64,7 +64,7 @@ class MovieForm(forms.ModelForm):
             'country': forms.TextInput(attrs=text_attrs),
             'world_premiere': forms.DateInput(attrs=date_attrs),
             'poster': forms.FileInput(attrs=file_attrs),
-            'trailer': forms.FileInput(attrs=file_attrs),
+            'video': forms.FileInput(attrs=file_attrs),
             'actors': forms.SelectMultiple(attrs=form_control),
             'directors': forms.SelectMultiple(attrs=form_control),
             'genres': forms.SelectMultiple(attrs=form_control),

@@ -23,6 +23,12 @@ body {
     margin-right: auto;
 }
 
+.carousel-link {
+    text-decoration: none;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+}
+
 .actor-link {
     text-decoration: none;
     color: rgb(45, 107, 189);
@@ -41,6 +47,14 @@ body {
     color: rgb(32, 119, 32);
 }
 
+.carousel-movie {
+    width: 50%;
+}
+
+.carousel-person {
+    width: 40%;
+}
+
 .centered-content {
   display: flex;
   flex-direction: column;
@@ -53,8 +67,24 @@ body {
     width: 100%;
 }
 
+.comment-profile-info {
+    display: flex;
+}
+
+.comment-profile-div {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.comment-profile-pic {
+    width: 100%;
+    height: 100%;
+}
+
 .username-in-comment {
-    margin-bottom: 0px;
+    margin: 10px 0 0 10px;
 }
 
 .reg-login-div {
@@ -76,5 +106,9 @@ body {
         position: static;
         width: 90%;
         padding: 0;
+    }
+
+    .carousel-movie {
+        width: 80%;
     }
 }

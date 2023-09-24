@@ -79,7 +79,7 @@ class Movie(models.Model):
     country = models.CharField(max_length=150)
     world_premiere = models.DateField(default=datetime.date.today)
     poster = models.ImageField(upload_to='movie_posters')
-    trailer = models.FileField(upload_to='movie_trailers', blank=True)
+    video = models.FileField(upload_to='movie_trailers', blank=True)
     actors = models.ManyToManyField(Actor, related_name='movies')
     directors = models.ManyToManyField(Director, related_name='movies')
     genres = models.ManyToManyField(Genre, related_name='movies')
