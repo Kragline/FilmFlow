@@ -108,6 +108,10 @@ body {
     margin: auto;
 }
 
+.like-form {
+    margin-bottom: 0;
+}
+
 @media (max-width: 1200px) {
     .search {
         float: none;

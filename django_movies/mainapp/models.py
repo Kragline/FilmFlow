@@ -101,6 +101,9 @@ class Movie(models.Model):
     def get_absolute_url_for_delete(self):
         return reverse('delete_movie', kwargs={'movie_slug': self.slug})
 
+    def add_comment_absolute_url(self):
+        return reverse('add_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
+
     class Meta:
         verbose_name = 'Movie'
         verbose_name_plural = 'Movies'
@@ -111,12 +114,14 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='liked_comments')
 
     def __str__(self):
-        return self.text
+        return f'Comment by {self.author} on {self.movie}: {self.text}'
 
-    def get_absolute_url(self):
-        return reverse('about_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
+
+    def get_absolute_url_for_like(self):
+        return reverse('like_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
 
     def get_absolute_url_for_update(self):
         return reverse('update_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})

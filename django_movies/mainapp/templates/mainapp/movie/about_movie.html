@@ -154,9 +154,22 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{ comment.text }}</p>
+                                {% if request.user.is_authenticated %}
+                                    <form class="like-form" action="{{ comment.get_absolute_url_for_like }}" method="post">
+                                        {% csrf_token %}
+                                        <button class="btn btn-outline-success btn-sm" type="submit">
+                                            {% if request.user in comment.likes.all %}
+                                                Disagree
+                                            {% else %}
+                                                Agree
+                                            {% endif %}
+                                            {{ comment.likes.count }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                                 {% if request.user == comment.author %}
-                                    <a class="btn btn-outline-success btn-sm" role="button" href="{{ comment.get_absolute_url_for_update }}">Update</a>
-                                    <a class="btn btn-outline-danger btn-sm" role="button" href="{{ comment.get_absolute_url_for_delete }}">Delete</a>
+                                        <a class="btn btn-outline-success btn-sm mt-2" role="button" href="{{ comment.get_absolute_url_for_update }}">Update</a>
+                                        <a class="btn btn-outline-danger btn-sm mt-2" role="button" href="{{ comment.get_absolute_url_for_delete }}">Delete</a>
                                 {% endif %}
                             </div>
                             <div class="card-footer text-end">

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Count
@@ -333,3 +333,16 @@ class DeleteCommentView(SidebarData, LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})
 
+
+class LikeCommentView(SidebarData, LoginRequiredMixin, View):
+    def post(self, request, movie_slug, comment_id, *args, **kwargs):
+        movie = Movie.objects.get(slug=movie_slug)
+        comment = movie.comments.get(pk=comment_id)
+        current_user = self.request.user
+
+        if current_user in comment.likes.all():
+            comment.likes.remove(current_user)
+        else:
+            comment.likes.add(current_user)
+
+        return redirect(movie.get_absolute_url())
