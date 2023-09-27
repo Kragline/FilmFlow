@@ -16,13 +16,34 @@
                 <h2 class="card-title actor-bold">{{ person.name }}</h2>
             </div>
             <div class="card-body">
-                {% if user.is_superuser %}
-                <p>
-                    <a class="actor-link" href="{{ person.get_absolute_url_for_update }}">Update</a> |
-                    <a class="actor-link" href="{{ person.get_absolute_url_for_delete }}">Delete</a>
-                </p>
-                {% endif %}
                 <p class="card-text">{{ person.bio|linebreaks }}</p>
+                {% if user.is_superuser %}
+                    <a class="btn btn-outline-primary" role="button" href="{{ person.get_absolute_url_for_update }}">Update</a>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Delete
+                    </button>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5 actor-bold" id="exampleModalLabel">Delete {{ person.name }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <h5>Are you sure you want to delete this person?</h5>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <form method="post" action="{{ person.get_absolute_url_for_delete }}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endif %}
 
                 <hr>
                 <h4 class="card-text">
