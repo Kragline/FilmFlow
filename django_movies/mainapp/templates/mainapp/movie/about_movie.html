@@ -41,11 +41,22 @@
                                     <b class="movie-bold">Info</b>
                                 </small>
                             </h4>
-                            <p class="card-text"><b class="movie-bold">World premiere:</b> {{ movie.world_premiere }}
+                            <p class="card-text">
+                                <b class="movie-bold">World premiere:</b> {{ movie.world_premiere }}
+                            </p>
+                            <p class="card-text">
+                                <b class="movie-bold">Country:</b> {{ movie.country }}
+                            </p>
+                            <p class="card-text">
+                                <b class="movie-bold">Year:</b> {{ movie.year }}
                             </p>
 
                             <p class="card-text"><b class="movie-bold">Budget:</b> {{ movie.budget }}$</p>
                             <p class="card-text"><b class="movie-bold">Fees:</b> {{ movie.fees }}$</p>
+
+                            <p class="card-text">
+                                <b class="movie-bold">Tagline:</b> {{ movie.tagline }}
+                            </p>
 
                             <p class="card-text">
                                 <b class="movie-bold">Genres:</b>
@@ -60,6 +71,37 @@
                                     <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
                                 {% endfor %}
                             </p>
+
+                            {% if request.user.is_superuser %}
+                                <a class="btn btn-outline-success" role="button" href="{{ movie.get_absolute_url_for_update }}">Update</a>
+
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Delete
+                                </button>
+
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5 movie-bold" id="exampleModalLabel">Delete {{ movie.title }}</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5>Are you sure you want to delete this movie?</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                        data-bs-dismiss="modal">Close
+                                                </button>
+                                                <form method="post" action="{{ movie.get_absolute_url_for_delete }}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -103,40 +145,13 @@
                             </div>
                         </div>
                     </div>
-                    {% if request.user.is_superuser %}
-                        <a class="btn btn-outline-success" role="button" href="{{ movie.get_absolute_url_for_update }}">Update</a>
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Delete
-                        </button>
-
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h1 class="modal-title fs-5 movie-bold" id="exampleModalLabel">Delete {{ movie.title }}</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                  <h5>Are you sure you want to delete this movie?</h5>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                <form method="post" action="{{ movie.get_absolute_url_for_delete }}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    {% endif %}
 
                     <p class="card-text">{{ movie.about|linebreaks }}</p>
 
                     {% if movie.video %}
-                    <video controls width="100%">
-                        <source src="{{ movie.trailer.url }}" type="video/mp4">
-                    </video>
+                        <video controls width="100%">
+                            <source src="{{ movie.trailer.url }}" type="video/mp4">
+                        </video>
                     {% endif %}
 
                     {% if request.user.is_authenticated %}
@@ -197,42 +212,45 @@
                                     </button>
 
                                     <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <h1 class="modal-title fs-5 movie-bold" id="exampleModalLabel2">Delete {{ comment.text }}</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                          </div>
-                                          <div class="modal-body">
-                                              <h5>Are you sure you want to delete this comment?</h5>
-                                              <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="comment-profile-info">
-                                                            {% if comment.author.custom_profile.profile_pic %}
-                                                                <div class="comment-profile-div">
-                                                                    <img class="comment-profile-pic"
-                                                                         src="{{ comment.author.custom_profile.profile_pic.url }}">
-                                                                </div>
-                                                            {% endif %}
-                                                            <h5 class="card-title username-in-comment">
-                                                                <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">{{ comment.author }}</a>
-                                                            </h5>
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5 movie-bold" id="exampleModalLabel2">Delete {{ comment.text }}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5>Are you sure you want to delete this comment?</h5>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="comment-profile-info">
+                                                                {% if comment.author.custom_profile.profile_pic %}
+                                                                    <div class="comment-profile-div">
+                                                                        <img class="comment-profile-pic" src="{{ comment.author.custom_profile.profile_pic.url }}">
+                                                                    </div>
+                                                                {% endif %}
+                                                                <h5 class="card-title username-in-comment">
+                                                                    <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">{{ comment.author }}</a>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            {{ comment.text }}
                                                         </div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        {{ comment.text }}
-                                                    </div>
-                                              </div>
-                                          </div>
-                                          <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                            <form method="post" action="{{ comment.get_absolute_url_for_delete }}">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
-                                            </form>
-                                          </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <form method="post" action="{{ comment.get_absolute_url_for_delete }}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-outline-danger" value="Yes">
+                                                            Yes, delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
                                 {% endif %}
                             </div>

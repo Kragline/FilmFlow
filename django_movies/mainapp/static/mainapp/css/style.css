@@ -17,6 +17,19 @@ body {
     width: 18%;
 }
 
+.filters-container {
+    display: flex;
+}
+
+.filter-item {
+    flex-grow: 1;
+    margin-bottom: 10px;
+}
+
+.second-item, .third-item {
+    margin-left: 10px;
+}
+
 .pagination {
     width: 60%;
     margin-left: auto;
@@ -112,7 +125,7 @@ body {
     margin-bottom: 0;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     .search {
         float: none;
         position: static;
