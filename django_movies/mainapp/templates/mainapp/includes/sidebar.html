@@ -4,18 +4,12 @@
             <div class="mb-2">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="movie-search">
             </div>
-                <div class="filters-container">
-                    <button class="btn btn-outline-success filter-item first-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+
+                <h4 class="d-inline-flex gap-1">
+                    <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         Years
                     </button>
-                    <button class="btn btn-outline-success filter-item second-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-                        Genres
-                    </button>
-                    <button class="btn btn-outline-success filter-item third-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
-                        Ordering
-                    </button>
-                </div>
-
+                </h4>
                 <div class="collapse mb-2" id="collapseExample">
                     <div class="card card-body">
                         {% for year_dict in view.get_years %}
@@ -29,6 +23,11 @@
                     </div>
                 </div>
 
+                <h4 class="d-inline-flex gap-1">
+                    <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                        Genres
+                    </button>
+                </h4>
                 <div class="collapse mb-2" id="collapseExample2">
                     <div class="card card-body">
                         {% for genre in view.get_genres %}
@@ -44,6 +43,11 @@
                     </div>
                 </div>
 
+                <h4 class="d-inline-flex gap-1">
+                    <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                        Ordering
+                    </button>
+                </h4>
                 <div class="collapse " id="collapseExample3">
                     <div class="card card-body">
                             <div class="form-check">
@@ -104,7 +108,7 @@
                 </div>
 
             <div class="d-grid gap-2">
-                <button class="btn btn-outline-success" type="submit">Find movie</button>
+                <button class="btn btn-outline-success mt-2" type="submit">Find movie</button>
             </div>
         </form>
     </div>
