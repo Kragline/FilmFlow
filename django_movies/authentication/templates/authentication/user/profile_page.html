@@ -22,11 +22,78 @@
                         <h5 class="card-title actor-bold">Staff</h5>
                     {% endif %}
                     {% if request.user == user_info %}
-                        <p class="card-text">
-                            <a class="actor-link" href="{% url 'change_profile_pic' user_info.custom_profile.pk %}">Change profile pic</a> |
-                            <a class="actor-link" href="{% url 'update_user' user_info.username %}">Update</a> |
-                            <a class="actor-link" href="{% url 'delete_user' user_info.username %}">Delete</a>
-                        </p>
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Change profile pic
+                            </button>
+
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Change your profile pic</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{% url 'change_profile_pic' user_info.custom_profile.pk %}" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {% if change_profile_pic_form.non_field_errors %}
+                                                <div class="alert alert-warning post" role="alert">
+                                                    {{ change_profile_pic_form.non_field_errors }}
+                                                </div>
+                                            {% endif %}
+                                                <div class="mb-3">
+                                                    <label for="{{ f.id_for_label }}" class="form-label">{{ change_profile_pic_form.profile_pict.label }}</label>
+                                                    {{ change_profile_pic_form.profile_pic }}
+                                                    {% if change_profile_pic_form.profile_pic.errors %}
+                                                        <div class="alert alert-warning post" role="alert">
+                                                            {{ change_profile_pic_form.profile_pic.errors }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            <button type="submit" class="btn btn-outline-primary">Apply changes</button>
+                                        </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a class="btn btn-outline-primary" href="{% url 'update_user' user_info.username %}">Update account</a>
+
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                                Delete account
+                            </button>
+
+                            <div class="modal fade" id="exampleModal3" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel3">Delete your account</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h3>Are you sure you want to delete this account?</h3>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <form action="{% url 'delete_user' user_info.username %}" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         {% if user_info.is_superuser %}
                             <hr>
                             <h5 class="card-title actor-bold">Admin tools</h5>

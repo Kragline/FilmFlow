@@ -134,17 +134,9 @@ class UpdateMovieView(SidebarData, LoginRequiredMixin, UpdateView):
 
 class DeleteMovieView(SidebarData, LoginRequiredMixin, DeleteView):
     model = Movie
-    template_name = 'mainapp/movie/delete_movie.html'
-    context_object_name = 'movie'
     login_url = reverse_lazy('home')
     success_url = reverse_lazy('home')
     slug_url_kwarg = 'movie_slug'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Delete movie'
-
-        return context
 
 
 '''                 ****    Actor   ****                   '''
@@ -199,17 +191,9 @@ class UpdateActorView(SidebarData, LoginRequiredMixin, UpdateView):
 
 class DeleteActorView(SidebarData, LoginRequiredMixin, DeleteView):
     model = Actor
-    template_name = 'mainapp/person/delete_person.html'
-    context_object_name = 'person'
     login_url = reverse_lazy('home')
     success_url = reverse_lazy('home')
     slug_url_kwarg = 'actor_slug'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Delete actor'
-
-        return context
 
 
 '''                 ****    Director   ****                   '''
@@ -252,12 +236,6 @@ class UpdateDirectorView(UpdateActorView):
 class DeleteDirectorView(DeleteActorView):
     model = Director
     slug_url_kwarg = 'director_slug'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Delete director'
-
-        return context
 
 
 '''                 ****    Genre   ****                   '''
@@ -318,17 +296,9 @@ class UpdateCommentView(SidebarData, LoginRequiredMixin, UpdateView):
 
 class DeleteCommentView(SidebarData, LoginRequiredMixin, DeleteView):
     model = Comment
-    template_name = 'mainapp/comment/delete_comment.html'
-    context_object_name = 'comment'
     login_url = reverse_lazy('home')
     success_url = reverse_lazy('home')
     pk_url_kwarg = 'comment_id'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Delete director'
-
-        return context
 
     def get_success_url(self):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})

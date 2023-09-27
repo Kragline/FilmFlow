@@ -61,7 +61,7 @@ class ProfilePageView(SidebarData, LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = f'User {self.object.username}'
+        context['change_profile_pic_form'] = CustomProfileForm()
 
         return context
 
@@ -77,7 +77,7 @@ class UpdateUserView(SidebarData, LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = f'Update {self.object.username}\'s info'
+        context['title'] = f'Update your personal information'
 
         return context
 
@@ -87,33 +87,17 @@ class UpdateUserView(SidebarData, LoginRequiredMixin, UpdateView):
 
 class UserDeleteView(SidebarData, LoginRequiredMixin, DeleteView):
     model = User
-    context_object_name = 'current_user'
-    template_name = 'authentication/user/delete_user.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
     success_url = reverse_lazy('register')
     login_url = reverse_lazy('home')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = f'Delete account {self.object.username}'
-
-        return context
-
 
 class ChangeProfilePicView(SidebarData, LoginRequiredMixin, UpdateView):
     model = CustomProfile
     form_class = CustomProfileForm
-    template_name = 'authentication/user/change_profile_pic.html'
-    context_object_name = 'form'
     login_url = reverse_lazy('home')
     pk_url_kwarg = 'user_id'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Change profile pic'
-
-        return context
 
     def get_success_url(self):
         return reverse_lazy('profile_page', kwargs={'username': self.object.user.username})
