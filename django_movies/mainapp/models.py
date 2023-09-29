@@ -117,8 +117,7 @@ class Comment(models.Model):
     likes = models.ManyToManyField(User, related_name='liked_comments')
 
     def __str__(self):
-        return f'Comment by {self.author} on {self.movie}: {self.text}'
-
+        return f'Comment by {self.author} on {self.movie}:\n {self.text}'
 
     def get_absolute_url_for_like(self):
         return reverse('like_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
@@ -128,3 +127,15 @@ class Comment(models.Model):
 
     def get_absolute_url_for_delete(self):
         return reverse('delete_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
+
+
+class Saga(models.Model):
+    name = models.CharField(max_length=150)
+    movies = models.ManyToManyField(Movie, related_name='saga')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Saga'
+        verbose_name_plural = 'Sagas'

@@ -51,11 +51,19 @@ class CommentAdmin(admin.ModelAdmin):
     list_display_links = ('author', 'movie', 'text')
 
 
+class SagaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
+
+    search_fields = ('name',)
+
+
 admin.site.register(Actor, ActorAdmin)
 admin.site.register(Director, ActorAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Saga, SagaAdmin)
 
 admin.site.site_title = 'Django Movies Administration'
 admin.site.site_header = 'Django Movies Administration'
