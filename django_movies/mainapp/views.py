@@ -23,7 +23,7 @@ class SidebarData:
 
     @classmethod
     def get_years(cls):
-        return cls.get_movies().values('year').order_by('-year')
+        return cls.get_movies().values('year').order_by('-year').distinct()
 
 
 class MovieListView(SidebarData, ListView):
@@ -66,7 +66,7 @@ class FilterMoviesView(SidebarData, ListView):
             if search_mode:
                 queryset = queryset.order_by(self.request.GET.get('search-mode'))
 
-        return queryset
+        return queryset.distinct()
 
 
 class AboutMovieView(SidebarData, DetailView):
@@ -92,6 +92,10 @@ class AboutMovieView(SidebarData, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        movie_saga = self.object.saga
+        if movie_saga is not None:
+            context['other_movies'] = Movie.objects.filter(saga=movie_saga).exclude(pk=self.object.pk)
 
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')

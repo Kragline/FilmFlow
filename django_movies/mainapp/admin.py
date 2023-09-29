@@ -46,6 +46,13 @@ class GenreAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
+class SagaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
+
+    search_fields = ('name',)
+
+
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('author', 'movie', 'text')
     list_display_links = ('author', 'movie', 'text')
@@ -55,6 +62,7 @@ admin.site.register(Actor, ActorAdmin)
 admin.site.register(Director, ActorAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Genre, GenreAdmin)
+admin.site.register(Saga, SagaAdmin)
 admin.site.register(Comment, CommentAdmin)
 
 admin.site.site_title = 'Django Movies Administration'

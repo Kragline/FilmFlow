@@ -50,11 +50,12 @@ class DirectorForm(PersonForm):
 class MovieForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['saga'].empty_label = 'Choose saga'
 
     class Meta:
         model = Movie
         fields = ('title', 'tagline', 'about', 'year', 'country', 'world_premiere', 'poster', 'video',
-                  'actors', 'directors', 'genres', 'rating', 'budget', 'fees', 'slug')
+                  'actors', 'directors', 'genres', 'saga', 'rating', 'budget', 'fees', 'slug')
 
         widgets = {
             'title': forms.TextInput(attrs=text_attrs),
@@ -68,6 +69,7 @@ class MovieForm(forms.ModelForm):
             'actors': forms.SelectMultiple(attrs=form_control),
             'directors': forms.SelectMultiple(attrs=form_control),
             'genres': forms.SelectMultiple(attrs=form_control),
+            'saga': forms.Select(attrs=form_control),
             'rating': forms.NumberInput(attrs=number_attrs),
             'budget': forms.NumberInput(attrs=number_attrs),
             'fees': forms.NumberInput(attrs=number_attrs),
@@ -94,4 +96,14 @@ class CommentForm(forms.ModelForm):
 
         widgets = {
             'text': forms.Textarea(attrs=comment_attrs)
+        }
+
+
+class SagaForm(forms.ModelForm):
+    class Meta:
+        model = Saga
+        fields = ('name',)
+
+        widgets = {
+            'name': forms.Textarea(attrs=text_attrs)
         }

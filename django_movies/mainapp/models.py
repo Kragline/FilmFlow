@@ -71,6 +71,17 @@ class Genre(models.Model):
         verbose_name_plural = 'Genres'
 
 
+class Saga(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Saga'
+        verbose_name_plural = 'Sagas'
+
+
 class Movie(models.Model):
     title = models.CharField(max_length=150)
     tagline = models.CharField(blank=True, max_length=150)
@@ -83,6 +94,7 @@ class Movie(models.Model):
     actors = models.ManyToManyField(Actor, related_name='movies')
     directors = models.ManyToManyField(Director, related_name='movies')
     genres = models.ManyToManyField(Genre, related_name='movies')
+    saga = models.ForeignKey(Saga, on_delete=models.SET_NULL, null=True, blank=True, related_name='movies')
     rating = models.PositiveSmallIntegerField(default=1, blank=True)
     budget = models.PositiveIntegerField(default=0, help_text='Budget in US dollars')
     fees = models.PositiveIntegerField(default=0)
