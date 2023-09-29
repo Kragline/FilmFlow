@@ -316,20 +316,3 @@ class LikeCommentView(SidebarData, LoginRequiredMixin, View):
             comment.likes.add(current_user)
 
         return redirect(movie.get_absolute_url())
-
-
-'''                 ****    Saga   ****                   '''
-
-
-class AddSagaView(SidebarData, LoginRequiredMixin, CreateView):
-    form_class = SagaForm
-    template_name = 'mainapp/saga/add_saga.html'
-    context_object_name = 'form'
-    login_url = reverse_lazy('home')
-    success_url = reverse_lazy('home')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Add saga'
-
-        return context

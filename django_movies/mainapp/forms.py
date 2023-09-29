@@ -48,6 +48,8 @@ class DirectorForm(PersonForm):
 
 
 class MovieForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = Movie
@@ -92,15 +94,4 @@ class CommentForm(forms.ModelForm):
 
         widgets = {
             'text': forms.Textarea(attrs=comment_attrs)
-        }
-
-
-class SagaForm(forms.ModelForm):
-    class Meta:
-        model = Saga
-        fields = ('name', 'movies')
-
-        widgets = {
-            'name': forms.TextInput(attrs=text_attrs),
-            'movies': forms.SelectMultiple(attrs=form_control)
         }

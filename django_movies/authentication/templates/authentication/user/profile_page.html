@@ -97,14 +97,15 @@
                         {% if user_info.is_superuser %}
                             <hr>
                             <h5 class="card-title actor-bold">Admin tools</h5>
-                            <a class="btn btn-outline-primary" href="{% url 'add_movie' %}">Add movie</a>
-                            <a class="btn btn-outline-primary" href="{% url 'add_actor' %}">Add actor</a>
-                            <a class="btn btn-outline-primary" href="{% url 'add_director' %}">Add director</a>
-                            <a class="btn btn-outline-primary" href="{% url 'add_genre' %}">Add genre</a>
-                            <a class="btn btn-outline-primary" href="{% url 'add_saga' %}">Add saga</a>
+                            <p class="card-text">
+                                <a class="actor-link" href="{% url 'add_movie' %}">Add movie</a> |
+                                <a class="actor-link" href="{% url 'add_actor' %}">Add actor</a> |
+                                <a class="actor-link" href="{% url 'add_director' %}">Add director</a> |
+                                <a class="actor-link" href="{% url 'add_genre'  %}">Add genre</a>
+                            </p>
                         {% endif %}
                         <hr>
-                        <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a>
+                        <a class="actor-link" href="{% url 'logout' %}">Logout</a>
                     {% endif %}
                 </div>
             </div>
