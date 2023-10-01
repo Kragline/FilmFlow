@@ -1,0 +1,49 @@
+.user-page {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-info {
+    display: flex;
+    width: 50%;
+}
+
+.user-tools {
+    width: 50%;
+}
+
+.profile-pic-div {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+}
+
+.username-in-profile {
+    margin: auto 0 auto 20px;
+}
+
+@media (max-width: 1500px) {
+    .user-page {
+        display: block;
+        justify-content: center;
+    }
+
+    .username-in-profile {
+        margin: auto 0 auto 20px;
+    }
+
+    .profile-info {
+        width: 100%;
+    }
+
+    .user-tools {
+        width: 100%;
+        margin-top: 20px;
+    }
+}

@@ -9,7 +9,7 @@ from django.db.models import Count
 from .forms import *
 
 
-'''                 ****    Movie   ****                   '''
+'''                 ****    Base Classes   ****                   '''
 
 
 class SidebarData:
@@ -24,6 +24,27 @@ class SidebarData:
     @classmethod
     def get_years(cls):
         return cls.get_movies().values('year').order_by('-year').distinct()
+
+
+class LoginUrl(LoginRequiredMixin):
+    login_url = reverse_lazy('home')
+
+
+class AddObjectView(SidebarData, LoginUrl, CreateView):
+    template_name = 'mainapp/base_templates/add_object.html'
+    context_object_name = 'form'
+
+
+class UpdateObjectView(SidebarData, LoginUrl, UpdateView):
+    template_name = 'mainapp/base_templates/update_object.html'
+    context_object_name = 'form'
+
+
+class DeleteObjectView(SidebarData, LoginUrl, DeleteView):
+    success_url = reverse_lazy('home')
+
+
+'''                 ****    Movie   ****                   '''
 
 
 class MovieListView(SidebarData, ListView):
@@ -103,15 +124,13 @@ class AboutMovieView(SidebarData, DetailView):
         return context
 
 
-class AddMovieView(SidebarData, LoginRequiredMixin, CreateView):
+class AddMovieView(AddObjectView):
     form_class = MovieForm
-    template_name = 'mainapp/movie/add_movie.html'
-    context_object_name = 'form'
-    login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add movie'
+        context['form_action'] = '/add_movie/'
 
         return context
 
@@ -119,11 +138,9 @@ class AddMovieView(SidebarData, LoginRequiredMixin, CreateView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.slug})
 
 
-class UpdateMovieView(SidebarData, LoginRequiredMixin, UpdateView):
+class UpdateMovieView(UpdateObjectView):
     model = Movie
     form_class = MovieForm
-    template_name = 'mainapp/movie/update_movie.html'
-    login_url = reverse_lazy('home')
     slug_url_kwarg = 'movie_slug'
 
     def get_context_data(self, **kwargs):
@@ -136,10 +153,8 @@ class UpdateMovieView(SidebarData, LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.slug})
 
 
-class DeleteMovieView(SidebarData, LoginRequiredMixin, DeleteView):
+class DeleteMovieView(DeleteObjectView):
     model = Movie
-    login_url = reverse_lazy('home')
-    success_url = reverse_lazy('home')
     slug_url_kwarg = 'movie_slug'
 
 
@@ -159,11 +174,8 @@ class AboutActorView(SidebarData, DetailView):
         return context
 
 
-class AddActorView(SidebarData, LoginRequiredMixin, CreateView):
+class AddActorView(AddObjectView):
     form_class = ActorForm
-    template_name = 'mainapp/person/add_person.html'
-    context_object_name = 'form'
-    login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -176,11 +188,9 @@ class AddActorView(SidebarData, LoginRequiredMixin, CreateView):
         return reverse_lazy('about_actor', kwargs={'actor_slug': self.object.slug})
 
 
-class UpdateActorView(SidebarData, LoginRequiredMixin, UpdateView):
+class UpdateActorView(UpdateObjectView):
     model = Actor
     form_class = ActorForm
-    template_name = 'mainapp/person/update_person.html'
-    login_url = reverse_lazy('home')
     slug_url_kwarg = 'actor_slug'
 
     def get_context_data(self, **kwargs):
@@ -193,10 +203,8 @@ class UpdateActorView(SidebarData, LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_actor', kwargs={'actor_slug': self.object.slug})
 
 
-class DeleteActorView(SidebarData, LoginRequiredMixin, DeleteView):
+class DeleteActorView(DeleteObjectView):
     model = Actor
-    login_url = reverse_lazy('home')
-    success_url = reverse_lazy('home')
     slug_url_kwarg = 'actor_slug'
 
 
@@ -208,7 +216,7 @@ class AboutDirectorView(AboutActorView):
     slug_url_kwarg = 'director_slug'
 
 
-class AddDirectorView(AddActorView):
+class AddDirectorView(AddObjectView):
     form_class = DirectorForm
 
     def get_context_data(self, **kwargs):
@@ -222,7 +230,7 @@ class AddDirectorView(AddActorView):
         return reverse_lazy('about_director', kwargs={'director_slug': self.object.slug})
 
 
-class UpdateDirectorView(UpdateActorView):
+class UpdateDirectorView(UpdateObjectView):
     model = Director
     form_class = DirectorForm
     slug_url_kwarg = 'director_slug'
@@ -260,15 +268,13 @@ class GenreListView(SidebarData, ListView):
         return Movie.objects.filter(genres__slug=self.kwargs['genre_slug']).order_by('create_time')
 
 
-class AddGenreView(SidebarData, LoginRequiredMixin, CreateView):
+class AddGenreView(AddObjectView):
     form_class = GenreForm
-    template_name = 'mainapp/genre/add_genre.html'
-    context_object_name = 'form'
-    login_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add genre'
+        context['form_action'] = '/add_genre/'
 
         return context
 
@@ -279,12 +285,9 @@ class AddGenreView(SidebarData, LoginRequiredMixin, CreateView):
 '''                 ****    Comment   ****                   '''
 
 
-class UpdateCommentView(SidebarData, LoginRequiredMixin, UpdateView):
+class UpdateCommentView(UpdateObjectView):
     model = Comment
     form_class = CommentForm
-    template_name = 'mainapp/comment/update_comment.html'
-    context_object_name = 'form'
-    login_url = reverse_lazy('home')
     pk_url_kwarg = 'comment_id'
     slug_url_kwarg = 'movie_slug'
 
@@ -298,10 +301,8 @@ class UpdateCommentView(SidebarData, LoginRequiredMixin, UpdateView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})
 
 
-class DeleteCommentView(SidebarData, LoginRequiredMixin, DeleteView):
+class DeleteCommentView(DeleteObjectView):
     model = Comment
-    login_url = reverse_lazy('home')
-    success_url = reverse_lazy('home')
     pk_url_kwarg = 'comment_id'
 
     def get_success_url(self):

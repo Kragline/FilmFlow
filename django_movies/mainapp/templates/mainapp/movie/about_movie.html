@@ -166,8 +166,12 @@
                             <tbody>
                                 {% for other_movie in other_movies %}
                                     <tr>
-                                        <td><a class="hover-movie-link" href="{{ movie.get_absolute_url }}">{{ other_movie.title }}</a></td>
-                                        <td>{{ other_movie.year }}</td>
+                                        <td>
+                                            <a class="hover-movie-link" href="{{ other_movie.get_absolute_url }}">{{ other_movie.title }}</a>
+                                        </td>
+                                        <td>
+                                            {{ other_movie.year }}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

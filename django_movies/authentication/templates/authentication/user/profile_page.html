@@ -4,112 +4,130 @@
 {% block content %}
 
     <div class="card border-primary mt-3">
-        <div class="row g-0">
-            <div class="col-md-4">
-                {% if user_info.custom_profile.profile_pic %}
-                    <img class="img-fluid rounded-top" src="{{ user_info.custom_profile.profile_pic.url }}">
-                {% endif %}
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h1 class="actor-bold">{{ user_info.username }}</h1>
-                    <p class="card-text">
-                        {% if user_info.last_name %} {{ user_info.first_name }} {% endif %} {% if user_info.last_name %} {{ user_info.last_name }} {% endif %}
-                    </p>
-                    {% if user_info.is_staff %}
-                        <h5 class="card-title actor-bold">Superuser</h5>
-                    {% elif user_info.is_superuser %}
-                        <h5 class="card-title actor-bold">Staff</h5>
+        <div class="card-body">
+            <div class="user-page">
+
+                <div class="profile-info">
+                    {% if user_info.custom_profile.profile_pic %}
+                        <div class="profile-pic-div">
+                            <img class="profile-pic" src="{{ user_info.custom_profile.profile_pic.url }}">
+                        </div>
                     {% endif %}
-                    {% if request.user == user_info %}
-                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Change profile pic
-                            </button>
+                    <div class="username-in-profile">
+                        <h2 class="actor-bold">
+                            {{ user_info.username }}
+                        </h2>
+                        <h4>
+                            {% if user_info.first_name %}
+                                {{ user_info.first_name }}
+                            {% endif %}
+                            {% if user_info.last_name %}
+                                {{ user_info.last_name }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                </div>
+                {% if request.user == user_info %}
+                    <div class="user-tools">
+                        <h4 class="card-title actor-bold">User tools</h4>
+                        <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Change profile pic
+                        </button>
 
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Change your profile pic</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{% url 'change_profile_pic' user_info.custom_profile.pk %}" method="post" enctype="multipart/form-data">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Change your profile pic</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'change_profile_pic' user_info.custom_profile.pk %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% if change_profile_pic_form.non_field_errors %}
+                                            <div class="alert alert-warning post" role="alert">
+                                                {{ change_profile_pic_form.non_field_errors }}
+                                            </div>
+                                        {% endif %}
+                                            <div class="mb-3">
+                                                <label for="{{ f.id_for_label }}" class="form-label">{{ change_profile_pic_form.profile_pict.label }}</label>
+                                                {{ change_profile_pic_form.profile_pic }}
+                                                {% if change_profile_pic_form.profile_pic.errors %}
+                                                    <div class="alert alert-warning post" role="alert">
+                                                        {{ change_profile_pic_form.profile_pic.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        <button type="submit" class="btn btn-outline-primary">Apply changes</button>
+                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="btn btn-outline-primary mb-2" href="{% url 'update_user' user_info.username %}">
+                            Update account
+                        </a>
+
+                        <button type="button" class="btn btn-outline-danger  mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                            </svg>
+                            Delete account
+                        </button>
+
+                        <div class="modal fade" id="exampleModal3" tabindex="-1"
+                             aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel3">Delete your account</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3>Are you sure you want to delete this account?</h3>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <form action="{% url 'delete_user' user_info.username %}" method="post">
                                             {% csrf_token %}
-                                            {% if change_profile_pic_form.non_field_errors %}
-                                                <div class="alert alert-warning post" role="alert">
-                                                    {{ change_profile_pic_form.non_field_errors }}
-                                                </div>
-                                            {% endif %}
-                                                <div class="mb-3">
-                                                    <label for="{{ f.id_for_label }}" class="form-label">{{ change_profile_pic_form.profile_pict.label }}</label>
-                                                    {{ change_profile_pic_form.profile_pic }}
-                                                    {% if change_profile_pic_form.profile_pic.errors %}
-                                                        <div class="alert alert-warning post" role="alert">
-                                                            {{ change_profile_pic_form.profile_pic.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                            <button type="submit" class="btn btn-outline-primary">Apply changes</button>
+                                            <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
                                         </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                Close
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <a class="btn btn-outline-primary" href="{% url 'update_user' user_info.username %}">Update account</a>
-
-                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal3">
-                                Delete account
-                            </button>
-
-                            <div class="modal fade" id="exampleModal3" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel3" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel3">Delete your account</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h3>Are you sure you want to delete this account?</h3>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Close
-                                            </button>
-                                            <form action="{% url 'delete_user' user_info.username %}" method="post">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-outline-danger" value="Yes">Yes, delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <a class="btn btn-outline-primary mb-2" href="{% url 'logout' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+                                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                                <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+                            </svg>
+                            Logout
+                        </a>
 
                         {% if user_info.is_superuser %}
                             <hr>
-                            <h5 class="card-title actor-bold">Admin tools</h5>
+                            <h4 class="card-title actor-bold">Admin tools</h4>
                             <a class="btn btn-outline-primary" href="{% url 'add_movie' %}">Add movie</a>
                             <a class="btn btn-outline-primary" href="{% url 'add_actor' %}">Add actor</a>
                             <a class="btn btn-outline-primary" href="{% url 'add_director' %}">Add director</a>
-                            <a class="btn btn-outline-primary" href="{% url 'add_genre'  %}">Add genre</a>
                         {% endif %}
-                        <hr>
-                        <a class="actor-link" href="{% url 'logout' %}">Logout</a>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             </div>
-            <div class="card-footer text-end">
-                <small class="text-body-secondary">Joined at: {{ user_info.date_joined|date:"d.m.Y" }}</small>
-            </div>
+        </div>
+        <div class="card-footer text-end">
+            <small class="text-body-secondary">Joined at: {{ user_info.date_joined|date:"d.m.Y" }}</small>
         </div>
     </div>
 {% endblock %}
