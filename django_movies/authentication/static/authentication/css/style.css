@@ -17,6 +17,7 @@
     width: 200px;
     border-radius: 50%;
     overflow: hidden;
+    margin: auto 0 auto 0;
 }
 
 .profile-pic {

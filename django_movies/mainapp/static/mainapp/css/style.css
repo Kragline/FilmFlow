@@ -48,25 +48,16 @@ body {
 }
 
 .hover-movie-link:hover {
-    color: rgb(39, 151, 39);
-}
-
-.actor-link {
-    text-decoration: none;
-    color: rgb(45, 107, 189);
-}
-
-.actor-bold {
-    color: rgb(38, 86, 150);
+    color: rgb(41, 112, 207);
 }
 
 .movie-link {
     text-decoration: none;
-    color: rgb(39, 151, 39);
+    color: rgb(45, 107, 189);
 }
 
 .movie-bold {
-    color: rgb(32, 119, 32);
+    color: rgb(38, 86, 150);
 }
 
 .centered-content {

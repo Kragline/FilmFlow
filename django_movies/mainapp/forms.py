@@ -90,6 +90,10 @@ class GenreForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].label = 'Comment text'
+
     class Meta:
         model = Comment
         fields = ('text',)

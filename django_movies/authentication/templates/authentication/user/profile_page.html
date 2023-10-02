@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div class="card border-primary mt-3">
+    <div class="card mt-3">
         <div class="card-body">
             <div class="user-page">
 
@@ -14,8 +14,14 @@
                         </div>
                     {% endif %}
                     <div class="username-in-profile">
-                        <h2 class="actor-bold">
+                        <h2 class="movie-bold">
                             {{ user_info.username }}
+                            {% if user_info.is_superuser %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                    <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                                </svg>
+                            {% endif %}
                         </h2>
                         <h4>
                             {% if user_info.first_name %}
@@ -29,8 +35,8 @@
                 </div>
                 {% if request.user == user_info %}
                     <div class="user-tools">
-                        <h4 class="card-title actor-bold">User tools</h4>
-                        <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <h4 class="card-title movie-bold">User tools</h4>
+                        <button type="button" class="btn btn-outline-secondary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Change profile pic
                         </button>
 
@@ -71,8 +77,16 @@
                             </div>
                         </div>
 
-                        <a class="btn btn-outline-primary mb-2" href="{% url 'update_user' user_info.username %}">
+                        <a class="btn btn-outline-secondary mb-2" href="{% url 'update_user' user_info.username %}">
                             Update account
+                        </a>
+
+                        <a class="btn btn-outline-secondary mb-2" href="{% url 'logout' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+                                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                                <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+                            </svg>
+                            Logout
                         </a>
 
                         <button type="button" class="btn btn-outline-danger  mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal3">
@@ -107,17 +121,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-outline-primary mb-2" href="{% url 'logout' %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
-                                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
-                                <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
-                            </svg>
-                            Logout
-                        </a>
 
                         {% if user_info.is_superuser %}
                             <hr>
-                            <h4 class="card-title actor-bold">Admin tools</h4>
+                            <h4 class="card-title movie-bold">Admin tools</h4>
                             <a class="btn btn-outline-primary" href="{% url 'add_movie' %}">Add movie</a>
                             <a class="btn btn-outline-primary" href="{% url 'add_actor' %}">Add actor</a>
                             <a class="btn btn-outline-primary" href="{% url 'add_director' %}">Add director</a>

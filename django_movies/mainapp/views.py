@@ -26,21 +26,21 @@ class SidebarData:
         return cls.get_movies().values('year').order_by('-year').distinct()
 
 
-class LoginUrl(LoginRequiredMixin):
+class BaseObjectView(LoginRequiredMixin):
     login_url = reverse_lazy('home')
-
-
-class AddObjectView(SidebarData, LoginUrl, CreateView):
-    template_name = 'mainapp/base_templates/add_object.html'
+    template_name = 'mainapp/add_update_object.html'
     context_object_name = 'form'
 
 
-class UpdateObjectView(SidebarData, LoginUrl, UpdateView):
-    template_name = 'mainapp/base_templates/update_object.html'
-    context_object_name = 'form'
+class AddObjectView(SidebarData, BaseObjectView, CreateView):
+    pass
 
 
-class DeleteObjectView(SidebarData, LoginUrl, DeleteView):
+class UpdateObjectView(SidebarData, BaseObjectView, UpdateView):
+    pass
+
+
+class DeleteObjectView(SidebarData, BaseObjectView, DeleteView):
     success_url = reverse_lazy('home')
 
 
