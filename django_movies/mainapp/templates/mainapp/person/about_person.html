@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h1 class="actor-bold">{{ title }}</h1>
+<h1 class="movie-bold">{{ title }}</h1>
 <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-4">
@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-8">
             <div class="card-header">
-                <h2 class="card-title actor-bold">{{ person.name }}</h2>
+                <h2 class="card-title movie-bold">{{ person.name }}</h2>
             </div>
             <div class="card-body">
                 <p class="card-text">{{ person.bio|linebreaks }}</p>
@@ -27,7 +27,7 @@
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h1 class="modal-title fs-5 actor-bold" id="exampleModalLabel">Delete {{ person.name }}</h1>
+                            <h1 class="modal-title fs-5 movie-bold" id="exampleModalLabel">Delete {{ person.name }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
@@ -48,7 +48,7 @@
                 <hr>
                 <h4 class="card-text">
                     <small class="text-body-secondary">
-                        <b class="actor-bold">{{ person.name }}'s movies</b>
+                        <b class="movie-bold">{{ person.name }}'s movies</b>
                     </small>
                 </h4>
                 <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">

@@ -13,12 +13,14 @@
         {% for movie in movies %}
             <div class="col">
                 <div class="card text-center h-100">
-                    {% if movie.poster %}
-                        <img class="card-img-top" src="{{ movie.poster.url }}">
-                    {% endif %}
+                    <div class="fixed-div">
+                        {% if movie.poster %}
+                            <img class="card-img-top" src="{{ movie.poster.url }}">
+                        {% endif %}
+                    </div>
                     <div class="card-body">
                         <div class="centered-content">
-                            <h2 class="card-title"><a class="movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h2>
+                            <h4 class="card-title"><a class="movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h4>
                             <div class="not-centered">
                                 {% colored_stars_range number=movie.rating as rating_range %}
                                 {% for star in rating_range %}

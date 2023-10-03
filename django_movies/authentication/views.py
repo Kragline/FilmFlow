@@ -50,7 +50,7 @@ def logout_user(request):
     return redirect('login')
 
 
-class ProfilePageView(SidebarData, LoginRequiredMixin, DetailView):
+class ProfilePageView(SidebarData, DetailView):
     model = User
     template_name = 'authentication/user/profile_page.html'
     context_object_name = 'user_info'
