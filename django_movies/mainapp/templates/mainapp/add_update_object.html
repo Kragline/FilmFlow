@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1 class="movie-bold">{{ title }}</h1>
+<h1 class="movie-bold title">{{ title }}</h1>
 
 <form action="{{ form_action }}" method="post" enctype="multipart/form-data">
     {% csrf_token %}

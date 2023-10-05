@@ -64,10 +64,9 @@ class MovieListView(SidebarData, ListView):
         return SidebarData.get_movies().order_by('pk')
 
 
-class FilterMoviesView(SidebarData, ListView):
-    model = Movie
-    template_name = 'mainapp/movie/filter_movies_list.html'
-    context_object_name = 'movies'
+class FilterMoviesView(MovieListView):
+    paginate_by = None
+    context_title = 'Filtering Movies'
 
     def get_queryset(self):
         queryset = SidebarData.get_movies()
@@ -84,10 +83,16 @@ class FilterMoviesView(SidebarData, ListView):
                 queryset = queryset.filter(year__in=years)
             if genres:
                 queryset = queryset.filter(genres__in=genres)
-            if search_mode:
-                queryset = queryset.order_by(self.request.GET.get('search-mode'))
+            if not queryset.exists():
+                self.context_title = 'No matches found'
 
-        return queryset.distinct()
+        return queryset.order_by(self.request.GET.get('search-mode')).distinct()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.context_title
+
+        return context
 
 
 class AboutMovieView(SidebarData, DetailView):
@@ -260,7 +265,7 @@ class GenreListView(SidebarData, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Genre ' + Genre.objects.get(slug=self.kwargs['genre_slug']).name
+        context['title'] = Genre.objects.get(slug=self.kwargs['genre_slug']).name + ' Movies'
 
         return context
 
