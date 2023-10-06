@@ -16,9 +16,15 @@ body {
     padding-bottom: 0px;
 }
 
+.last-activity {
+    float: right;
+    margin: 30px 20px 0 0;
+    width: 18%;
+}
+
 .search {
     float: left;
-    margin: 15px 0 0 20px;
+    margin: 30px 0 0 20px;
     width: 18%;
 }
 
@@ -36,7 +42,7 @@ body {
 }
 
 .pagination {
-    width: 60%;
+    justify-content: center;
     margin-left: auto;
     margin-right: auto;
 }
@@ -152,6 +158,14 @@ ul {
         margin: 15px auto 0 auto;
     }
 
+    .last-activity {
+        float: none;
+        position: static;
+        width: 70%;
+        background-color: white;
+        margin: 15px auto 0 auto;
+    }
+
     .content {
         float: none;
         position: static;
@@ -183,7 +197,7 @@ ul {
 }
 
 @media (max-width: 1000px) {
-    .search, .content {
+    .search, .last-activity, .content {
         width: 90%;
     }
 }

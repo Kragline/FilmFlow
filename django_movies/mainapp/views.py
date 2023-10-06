@@ -26,36 +26,43 @@ class SidebarData:
         return cls.get_movies().values('year').order_by('-year').distinct()
 
 
-class BaseObjectView(LoginRequiredMixin):
+class LastActivity:
+    @classmethod
+    def get_last_movies(cls):
+        return SidebarData.get_movies().order_by('-pk')[:4]
+
+
+class BaseObjectView(SidebarData, LastActivity, LoginRequiredMixin):
     login_url = reverse_lazy('home')
     template_name = 'mainapp/add_update_object.html'
     context_object_name = 'form'
 
 
-class AddObjectView(SidebarData, BaseObjectView, CreateView):
+class AddObjectView(BaseObjectView, CreateView):
     pass
 
 
-class UpdateObjectView(SidebarData, BaseObjectView, UpdateView):
+class UpdateObjectView(BaseObjectView, UpdateView):
     pass
 
 
-class DeleteObjectView(SidebarData, BaseObjectView, DeleteView):
+class DeleteObjectView(BaseObjectView, DeleteView):
     success_url = reverse_lazy('home')
 
 
 '''                 ****    Movie   ****                   '''
 
 
-class MovieListView(SidebarData, ListView):
+class MovieListView(SidebarData, LastActivity, ListView):
     model = Movie
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
+    context_title = 'Django Movies'
     paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Django Movies'
+        context['title'] = self.context_title
 
         return context
 
@@ -66,7 +73,6 @@ class MovieListView(SidebarData, ListView):
 
 class FilterMoviesView(MovieListView):
     paginate_by = None
-    context_title = 'Filtering Movies'
 
     def get_queryset(self):
         queryset = SidebarData.get_movies()
@@ -86,16 +92,10 @@ class FilterMoviesView(MovieListView):
             if not queryset.exists():
                 self.context_title = 'No matches found'
 
-        return queryset.order_by(self.request.GET.get('search-mode')).distinct()
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = self.context_title
-
-        return context
+        return queryset.order_by(search_mode).distinct()
 
 
-class AboutMovieView(SidebarData, DetailView):
+class AboutMovieView(SidebarData, LastActivity, DetailView):
     model = Movie
     template_name = 'mainapp/movie/about_movie.html'
     context_object_name = 'movie'
@@ -166,7 +166,7 @@ class DeleteMovieView(DeleteObjectView):
 '''                 ****    Actor   ****                   '''
 
 
-class AboutActorView(SidebarData, DetailView):
+class AboutActorView(SidebarData, LastActivity, DetailView):
     model = Actor
     template_name = 'mainapp/person/about_person.html'
     context_object_name = 'person'
@@ -258,7 +258,7 @@ class DeleteDirectorView(DeleteActorView):
 '''                 ****    Genre   ****                   '''
 
 
-class GenreListView(SidebarData, ListView):
+class GenreListView(SidebarData, LastActivity, ListView):
     model = Movie
     template_name = 'mainapp/genre/show_genre.html'
     context_object_name = 'movies'
@@ -314,7 +314,7 @@ class DeleteCommentView(DeleteObjectView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})
 
 
-class LikeCommentView(SidebarData, LoginRequiredMixin, View):
+class LikeCommentView(SidebarData, LastActivity, LoginRequiredMixin, View):
     def post(self, request, movie_slug, comment_id, *args, **kwargs):
         movie = Movie.objects.get(slug=movie_slug)
         comment = movie.comments.get(pk=comment_id)
