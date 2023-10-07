@@ -8,11 +8,9 @@
             <div class="user-page">
 
                 <div class="profile-info">
-                    {% if user_info.custom_profile.profile_pic %}
-                        <div class="profile-pic-div">
-                            <img class="profile-pic" src="{{ user_info.custom_profile.profile_pic.url }}">
-                        </div>
-                    {% endif %}
+                    <div class="profile-pic-div">
+                        <img class="profile-pic" src="{{ user_info.custom_profile.profile_pic.url }}">
+                    </div>
                     <div class="username-in-profile">
                         <h2 class="movie-bold">
                             {{ user_info.username }}

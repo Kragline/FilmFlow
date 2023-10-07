@@ -10,10 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegisterUserForm, LoginUserForm, UpdateUserForm, CustomProfileForm
 from .models import CustomProfile
 
-from mainapp.views import SidebarData
+from mainapp.views import SidebarData, LastActivity
 
 
-class RegisterUserView(SidebarData, CreateView):
+class RegisterUserView(SidebarData, LastActivity, CreateView):
     form_class = RegisterUserForm
     template_name = 'authentication/auth/register.html'
 
@@ -31,7 +31,7 @@ class RegisterUserView(SidebarData, CreateView):
         return context
 
 
-class LoginUserView(SidebarData, LoginView):
+class LoginUserView(SidebarData, LastActivity, LoginView):
     form_class = LoginUserForm
     template_name = 'authentication/auth/login.html'
 
@@ -50,7 +50,7 @@ def logout_user(request):
     return redirect('login')
 
 
-class ProfilePageView(SidebarData, DetailView):
+class ProfilePageView(SidebarData, LastActivity, DetailView):
     model = User
     template_name = 'authentication/user/profile_page.html'
     context_object_name = 'user_info'
@@ -66,7 +66,7 @@ class ProfilePageView(SidebarData, DetailView):
         return context
 
 
-class UpdateUserView(SidebarData, LoginRequiredMixin, UpdateView):
+class UpdateUserView(SidebarData, LastActivity, LoginRequiredMixin, UpdateView):
     model = User
     form_class = UpdateUserForm
     context_object_name = 'form'
@@ -85,7 +85,7 @@ class UpdateUserView(SidebarData, LoginRequiredMixin, UpdateView):
         return reverse_lazy('profile_page', kwargs={'username': self.object.username})
 
 
-class UserDeleteView(SidebarData, LoginRequiredMixin, DeleteView):
+class UserDeleteView(SidebarData, LastActivity, LoginRequiredMixin, DeleteView):
     model = User
     slug_field = 'username'
     slug_url_kwarg = 'username'
@@ -93,7 +93,7 @@ class UserDeleteView(SidebarData, LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('home')
 
 
-class ChangeProfilePicView(SidebarData, LoginRequiredMixin, UpdateView):
+class ChangeProfilePicView(SidebarData, LastActivity, LoginRequiredMixin, UpdateView):
     model = CustomProfile
     form_class = CustomProfileForm
     login_url = reverse_lazy('home')

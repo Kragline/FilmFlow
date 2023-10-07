@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="card mb-3">
+<div class="card mt-4 mb-3">
     <div class="row g-0">
         <div class="col-md-4">
             {% if movie.poster %}
@@ -196,13 +196,11 @@
                         {% for comment in comments %}
                         <div class="card mb-3">
                             <div class="card-header">
-                                <div class="comment-profile-info">
-                                    {% if comment.author.custom_profile.profile_pic %}
-                                        <div class="comment-profile-div">
-                                            <img class="comment-profile-pic"
-                                                 src="{{ comment.author.custom_profile.profile_pic.url }}">
-                                        </div>
-                                    {% endif %}
+                                <div class="profile-info">
+                                    <div class="profile-div">
+                                        <img class="profile-pic"
+                                             src="{{ comment.author.custom_profile.profile_pic.url }}">
+                                    </div>
                                     <h5 class="card-title username-in-comment">
                                         <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">
                                             {{ comment.author }}
