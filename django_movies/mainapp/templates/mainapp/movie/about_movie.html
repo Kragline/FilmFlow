@@ -46,7 +46,7 @@
                                 <b class="movie-bold">Country:</b> {{ movie.country }}
                             </p>
                             <p class="card-text">
-                                <b class="movie-bold">Year:</b> {{ movie.year }}
+                                <b class="movie-bold">Year:</b> <span class="hover-movie-link" id="movieYear" onclick="fineMovieByYear()">{{ movie.year }}</span>
                             </p>
 
                             <p class="card-text"><b class="movie-bold">Budget:</b> {{ movie.budget|format_money }}</p>
@@ -197,7 +197,7 @@
                         <div class="card mb-3">
                             <div class="card-header">
                                 <div class="profile-info">
-                                    <div class="profile-div">
+                                    <div class="comment-profile-div">
                                         <img class="profile-pic"
                                              src="{{ comment.author.custom_profile.profile_pic.url }}">
                                     </div>
