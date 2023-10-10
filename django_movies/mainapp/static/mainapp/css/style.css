@@ -67,6 +67,7 @@ body {
 }
 
 .hover-movie-link:hover {
+    cursor: pointer;
     color: rgb(41, 112, 207);
 }
 
@@ -155,6 +156,17 @@ body {
 
 ul {
   list-style-type: none;
+}
+
+footer {
+    background-color: #212529;
+    padding: 20px;
+}
+
+.footer-text {
+    color: white;
+    text-align: center;
+    margin-bottom: 0;
 }
 
 @media (max-width: 1400px) {

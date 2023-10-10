@@ -35,32 +35,32 @@
                         <div class="card-body">
                             <h4 class="card-text">
                                 <small class="text-body-secondary">
-                                    <b class="movie-bold">Info</b>
+                                    <b class="movie-bold">About</b>
                                 </small>
                             </h4>
                             <p class="card-text">
-                                <b class="movie-bold">World premiere:</b> {{ movie.world_premiere }}
+                                <b class="movie-bold">World premiere</b> {{ movie.world_premiere }}
                             </p>
 
                             <p class="card-text">
-                                <b class="movie-bold">Country:</b> {{ movie.country }}
+                                <b class="movie-bold">Country</b> {{ movie.country }}
                             </p>
                             <p class="card-text">
-                                <b class="movie-bold">Year:</b> <span class="hover-movie-link" id="movieYear" onclick="fineMovieByYear()">{{ movie.year }}</span>
+                                <b class="movie-bold">Year</b> <span class="hover-movie-link" id="movieYear" onclick="fineMovieByYear()">{{ movie.year }}</span>
                             </p>
 
-                            <p class="card-text"><b class="movie-bold">Budget:</b> {{ movie.budget|format_money }}</p>
-                            <p class="card-text"><b class="movie-bold">Fees:</b> {{ movie.fees|format_money }}</p>
+                            <p class="card-text"><b class="movie-bold">Budget</b> {{ movie.budget|format_money }}</p>
+                            <p class="card-text"><b class="movie-bold">Fees</b> {{ movie.fees|format_money }}</p>
 
                             <p class="card-text">
-                                <b class="movie-bold">Genres:</b>
+                                <b class="movie-bold">Genres</b>
                                 {% for genre in movie.genres.all %}
                                     <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
                                 {% endfor %}
                             </p>
 
                             <p class="card-text">
-                                <b class="movie-bold">Director:</b>
+                                <b class="movie-bold">Director</b>
                                 {% for director in movie.directors.all %}
                                     <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
                                 {% endfor %}
