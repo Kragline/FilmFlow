@@ -1,0 +1,43 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+    <div class="card mt-4">
+        <div class="card-header">
+            <h1 class="movie-bold title">{{ title }}</h1>
+        </div>
+        <div class="card-body">
+            <h5 class="movie-bold">Introduction</h5>
+            <p class="about-text">
+                Welcome to FilmFlow!
+                Hey there! I'm a film-loving student who created FilmFlow, an online cinema platform that brings the magic of the big screen right to your devices.
+                Let me tell you a bit about myself and this exciting journey.
+            </p>
+
+            <h5 class="movie-bold">Story</h5>
+            <p class="about-text">
+                FilmFlow was founded by a student who really enjoys movies, but was tired of the limited movie options available online.
+                So I decided to create a platform where movie buffs like us could access a vast library of films from all genres and eras.
+                After countless late-night brainstorming sessions and a lot of hard work, FilmFlow was born.
+
+            <h5 class="movie-bold">My Mission</h5>
+            <p class="about-text">
+                My mission at FilmFlow is simple yet profound: to make cinematic experiences accessible to everyone, no matter where they are.
+                I believe that movies have the power to inspire, entertain, and educate.
+                I strive to curate a diverse collection of movies that cater to different tastes and preferences.
+            </p>
+
+
+            <h5 class="movie-bold">Become a Part of FilmFlow</h5>
+            <p class="about-text">
+                I invite you to join me on this exciting cinematic adventure.
+                Immerse yourself in the world of movies, let the stories transport you, and share in the wonder of cinema.
+                Whether you're a seasoned cinephile or just starting to explore, FilmFlow promises an enriching experience.
+
+                Thank you for being a part of our story. Lights, camera, action! 🎬<br><br>
+
+                If there is a problems sure to let me know <a class="movie-link" href="{% url 'troubleshoot' %}">here</a>.
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

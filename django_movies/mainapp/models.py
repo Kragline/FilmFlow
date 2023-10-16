@@ -131,7 +131,6 @@ class Comment(models.Model):
     def __str__(self):
         return f'Comment by {self.author} on {self.movie}: {self.text}'
 
-
     def get_absolute_url_for_like(self):
         return reverse('like_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
 
@@ -140,3 +139,9 @@ class Comment(models.Model):
 
     def get_absolute_url_for_delete(self):
         return reverse('delete_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
+
+
+class Troubleshoot(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='troubleshoots')
+    description = models.TextField()
+    create_time = models.DateTimeField(auto_now_add=True)

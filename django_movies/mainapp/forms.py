@@ -103,11 +103,15 @@ class CommentForm(forms.ModelForm):
         }
 
 
-class SagaForm(forms.ModelForm):
+class TroubleshootForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['description'].label = 'Describe your problem here'
+
     class Meta:
-        model = Saga
-        fields = ('name',)
+        model = Troubleshoot
+        fields = ('description',)
 
         widgets = {
-            'name': forms.Textarea(attrs=text_attrs)
+            'description': forms.Textarea(attrs={'type': 'text', 'class': 'form-control', 'cols': 70, 'rows': 10})
         }

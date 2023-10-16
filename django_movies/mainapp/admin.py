@@ -58,12 +58,24 @@ class CommentAdmin(admin.ModelAdmin):
     list_display_links = ('author', 'movie', 'text')
 
 
+class TroubleshootAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'get_user_photo')
+    list_display_links = ('id', 'user')
+
+    def get_user_photo(self, model_object):
+        if model_object.user.custom_profile.profile_pic:
+            return mark_safe(f'<img src="{model_object.user.custom_profile.profile_pic.url}" width=70">')
+
+    get_user_photo.short_description = 'Profile pic'
+
+
 admin.site.register(Actor, ActorAdmin)
 admin.site.register(Director, ActorAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Saga, SagaAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Troubleshoot, TroubleshootAdmin)
 
-admin.site.site_title = 'Django Movies Administration'
-admin.site.site_header = 'Django Movies Administration'
+admin.site.site_title = 'FilmFlow Administration'
+admin.site.site_header = 'FilmFlow Administration'

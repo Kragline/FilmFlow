@@ -133,6 +133,16 @@ body {
     display: flex;
 }
 
+.contacts-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-text {
+    text-align: justify;
+}
+
 .comment-profile-div {
     height: 50px;
     width: 50px;

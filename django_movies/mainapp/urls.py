@@ -31,4 +31,9 @@ urlpatterns = [
     path('movie/<slug:movie_slug>/comment/<int:comment_id>/update/', UpdateCommentView.as_view(), name='update_comment'),
     path('movie/<slug:movie_slug>/comment/<int:comment_id>/delete/', DeleteCommentView.as_view(), name='delete_comment'),
     path('movie/<slug:movie_slug>/comment/<int:comment_id>/like/', LikeCommentView.as_view(), name='like_comment'),
+
+    # Other
+    path('about_us/', AboutUsView.as_view(), name='about'),
+    path('troubleshoot/', TroubleshootView.as_view(), name='troubleshoot'),
+    path('contacts/', ContactsView.as_view(), name='contacts'),
 ]

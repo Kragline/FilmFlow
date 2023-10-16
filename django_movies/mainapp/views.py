@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Count
@@ -57,7 +57,7 @@ class MovieListView(SidebarData, LastActivity, ListView):
     model = Movie
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
-    context_title = 'Django Movies'
+    context_title = 'FilmFlow'
     paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -326,3 +326,43 @@ class LikeCommentView(SidebarData, LastActivity, LoginRequiredMixin, View):
             comment.likes.add(current_user)
 
         return redirect(movie.get_absolute_url())
+
+
+'''                 ****    Other   ****                   '''
+
+
+class AboutUsView(SidebarData, LastActivity, TemplateView):
+    template_name = 'mainapp/other/about_us.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['title'] = 'About FilmFlow'
+
+        return context
+
+
+class ContactsView(SidebarData, LastActivity, TemplateView):
+    template_name = 'mainapp/other/contacts.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['title'] = 'Contacts'
+
+        return context
+
+
+class TroubleshootView(AddObjectView):
+    form_class = TroubleshootForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        trouble = form.save(commit=False)
+        trouble.user = self.request.user
+        trouble.save()
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['title'] = 'Tell about your problem'
+        context['form_action'] = '/troubleshoot/'
+
+        return context
