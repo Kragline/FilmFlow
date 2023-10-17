@@ -354,11 +354,14 @@ class ContactsView(SidebarData, LastActivity, TemplateView):
 class TroubleshootView(AddObjectView):
     form_class = TroubleshootForm
     success_url = reverse_lazy('home')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         trouble = form.save(commit=False)
         trouble.user = self.request.user
         trouble.save()
+
+        return redirect('home')
 
     def get_context_data(self):
         context = super().get_context_data()

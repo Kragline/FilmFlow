@@ -20,15 +20,17 @@
                              {% endfor %}
                         </ul>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'about' %}">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'contacts' %}">Contacts</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'troubleshoot' %}">Troubleshoot</a>
-                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'troubleshoot' %}">Troubleshoot</a>
+                        </li>
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav auth-item">
