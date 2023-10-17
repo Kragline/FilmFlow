@@ -1,5 +1,4 @@
 body {
-    margin-top: 55px;
     min-height: 100vh;
     height: 100%;
     display: flex;
@@ -172,14 +171,36 @@ ul {
   list-style-type: none;
 }
 
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 60px;
+  transition: right 0.3s ease-in-out;
+}
+
+#scrollToTopBtn span {
+  margin-left: -2px;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #0056b3;
+  right: 20px;
+}
+
 footer {
     height: 100%;
     background-color: #212529;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
+}
+
+.footer-hr {
+    color: gray;
+    margin: 0 auto 20px auto;
+    width: 600px;
 }
 
 .footer-text {
-    color: white;
+    color: gray;
     text-align: center;
     margin-bottom: 0;
 }

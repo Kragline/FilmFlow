@@ -141,7 +141,16 @@ class Comment(models.Model):
         return reverse('delete_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
 
 
+TROUBLESHOOT_CHOICES = (
+    ('no_error_category', 'Not selected'),
+    ('page_load_error', 'The page does not load'),
+    ('quality_error', 'Movie quality is bad'),
+    ('account_error', 'Can\'t change account information'),
+)
+
+
 class Troubleshoot(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='troubleshoots')
+    category = models.CharField(choices=TROUBLESHOOT_CHOICES, default='no_error_category', max_length=150)
     description = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)

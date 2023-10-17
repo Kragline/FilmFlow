@@ -59,8 +59,8 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class TroubleshootAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'get_user_photo')
-    list_display_links = ('id', 'user')
+    list_display = ('id', 'category', 'user', 'get_user_photo')
+    list_display_links = ('id', 'category')
 
     def get_user_photo(self, model_object):
         if model_object.user.custom_profile.profile_pic:

@@ -110,8 +110,9 @@ class TroubleshootForm(forms.ModelForm):
 
     class Meta:
         model = Troubleshoot
-        fields = ('description',)
+        fields = ('category', 'description')
 
         widgets = {
+            'category': forms.Select(attrs=form_control),
             'description': forms.Textarea(attrs={'type': 'text', 'class': 'form-control', 'cols': 70, 'rows': 10})
         }

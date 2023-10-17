@@ -1,1 +1,33 @@
-<h4 class="footer-text">&copy All rights reserved</h4>
+{% load static %}
+
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-3 mb-2">
+        <div class="container-fluid">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <h5><a class="nav-link" href="#header-nav">Go To Top</a></h5>
+                </li>
+                <li class="nav-item">
+                    <h5><a class="nav-link" href="{% url 'home' %}">Home</a></h5>
+                </li>
+                <li class="nav-item">
+                    <h5><a class="nav-link" href="{% url 'about' %}">About Us</a></h5>
+                </li>
+                <li class="nav-item">
+                    <h5><a class="nav-link" href="{% url 'contacts' %}">Contacts</a></h5>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <h5><a class="nav-link" href="{% url 'troubleshoot' %}">Troubleshoot</a></h5>
+                    </li>
+                    <li class="nav-item">
+                        <h5><a class="nav-link" href="{% url 'profile_page' request.user.username %}">Your Profile</a></h5>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<hr class="footer-hr">
+<p class="footer-text">&copy Copyright All rights reserved</p>
