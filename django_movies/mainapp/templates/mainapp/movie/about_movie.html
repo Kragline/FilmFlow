@@ -6,9 +6,7 @@
 <div class="card mt-4 mb-3">
     <div class="row g-0">
         <div class="col-md-4">
-            {% if movie.poster %}
-                <img class="img-fluid rounded-start" src="{{ movie.poster.url }}">
-            {% endif %}
+            <img class="img-fluid rounded-start" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
         </div>
         <div class="col-md-8">
             <div class="card-header text-center">
@@ -84,7 +82,7 @@
                                         <div class="carousel-item">
                                     {% endif %}
                                             <div class="fixed-actor-div rounded">
-                                                <img src="{{ actor.photo.url }}" class="actor-img rounded" alt="">
+                                                <img src="{{ actor.photo.url }}" class="actor-img rounded" alt="{{ actor.name }}">
                                             </div>
                                             <div class="carousel-caption">
                                                 <h5>

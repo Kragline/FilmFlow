@@ -10,5 +10,8 @@ def colored_stars_range(number):
 
 
 @register.filter(name='format_money')
-def format_money(value):
-    return f'{ value / 1000000 } million $'
+def format_money(money):
+    money = str(money)
+    formatted_money = f'{money[:-6]} million $' if len(money) <= 9 else f'{money[:-9]} billion $'
+
+    return formatted_money

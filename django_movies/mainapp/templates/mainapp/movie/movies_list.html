@@ -14,9 +14,7 @@
             <div class="col">
                 <div class="card text-center h-100">
                     <div class="fixed-div">
-                        {% if movie.poster %}
-                            <img class="card-img-top" src="{{ movie.poster.url }}">
-                        {% endif %}
+                        <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
                     </div>
                     <div class="card-body">
                         <div class="centered-content">

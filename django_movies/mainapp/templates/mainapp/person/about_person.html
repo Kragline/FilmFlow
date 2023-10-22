@@ -6,9 +6,7 @@
 <div class="card mt-4 mb-3">
     <div class="row g-0">
         <div class="col-md-4">
-            {% if person.photo %}
-            <img class="img-fluid rounded-start" src="{{ person.photo.url }}">
-            {% endif %}
+            <img class="img-fluid rounded-start" src="{{ person.photo.url }}" alt="{{ person.name }}">
         </div>
         <div class="col-md-8">
             <div class="card-header">
@@ -55,7 +53,7 @@
                         <div class="col">
                             <div class="card text-center h-100">
                                 {% if movie.poster %}
-                                    <img class="card-img-top" src="{{ movie.poster.url }}">
+                                    <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
                                 {% endif %}
                                 <div class="card-body">
                                     <div class="centered-content">
