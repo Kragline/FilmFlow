@@ -9,10 +9,10 @@
 {% block content %}
     <h1 class="movie-bold title">{{ title }}</h1>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+    <div class="row row-cols-1 row-cols-md-3 g-3 mb-3">
         {% for movie in movies %}
             <div class="col">
-                <div class="card text-center h-100">
+                <div class="card movies-list-card text-center h-100">
                     <div class="fixed-div">
                         <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
                     </div>
