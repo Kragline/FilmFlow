@@ -1,3 +1,5 @@
+{% load static %}
+
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="header-nav">
         <div class="container-fluid">
@@ -5,7 +7,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <a class="navbar-brand" href="{% url 'home' %}">FilmFlow</a>
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'mainapp/img/logo-final-gray.png' %}" width="60">
+                </a>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     {% if view.get_genres %}
                     <li class="nav-item dropdown">

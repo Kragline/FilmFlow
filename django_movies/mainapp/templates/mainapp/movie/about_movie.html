@@ -73,15 +73,15 @@
                                     <b class="movie-bold">Actors</b>
                                 </small>
                             </h4>
-                            <div id="carouselExample" class="carousel carousel-person slide rounded">
+                            <div id="carouselExample" class="carousel carousel-person slide rounded" data-bs-ride="carousel">
                                 <div class="carousel-inner">
                                     {% for actor in movie.actors.all %}
                                     {% if forloop.first %}
-                                        <div class="carousel-item active">
+                                        <div class="carousel-item active" data-bs-interval="5000">
                                     {% else %}
                                         <div class="carousel-item">
                                     {% endif %}
-                                            <div class="fixed-actor-div rounded">
+                                            <div class="fixed-actor-div rounded" data-bs-interval="5000">
                                                 <img src="{{ actor.photo.url }}" class="actor-img rounded" alt="{{ actor.name }}">
                                             </div>
                                             <div class="carousel-caption">
