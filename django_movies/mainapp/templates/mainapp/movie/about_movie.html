@@ -77,11 +77,11 @@
                                 <div class="carousel-inner">
                                     {% for actor in movie.actors.all %}
                                     {% if forloop.first %}
-                                        <div class="carousel-item active" data-bs-interval="5000">
+                                        <div class="carousel-item active" data-bs-interval="3000">
                                     {% else %}
                                         <div class="carousel-item">
                                     {% endif %}
-                                            <div class="fixed-actor-div rounded" data-bs-interval="5000">
+                                            <div class="fixed-actor-div rounded" data-bs-interval="3000">
                                                 <img src="{{ actor.photo.url }}" class="actor-img rounded" alt="{{ actor.name }}">
                                             </div>
                                             <div class="carousel-caption">
@@ -171,23 +171,25 @@
                     {% endif %}
 
                     {% if request.user.is_authenticated %}
-                    <form method="post">
-                        {% csrf_token %}
-                        {% if form.non_field_errors %}
-                        <div class="alert alert-warning post mt-2" role="alert">
-                            {{ form.non_field_errors }}
-                        </div>
-                        {% endif %}
-                        <div class="mb-3">
-                            {{ form.text }}
-                            {% if form.errors %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
                             <div class="alert alert-warning post mt-2" role="alert">
-                                {{ form.errors }}
+                                {{ form.non_field_errors }}
                             </div>
                             {% endif %}
-                        </div>
-                        <button type="submit" class="btn btn-outline-primary">Send</button>
-                    </form>
+                            <div class="input-group mb-3">
+                                {{ form.text }}
+                                <button type="submit" class="btn btn-outline-primary">Send</button>
+                                {% if form.errors %}
+                                <div class="alert alert-warning post mt-2" role="alert">
+                                    {{ form.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    {% else %}
+                        <p><a class="movie-link" href="{% url 'login' %}">Login</a> to add a comment</p>
                     {% endif %}
 
                     {% if comments %}
@@ -201,7 +203,16 @@
                                     </div>
                                     <h5 class="card-title username-in-comment">
                                         <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">
-                                            {{ comment.author }}
+                                            {% if not comment.author.first_name and not comment.author.last_name %}
+                                                {{ comment.author.username }}
+                                            {% else %}
+                                                {% if comment.author.first_name %}
+                                                    {{ comment.author.first_name }}
+                                                {% endif %}
+                                                {% if comment.author.last_name %}
+                                                    {{ comment.author.last_name }}
+                                                {% endif %}
+                                            {% endif %}
                                             {% if comment.author.is_superuser %}
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>

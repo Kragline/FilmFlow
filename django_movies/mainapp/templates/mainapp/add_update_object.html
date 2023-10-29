@@ -8,9 +8,9 @@
     {% csrf_token %}
 
     {% if form.non_field_errors %}
-    <div class="alert alert-warning post mt-2" role="alert">
-        {{ form.non_field_errors }}
-    </div>
+        <div class="alert alert-warning post mt-2" role="alert">
+            {{ form.non_field_errors }}
+        </div>
     {% endif %}
 
     {% for f in form %}
@@ -19,9 +19,9 @@
         {{ f }}
 
         {% if f.errors %}
-        <div class="alert alert-warning post mt-2" role="alert">
-            {{ f.errors }}
-        </div>
+            <div class="alert alert-warning post mt-2" role="alert">
+                {{ f.errors }}
+            </div>
         {% endif %}
     </div>
     {% endfor %}

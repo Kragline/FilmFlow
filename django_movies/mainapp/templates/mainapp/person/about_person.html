@@ -51,10 +51,10 @@
                 <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
                     {% for movie in person.movies.all %}
                         <div class="col">
-                            <div class="card text-center h-100">
-                                {% if movie.poster %}
-                                    <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
-                                {% endif %}
+                            <div class="card movies-list-card text-center h-100">
+                                    <a href="{{ movie.get_absolute_url }}">
+                                        <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                                    </a>
                                 <div class="card-body">
                                     <div class="centered-content">
                                         <h5 class="card-title">

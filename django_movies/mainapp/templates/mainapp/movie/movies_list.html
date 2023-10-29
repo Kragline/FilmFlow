@@ -14,7 +14,9 @@
             <div class="col">
                 <div class="card movies-list-card text-center h-100">
                     <div class="fixed-div">
-                        <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                        <a href="{{ movie.get_absolute_url }}">
+                            <img class="card-img-top" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                        </a>
                     </div>
                     <div class="card-body">
                         <div class="centered-content">
