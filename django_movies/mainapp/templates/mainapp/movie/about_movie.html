@@ -139,9 +139,7 @@
                     <p class="card-text">{{ movie.about|linebreaks }}</p>
 
                     {% if movie.video %}
-                        <video controls width="100%">
-                            <source src="{{ movie.trailer.url }}" type="video/mp4">
-                        </video>
+                        <iframe class="mb-3" width="100%" height="400px" src="{{ movie.video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     {% endif %}
 
                     {% if other_movies %}

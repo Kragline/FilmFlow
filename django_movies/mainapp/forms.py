@@ -6,6 +6,7 @@ from .models import *
 form_control = {'class': 'form-select'}
 
 text_attrs = {'type': 'text', 'class': 'form-control'}
+url_attrs = {'type': 'url', 'class': 'form-control'}
 text_box_attrs = {'type': 'text', 'class': 'form-control', 'cols': 70}
 file_attrs = {'type': 'file', 'class': 'form-control'}
 
@@ -65,7 +66,7 @@ class MovieForm(forms.ModelForm):
             'country': forms.TextInput(attrs=text_attrs),
             'world_premiere': forms.DateInput(attrs=date_attrs),
             'poster': forms.FileInput(attrs=file_attrs),
-            'video': forms.FileInput(attrs=file_attrs),
+            'video': forms.URLInput(attrs=text_attrs),
             'actors': forms.SelectMultiple(attrs=form_control),
             'directors': forms.SelectMultiple(attrs=form_control),
             'genres': forms.SelectMultiple(attrs=form_control),

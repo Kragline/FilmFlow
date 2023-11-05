@@ -19,12 +19,9 @@ body {
 }
 
 .content {
-    border-radius: 10px;
     width: 60%;
     margin: 0 auto;
-    padding: 15px;
-    padding-top: 10px;
-    padding-bottom: 0px;
+    padding: 10px 15px 0 15px;
 }
 
 .last-activity {
