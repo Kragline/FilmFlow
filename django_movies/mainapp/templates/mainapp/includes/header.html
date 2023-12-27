@@ -16,10 +16,10 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Genres
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-dark">
                              {% for genre in view.get_genres %}
                                 {% if genre.movies_count > 0 %}
-                                    <li><a class="dropdown-item hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
                                 {% endif %}
                              {% endfor %}
                         </ul>

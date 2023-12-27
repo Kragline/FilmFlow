@@ -58,6 +58,7 @@ class MovieListView(SidebarData, LastActivity, ListView):
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
     context_title = 'FilmFlow'
+    search_mode = 'pk'
     paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -66,33 +67,30 @@ class MovieListView(SidebarData, LastActivity, ListView):
 
         return context
 
-    @classmethod
-    def get_queryset(cls):
-        return SidebarData.get_movies().order_by('pk')
-
-
-class FilterMoviesView(MovieListView):
-    paginate_by = None
-
     def get_queryset(self):
         queryset = SidebarData.get_movies()
 
         query = self.request.GET.get('movie-search')
         years = self.request.GET.getlist('year')
         genres = self.request.GET.getlist('genre')
-        search_mode = self.request.GET.get('search-mode')
 
         if self.request.method == 'GET':
             if query is not None:
                 queryset = queryset.filter(title__icontains=query)
+
             if years:
                 queryset = queryset.filter(year__in=years)
+
             if genres:
                 queryset = queryset.filter(genres__in=genres)
+
+            if s_mode := self.request.GET.get('search-mode'):
+                self.search_mode = s_mode
+
             if not queryset.exists():
                 self.context_title = 'No matches found'
 
-        return queryset.order_by(search_mode).distinct()
+        return queryset.order_by(self.search_mode).distinct()
 
 
 class AboutMovieView(SidebarData, LastActivity, DetailView):
