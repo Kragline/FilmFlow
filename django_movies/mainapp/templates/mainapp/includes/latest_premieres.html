@@ -1,7 +1,7 @@
-<div class="last-activity">
-    <h3 class="movie-bold">Last activity</h3>
+<div class="latest-premieres">
+    <h3 class="movie-bold">Watch latest premieres</h3>
     <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
-        {% for movie in view.get_last_movies %}
+        {% for movie in view.get_latest_premieres %}
             <div class="col">
                 <div class="card movies-list-card text-center h-100">
                     <a href="{{ movie.get_absolute_url }}">

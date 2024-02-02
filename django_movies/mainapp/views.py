@@ -25,14 +25,20 @@ class SidebarData:
     def get_years(cls):
         return cls.get_movies().values('year').order_by('-year').distinct()
 
+    @classmethod
+    def get_countries(cls):
+        return cls.get_movies().values('country').order_by().distinct()
 
-class LastActivity:
+    @classmethod
+    def get_latest_premieres(cls):
+        return Movie.objects.order_by('-world_premiere')[:4]
+
     @classmethod
     def get_last_movies(cls):
-        return SidebarData.get_movies().order_by('-pk')[:4]
+        return SidebarData.get_movies().order_by('-pk')[:10]
 
 
-class BaseObjectView(SidebarData, LastActivity, LoginRequiredMixin):
+class BaseObjectView(SidebarData, LoginRequiredMixin):
     login_url = reverse_lazy('home')
     template_name = 'mainapp/add_update_object.html'
     context_object_name = 'form'
@@ -53,7 +59,7 @@ class DeleteObjectView(BaseObjectView, DeleteView):
 '''                 ****    Movie   ****                   '''
 
 
-class MovieListView(SidebarData, LastActivity, ListView):
+class MovieListView(SidebarData, ListView):
     model = Movie
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
@@ -70,30 +76,23 @@ class MovieListView(SidebarData, LastActivity, ListView):
     def get_queryset(self):
         queryset = SidebarData.get_movies()
 
-        query = self.request.GET.get('movie-search')
-        years = self.request.GET.getlist('year')
-        genres = self.request.GET.getlist('genre')
-
         if self.request.method == 'GET':
-            if query is not None:
+            if query := self.request.GET.get('movie-search'):
                 queryset = queryset.filter(title__icontains=query)
 
-            if years:
+            if years := self.request.GET.getlist('year'):
                 queryset = queryset.filter(year__in=years)
 
-            if genres:
-                queryset = queryset.filter(genres__in=genres)
-
-            if s_mode := self.request.GET.get('search-mode'):
-                self.search_mode = s_mode
+            if countries := self.request.GET.getlist('country'):
+                queryset = queryset.filter(country__in=countries)
 
             if not queryset.exists():
                 self.context_title = 'No matches found'
 
-        return queryset.order_by(self.search_mode).distinct()
+        return queryset.distinct()
 
 
-class AboutMovieView(SidebarData, LastActivity, DetailView):
+class AboutMovieView(SidebarData, DetailView):
     model = Movie
     template_name = 'mainapp/movie/about_movie.html'
     context_object_name = 'movie'
@@ -123,6 +122,8 @@ class AboutMovieView(SidebarData, LastActivity, DetailView):
 
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
+        context['movie_actors'] = self.object.actors.order_by('name')
+        context['title'] = 'About ' + self.object.title
 
         return context
 
@@ -133,7 +134,7 @@ class AddMovieView(AddObjectView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add movie'
-        context['form_action'] = '/add_movie/'
+        context['form_action'] = '/movie/add/'
 
         return context
 
@@ -164,7 +165,7 @@ class DeleteMovieView(DeleteObjectView):
 '''                 ****    Actor   ****                   '''
 
 
-class AboutActorView(SidebarData, LastActivity, DetailView):
+class AboutActorView(SidebarData, DetailView):
     model = Actor
     template_name = 'mainapp/person/about_person.html'
     context_object_name = 'person'
@@ -183,7 +184,7 @@ class AddActorView(AddObjectView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add actor'
-        context['form_action'] = '/add_actor/'
+        context['form_action'] = '/actor/add/'
 
         return context
 
@@ -225,7 +226,7 @@ class AddDirectorView(AddObjectView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add director'
-        context['form_action'] = '/add_director/'
+        context['form_action'] = '/director/add/'
 
         return context
 
@@ -256,7 +257,7 @@ class DeleteDirectorView(DeleteActorView):
 '''                 ****    Genre   ****                   '''
 
 
-class GenreListView(SidebarData, LastActivity, ListView):
+class GenreListView(SidebarData, ListView):
     model = Movie
     template_name = 'mainapp/genre/show_genre.html'
     context_object_name = 'movies'
@@ -277,7 +278,7 @@ class AddGenreView(AddObjectView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add genre'
-        context['form_action'] = '/add_genre/'
+        context['form_action'] = '/movie/genre/add/'
 
         return context
 
@@ -312,7 +313,7 @@ class DeleteCommentView(DeleteObjectView):
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.object.movie.slug})
 
 
-class LikeCommentView(SidebarData, LastActivity, LoginRequiredMixin, View):
+class LikeCommentView(SidebarData, LoginRequiredMixin, View):
     def post(self, request, movie_slug, comment_id, *args, **kwargs):
         movie = Movie.objects.get(slug=movie_slug)
         comment = movie.comments.get(pk=comment_id)
@@ -329,7 +330,7 @@ class LikeCommentView(SidebarData, LastActivity, LoginRequiredMixin, View):
 '''                 ****    Other   ****                   '''
 
 
-class AboutUsView(SidebarData, LastActivity, TemplateView):
+class AboutUsView(SidebarData, TemplateView):
     template_name = 'mainapp/other/about_us.html'
 
     def get_context_data(self):
@@ -339,7 +340,7 @@ class AboutUsView(SidebarData, LastActivity, TemplateView):
         return context
 
 
-class ContactsView(SidebarData, LastActivity, TemplateView):
+class ContactsView(SidebarData, TemplateView):
     template_name = 'mainapp/other/contacts.html'
 
     def get_context_data(self):

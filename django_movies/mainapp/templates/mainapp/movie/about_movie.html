@@ -41,10 +41,10 @@
                             </p>
 
                             <p class="card-text">
-                                <b class="movie-bold">Country</b> {{ movie.country }}
+                                <b class="movie-bold">Country</b> <span class="hover-movie-link" id="movieCountry" onclick="findMovieByCountry()">{{ movie.country }}</span>
                             </p>
                             <p class="card-text">
-                                <b class="movie-bold">Year</b> <span class="hover-movie-link" id="movieYear" onclick="fineMovieByYear()">{{ movie.year }}</span>
+                                <b class="movie-bold">Year</b> <span class="hover-movie-link" id="movieYear" onclick="findMovieByYear()">{{ movie.year }}</span>
                             </p>
 
                             <p class="card-text"><b class="movie-bold">Budget</b> {{ movie.budget|format_money }}</p>
@@ -75,7 +75,7 @@
                             </h4>
                             <div id="carouselExample" class="carousel carousel-person slide rounded" data-bs-ride="carousel">
                                 <div class="carousel-inner">
-                                    {% for actor in movie.actors.all %}
+                                    {% for actor in movie_actors %}
                                     {% if forloop.first %}
                                         <div class="carousel-item active" data-bs-interval="3000">
                                     {% else %}

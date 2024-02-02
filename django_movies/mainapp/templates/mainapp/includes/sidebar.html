@@ -12,14 +12,14 @@
                         Genres
                     </button>
                     <button class="btn btn-outline-primary filter-item third-item" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
-                        Ordering
+                        Countries
                     </button>
                 </div>
                 <div class="collapse mb-2" id="collapseExample">
                     <div class="card card-body">
                         {% for year_dict in view.get_years %}
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ year_dict.year }}" name="year">
+                                <input class="form-check-input movie-year-checkbox" type="checkbox" value="{{ year_dict.year }}" name="year">
                                 <label class="form-check-label">
                                     {{ year_dict.year }}
                                 </label>
@@ -45,60 +45,14 @@
 
                 <div class="collapse mb-2" id="collapseExample3">
                     <div class="card card-body">
+                        {% for country in view.get_countries %}
                             <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="pk" id="flexRadioDefault1" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                By Default
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="title" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                By Title
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                                </svg>A
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="-title" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault3">
-                                By Title
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
-                                </svg>A
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="rating" id="flexRadioDefault4">
-                            <label class="form-check-label" for="flexRadioDefault4">
-                                By Rating
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                                </svg>
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="-rating" id="flexRadioDefault5">
-                            <label class="form-check-label" for="flexRadioDefault5">
-                                By Rating
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
-                                </svg>
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="world_premiere" id="flexRadioDefault6">
-                            <label class="form-check-label" for="flexRadioDefault6">
-                                Oldest
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search-mode" value="-world_premiere" id="flexRadioDefault7">
-                            <label class="form-check-label" for="flexRadioDefault7">
-                                Newest
-                            </label>
-                        </div>
+                                <input class="form-check-input movie-country-checkbox" type="checkbox" value="{{ country.country }}" name="country">
+                                <label class="form-check-label">
+                                    {{ country.country }}
+                                </label>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -107,4 +61,19 @@
                 <button class="btn btn-outline-primary filter-item second-item" type="submit">Find movie</button>
             </div>
         </form>
+
+        <h4 class="movie-bold">
+            Recently added
+        </h4>
+        <table class="table">
+            <tbody>
+                {% for movie in view.get_last_movies %}
+                    <tr>
+                        <td>
+                            <a class="hover-movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>

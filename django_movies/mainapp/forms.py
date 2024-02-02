@@ -4,6 +4,7 @@ from .models import *
 
 
 form_control = {'class': 'form-select'}
+select_multiple = {'class': 'form-select', 'size': 10}
 
 text_attrs = {'type': 'text', 'class': 'form-control'}
 url_attrs = {'type': 'url', 'class': 'form-control'}
@@ -67,9 +68,9 @@ class MovieForm(forms.ModelForm):
             'world_premiere': forms.DateInput(attrs=date_attrs),
             'poster': forms.FileInput(attrs=file_attrs),
             'video': forms.URLInput(attrs=text_attrs),
-            'actors': forms.SelectMultiple(attrs=form_control),
-            'directors': forms.SelectMultiple(attrs=form_control),
-            'genres': forms.SelectMultiple(attrs=form_control),
+            'actors': forms.SelectMultiple(attrs=select_multiple),
+            'directors': forms.SelectMultiple(attrs=select_multiple),
+            'genres': forms.SelectMultiple(attrs=select_multiple),
             'saga': forms.Select(attrs=form_control),
             'rating': forms.NumberInput(attrs=number_attrs),
             'budget': forms.NumberInput(attrs=number_attrs),

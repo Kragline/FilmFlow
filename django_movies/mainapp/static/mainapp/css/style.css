@@ -24,7 +24,7 @@ body {
     padding: 10px 15px 0 15px;
 }
 
-.last-activity {
+.latest-premieres {
     float: right;
     margin: 30px 20px 0 0;
     width: 18%;
@@ -204,7 +204,7 @@ footer {
         margin: 15px auto 0 auto;
     }
 
-    .last-activity {
+    .latest-premieres {
         float: none;
         position: static;
         width: 70%;
@@ -243,7 +243,7 @@ footer {
 }
 
 @media (max-width: 1000px) {
-    .search, .last-activity, .content {
+    .search, .latest-premieres, .content {
         width: 90%;
     }
 }
