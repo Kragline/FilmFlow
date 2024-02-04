@@ -1,5 +1,5 @@
 <div class="latest-premieres">
-    <h3 class="movie-bold">Watch latest premieres</h3>
+    <h3 class="movie-bold latest-premieres-heading">Watch latest premieres</h3>
     <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
         {% for movie in view.get_latest_premieres %}
             <div class="col">
@@ -9,9 +9,9 @@
                     </a>
                     <div class="card-body">
                         <div class="centered-content">
-                            <h5 class="card-title">
+                            <h6 class="card-title">
                                 <a class="movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
-                            </h5>
+                            </h6>
                         </div>
                     </div>
                 </div>

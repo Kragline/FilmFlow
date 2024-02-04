@@ -24,6 +24,10 @@ body {
     padding: 10px 15px 0 15px;
 }
 
+.latest-premieres-heading {
+    text-align: right;
+}
+
 .latest-premieres {
     float: right;
     margin: 30px 20px 0 0;

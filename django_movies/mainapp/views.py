@@ -63,13 +63,14 @@ class MovieListView(SidebarData, ListView):
     model = Movie
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
-    context_title = 'FilmFlow'
+    context_title = 'Select your favorite'
     search_mode = 'pk'
     paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = self.context_title
+        context['page_title'] = self.context_title
+        context['title'] = 'FilmFlow - Online cinema'
 
         return context
 
@@ -123,7 +124,7 @@ class AboutMovieView(SidebarData, DetailView):
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
         context['movie_actors'] = self.object.actors.order_by('name')
-        context['title'] = 'About ' + self.object.title
+        context['title'] = 'Watch ' + self.object.title + ' online'
 
         return context
 
