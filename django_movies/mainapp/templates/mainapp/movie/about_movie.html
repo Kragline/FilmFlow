@@ -24,10 +24,8 @@
                 <p class="card-text">
                     <b class="movie-bold">{{ movie.rating }}</b> / 10
                 </p>
-
             </div>
             <div class="card-body">
-
                 <div class="all-info-div">
                     <div class="card info-card">
                         <div class="card-body">
@@ -39,33 +37,33 @@
                             <p class="card-text">
                                 <b class="movie-bold">World premiere</b> {{ movie.world_premiere }}
                             </p>
-
+                            
                             <p class="card-text">
                                 <b class="movie-bold">Country</b> <span class="hover-movie-link" id="movieCountry" onclick="findMovieByCountry()">{{ movie.country }}</span>
                             </p>
                             <p class="card-text">
                                 <b class="movie-bold">Year</b> <span class="hover-movie-link" id="movieYear" onclick="findMovieByYear()">{{ movie.year }}</span>
                             </p>
-
+                            
                             <p class="card-text"><b class="movie-bold">Budget</b> {{ movie.budget|format_money }}</p>
                             <p class="card-text"><b class="movie-bold">Fees</b> {{ movie.fees|format_money }}</p>
-
+                            
                             <p class="card-text">
                                 <b class="movie-bold">Genres</b>
                                 {% for genre in movie.genres.all %}
-                                    <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
+                                <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
                                 {% endfor %}
                             </p>
-
+                            
                             <p class="card-text">
                                 <b class="movie-bold">Director</b>
                                 {% for director in movie.directors.all %}
-                                    <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+                                <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
                                 {% endfor %}
                             </p>
                         </div>
                     </div>
-
+                
                     <div class="card actors-card">
                         <div class="card-body">
                             <h4 class="card-text">
@@ -76,11 +74,11 @@
                             <div id="carouselExample" class="carousel carousel-person slide rounded" data-bs-ride="carousel">
                                 <div class="carousel-inner">
                                     {% for actor in movie_actors %}
-                                    {% if forloop.first %}
-                                        <div class="carousel-item active" data-bs-interval="3000">
-                                    {% else %}
-                                        <div class="carousel-item">
-                                    {% endif %}
+                                        {% if forloop.first %}
+                                            <div class="carousel-item active" data-bs-interval="3000">
+                                        {% else %}
+                                            <div class="carousel-item">
+                                        {% endif %}
                                             <div class="fixed-actor-div rounded" data-bs-interval="3000">
                                                 <img src="{{ actor.photo.url }}" class="actor-img rounded" alt="{{ actor.name }}">
                                             </div>
@@ -90,8 +88,7 @@
                                                 </h5>
                                             </div>
                                         </div>
-                                        {% endfor %}
-                                    </div>
+                                    {% endfor %}
                                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Previous</span>
@@ -104,6 +101,7 @@
                             </div>
                         </div>
                     </div>
+                </div>                   
                     {% if request.user.is_superuser %}
                         <a class="btn btn-outline-primary" role="button" href="{{ movie.get_absolute_url_for_update }}">Update</a>
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -166,6 +164,7 @@
                         </table>
                     {% endif %}
 
+                    
                     {% if request.user.is_authenticated %}
                         <form method="post">
                             {% csrf_token %}
@@ -195,7 +194,7 @@
                                 <div class="profile-info">
                                     <div class="comment-profile-div">
                                         <img class="profile-pic"
-                                             src="{{ comment.author.custom_profile.profile_pic.url }}">
+                                        src="{{ comment.author.custom_profile.profile_pic.url }}">
                                     </div>
                                     <h5 class="card-title username-in-comment">
                                         <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">
@@ -291,15 +290,8 @@
                         </div>
                         {% endfor %}
                     {% endif %}
-                </div>
-
-            </div>
-
-            <div class="card-footer text-end">
-                <small class="text-body-secondary">Was created at: {{ movie.create_time|date:"d.m.Y" }}</small>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

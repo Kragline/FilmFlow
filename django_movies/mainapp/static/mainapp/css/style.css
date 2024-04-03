@@ -18,26 +18,32 @@ body {
     margin-bottom: 10px;
 }
 
+.main-div {
+    display: flex;
+}
+
+.column {
+    flex: 1;
+}
+
+.search {
+    flex: 0 0 18%;
+    margin: 30px 0 0 20px;
+}
+
 .content {
-    width: 60%;
+    flex: 0 0 60%;
     margin: 0 auto;
     padding: 10px 15px 0 15px;
 }
 
+.latest-premieres {
+    flex: 0 0 18%;
+    margin: 30px 20px 0 0;
+}
+
 .latest-premieres-heading {
     text-align: right;
-}
-
-.latest-premieres {
-    float: right;
-    margin: 30px 20px 0 0;
-    width: 18%;
-}
-
-.search {
-    float: left;
-    margin: 30px 0 0 20px;
-    width: 18%;
 }
 
 .filters-container {
@@ -49,7 +55,8 @@ body {
     margin-bottom: 10px;
 }
 
-.second-item, .third-item {
+.second-item,
+.third-item {
     margin-left: 10px;
 }
 
@@ -112,11 +119,11 @@ body {
 }
 
 .centered-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .not-centered {
@@ -178,7 +185,7 @@ body {
 }
 
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 footer {
@@ -200,25 +207,29 @@ footer {
 }
 
 @media (max-width: 1400px) {
+    .main-div {
+        display: block;
+    }
+
+    .column {
+        display: block;
+    }
+
     .search {
-        float: none;
-        position: static;
         width: 70%;
-        background-color: white;
         margin: 15px auto 0 auto;
     }
 
     .latest-premieres {
-        float: none;
-        position: static;
         width: 70%;
-        background-color: white;
         margin: 15px auto 0 auto;
     }
 
+    .latest-premieres-heading {
+        text-align: left;
+    }
+
     .content {
-        float: none;
-        position: static;
         width: 70%;
         padding: 0;
     }
@@ -247,7 +258,15 @@ footer {
 }
 
 @media (max-width: 1000px) {
-    .search, .latest-premieres, .content {
-        width: 90%;
+    .search,
+    .latest-premieres,
+    .content {
+        width: 80%;
+    }
+
+    .latest-premieres-heading,
+    .recently-added-heading,
+    .search-heading {
+        text-align: center;
     }
 }

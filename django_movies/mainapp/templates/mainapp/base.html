@@ -11,18 +11,16 @@
     </head>
     <body>
         {% include 'mainapp/includes/header.html' %}
-        <main>
-            {% block wallpaper %}
-            {% endblock %}
-            <div class="main-div">
-                {% include 'mainapp/includes/sidebar.html' %}
-                {% include 'mainapp/includes/latest_premieres.html' %}
-                <div class="content">
-                    {% block content %}
-                    {% endblock %}
-                </div>
+        {% block wallpaper %}
+        {% endblock %}
+        <div class="main-div">
+            {% include 'mainapp/includes/sidebar.html' %}
+            <div class="column content">
+                {% block content %}
+                {% endblock %}
             </div>
-        </main>
+            {% include 'mainapp/includes/latest_premieres.html' %}
+        </div>
         <footer>
             {% include 'mainapp/includes/footer.html' %}
         </footer>
