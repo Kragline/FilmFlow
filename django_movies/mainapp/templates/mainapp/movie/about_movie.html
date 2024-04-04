@@ -140,7 +140,7 @@
 
                     {% if other_movies %}
                         <h4 class="movie-bold">
-                            <b>Also watch these</b>
+                            <b>Watch other {{ movie.saga }} movies</b>
                         </h4>
                         <table class="table table-striped">
                             <thead>
@@ -153,7 +153,11 @@
                                 {% for other_movie in other_movies %}
                                     <tr>
                                         <td>
-                                            <a class="hover-movie-link" href="{{ other_movie.get_absolute_url }}">{{ other_movie.title }}</a>
+                                            {% if movie.pk == other_movie.pk %}
+                                                <a class="blue-movie-link" href="{{ other_movie.get_absolute_url }}">{{ other_movie.title }}</a>
+                                            {% else %}
+                                                <a class="hover-movie-link" href="{{ other_movie.get_absolute_url }}">{{ other_movie.title }}</a>
+                                            {% endif %}
                                         </td>
                                         <td>
                                             {{ other_movie.year }}
@@ -164,6 +168,27 @@
                         </table>
                     {% endif %}
 
+                    <h4 class="movie-bold">
+                        <b>You also can try these</b>
+                    </h4>
+                    <div class="card-group media-scroller mb-3">
+                        {% for rec_movie in recomendations %}
+                            <div class="card text-center media-element">
+                                <div class="fixed-div-small">
+                                    <a href="{{ rec_movie.get_absolute_url }}">
+                                        <img class="card-img-top" src="{{ rec_movie.poster.url }}" alt="{{ rec_movie.title }}">
+                                    </a>
+                                </div>    
+                                <div class="card-body">
+                                    <div class="centered-content">
+                                        <h6 class="card-title">
+                                            <a class="movie-link" href="{{ rec_movie.get_absolute_url }}">{{ rec_movie.title }}</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                     
                     {% if request.user.is_authenticated %}
                         <form method="post">

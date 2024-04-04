@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from .forms import *
 
@@ -118,13 +118,18 @@ class AboutMovieView(SidebarData, DetailView):
         context = super().get_context_data(**kwargs)
 
         movie_saga = self.object.saga
-        if movie_saga is not None:
-            context['other_movies'] = Movie.objects.filter(saga=movie_saga).exclude(pk=self.object.pk)
+        if movie_saga:
+            context['other_movies'] = Movie.objects.filter(saga=movie_saga).order_by('world_premiere')
 
+        context['title'] = 'Watch ' + self.object.title + ' online'
+        context['movie_actors'] = self.object.actors.order_by('name')
+
+        genres = SidebarData.get_genres().filter(movies_count__gt=0)
+        directors = Director.objects.all()
+        context['recomendations'] = SidebarData.get_movies().exclude(pk=self.object.pk).filter(Q(genres__in=genres) | Q(directors__in=directors)).order_by('?').distinct()[:10]
+        
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
-        context['movie_actors'] = self.object.actors.order_by('name')
-        context['title'] = 'Watch ' + self.object.title + ' online'
 
         return context
 
