@@ -75,7 +75,7 @@ class MovieListView(SidebarData, ListView):
         return context
 
     def get_queryset(self):
-        queryset = SidebarData.get_movies()
+        queryset = SidebarData.get_movies().order_by('id')
 
         if self.request.method == 'GET':
             if query := self.request.GET.get('movie-search'):
@@ -125,8 +125,7 @@ class AboutMovieView(SidebarData, DetailView):
         context['movie_actors'] = self.object.actors.order_by('name')
 
         genres = SidebarData.get_genres().filter(movies_count__gt=0)
-        directors = Director.objects.all()
-        context['recomendations'] = SidebarData.get_movies().exclude(pk=self.object.pk).filter(Q(genres__in=genres) | Q(directors__in=directors)).order_by('?').distinct()[:10]
+        context['recomendations'] = SidebarData.get_movies().filter(genres__in=genres).order_by('?').distinct()[:15]
         
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')

@@ -3,11 +3,6 @@
     justify-content: center;
 }
 
-.user-profile-header {
-    color: rgb(38, 86, 150);
-    text-align: center;
-}
-
 .profile-info {
     display: flex;
     width: 50%;

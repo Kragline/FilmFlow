@@ -5,6 +5,10 @@ body {
     flex-direction: column;
 }
 
+.nav-dark-shadow {
+    box-shadow: 0 15px 15px rgba(0,0,0, 0.15);
+}
+
 .auth-item {
     text-align: right;
 }
@@ -77,6 +81,11 @@ body {
     color: black;
 }
 
+.hover-movie-link-dark {
+    text-decoration: none;
+    color: white;
+}
+
 .hover-movie-link:hover {
     cursor: pointer;
     color: rgb(41, 112, 207);
@@ -121,8 +130,17 @@ body {
     color: rgb(45, 107, 189);
 }
 
+.movie-link-dark {
+    text-decoration: none;
+    color: rgb(23, 116, 238);
+}
+
 .movie-bold {
     color: rgb(38, 86, 150);
+}
+
+.movie-bold-dark {
+    color: rgb(23, 116, 238);
 }
 
 .movies-list-card {
@@ -236,6 +254,10 @@ footer {
     height: 100%;
     background-color: #212529;
     padding: 0 20px 20px 20px;
+}
+
+.footer-dark-shadow {
+    box-shadow: 0 -10px 10px rgba(0,0,0, 0.15);
 }
 
 .footer-hr {

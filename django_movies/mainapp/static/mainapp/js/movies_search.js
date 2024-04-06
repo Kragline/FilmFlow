@@ -1,5 +1,7 @@
-function findMovieByYear() {
-    const movieYearElement = document.getElementById("movieYear");
+const movieYearElement = document.getElementById("movieYear");
+movieYearElement.addEventListener("click", findMoviesByYear);
+
+function findMoviesByYear() {
     const movieYear = movieYearElement.textContent;
 
     const formElement = document.getElementById("movieSearchForm");
@@ -15,8 +17,10 @@ function findMovieByYear() {
     formElement.submit();
 }
 
-function findMovieByCountry() {
-    const movieCountryElement = document.getElementById("movieCountry");
+const movieCountryElement = document.getElementById("movieCountry");
+movieCountryElement.addEventListener("click", findMoviesByCountry);
+
+function findMoviesByCountry() {
     const movieCountry = movieCountryElement.textContent;
 
     const formElement = document.getElementById("movieSearchForm");

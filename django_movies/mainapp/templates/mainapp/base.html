@@ -1,6 +1,6 @@
 {% load static %}
 
-<html lang="en">
+<html id="html" data-bs-theme="light" lang="en">
     <head>
         <meta charset="UTF-8">
         <title>{{ title }}</title>
@@ -21,9 +21,14 @@
             </div>
             {% include 'mainapp/includes/latest_premieres.html' %}
         </div>
-        <footer>
+        <footer id="footer">
             {% include 'mainapp/includes/footer.html' %}
         </footer>
-        <script src="{% static 'mainapp/js/script.js' %}"></script>
+        {% if movie %}
+            <script src="{% static 'mainapp/js/movies_search.js' %}"></script>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+            <script src="{% static 'mainapp/js/theme_change.js' %}"></script>
+        {% endif %}
     </body>
 </html>
