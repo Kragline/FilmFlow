@@ -17,7 +17,7 @@
                 </div>
                 <div class="collapse mb-2" id="collapseExample">
                     <div class="card card-body">
-                        {% for year_dict in view.get_years %}
+                        {% for year_dict in view.ALL_YEARS %}
                             <div class="form-check">
                                 <input class="form-check-input movie-year-checkbox" type="checkbox" value="{{ year_dict.year }}" name="year">
                                 <label class="form-check-label">
@@ -30,22 +30,20 @@
 
                 <div class="collapse mb-2" id="collapseExample2">
                     <div class="card card-body">
-                        {% for genre in view.get_genres %}
-                            {% if genre.movies_count > 0 %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ genre.pk }}" name="genre">
-                                    <label class="form-check-label">
-                                        {{ genre.name }}
-                                    </label>
-                                </div>
-                            {% endif %}
+                        {% for genre in view.NOT_EMPTY_GENRES %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ genre.pk }}" name="genre">
+                                <label class="form-check-label">
+                                    {{ genre.name }}
+                                </label>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
 
                 <div class="collapse mb-2" id="collapseExample3">
                     <div class="card card-body">
-                        {% for country in view.get_countries %}
+                        {% for country in view.ALL_COUNTRIES %}
                             <div class="form-check">
                                 <input class="form-check-input movie-country-checkbox" type="checkbox" value="{{ country.country }}" name="country">
                                 <label class="form-check-label">
@@ -67,7 +65,7 @@
         </h4>
         <table class="table">
             <tbody>
-                {% for movie in view.get_last_movies %}
+                {% for movie in view.RECENTLY_ADDED %}
                     <tr>
                         <td>
                             <a class="hover-movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>

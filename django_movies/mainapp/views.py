@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import Count, Q
+from django.db.models import Count
 
 from .forms import *
 
@@ -12,30 +12,14 @@ from .forms import *
 '''                 ****    Base Classes   ****                   '''
 
 
-class SidebarData:
-    @classmethod
-    def get_genres(cls):
-        return Genre.objects.annotate(movies_count=Count('movies'))
+class SidebarData():
+    NOT_EMPTY_GENRES = Genre.objects.annotate(movies_count=Count('movies')).filter(movies_count__gt=0)
 
-    @classmethod
-    def get_movies(cls):
-        return Movie.objects.all()
-
-    @classmethod
-    def get_years(cls):
-        return cls.get_movies().values('year').order_by('-year').distinct()
-
-    @classmethod
-    def get_countries(cls):
-        return cls.get_movies().values('country').order_by().distinct()
-
-    @classmethod
-    def get_latest_premieres(cls):
-        return Movie.objects.order_by('-world_premiere')[:4]
-
-    @classmethod
-    def get_last_movies(cls):
-        return SidebarData.get_movies().order_by('-pk')[:10]
+    ALL_MOVIES = Movie.objects.all()
+    ALL_YEARS = ALL_MOVIES.values('year').order_by('-year').distinct()
+    ALL_COUNTRIES = ALL_MOVIES.values('country').order_by().distinct()
+    LASTEST_PREMIERES = ALL_MOVIES.order_by('-world_premiere')[:4]
+    RECENTLY_ADDED = ALL_MOVIES.order_by('-pk')[:10]
 
 
 class BaseObjectView(SidebarData, LoginRequiredMixin):
@@ -75,7 +59,7 @@ class MovieListView(SidebarData, ListView):
         return context
 
     def get_queryset(self):
-        queryset = SidebarData.get_movies().order_by('id')
+        queryset = SidebarData.ALL_MOVIES.order_by('id')
 
         if self.request.method == 'GET':
             if query := self.request.GET.get('movie-search'):
@@ -117,18 +101,17 @@ class AboutMovieView(SidebarData, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        movie_saga = self.object.saga
-        if movie_saga:
-            context['other_movies'] = Movie.objects.filter(saga=movie_saga).order_by('world_premiere')
+        if movie_saga:=self.object.saga:
+            context['other_movies'] = SidebarData.ALL_MOVIES.filter(saga=movie_saga).order_by('world_premiere')
 
         context['title'] = 'Watch ' + self.object.title + ' online'
         context['movie_actors'] = self.object.actors.order_by('name')
 
-        genres = SidebarData.get_genres().filter(movies_count__gt=0)
-        context['recomendations'] = SidebarData.get_movies().filter(genres__in=genres).order_by('?').distinct()[:15]
+        context['recomendations'] = SidebarData.ALL_MOVIES.filter(genres__in=SidebarData.NOT_EMPTY_GENRES).order_by('?').distinct()[:15]
         
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
+        context['current_user'] = self.request.user
 
         return context
 

@@ -102,7 +102,7 @@
                         </div>
                     </div>
                 </div>                   
-                    {% if request.user.is_superuser %}
+                    {% if current_user.is_superuser %}
                         <a class="btn btn-outline-primary" role="button" href="{{ movie.get_absolute_url_for_update }}">Update</a>
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Delete
@@ -190,7 +190,7 @@
                         {% endfor %}
                     </div>
                     
-                    {% if request.user.is_authenticated %}
+                    {% if current_user.is_authenticated %}
                         <form method="post">
                             {% csrf_token %}
                             {% if form.non_field_errors %}
@@ -246,11 +246,11 @@
                             <div class="card-body">
                                 <p class="card-text">{{ comment.text }}</p>
                                 <div class="d-flex">
-                                    {% if request.user.is_authenticated %}
+                                    {% if current_user.is_authenticated %}
                                         <form class="like-form" action="{{ comment.get_absolute_url_for_like }}" method="post">
                                             {% csrf_token %}
                                             <button class="btn btn-outline-primary btn-sm" type="submit">
-                                                {% if request.user in comment.likes.all %}
+                                                {% if current_user in comment.likes.all %}
                                                     Disagree
                                                 {% else %}
                                                     Agree
@@ -258,7 +258,7 @@
                                                 {{ comment.likes.count }}
                                             </button>
                                         </form>
-                                        {% if request.user == comment.author %}
+                                        {% if current_user == comment.author %}
                                             <a class="btn btn-outline-primary btn-sm ms-1" role="button" href="{{ comment.get_absolute_url_for_update }}">Update</a>
                                             <button type="button" class="btn btn-outline-danger btn-sm ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                                 Delete

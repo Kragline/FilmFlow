@@ -11,20 +11,16 @@
                     <img src="{% static 'mainapp/img/logo-gray.png' %}" width="150">
                 </a>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if view.get_genres %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Genres
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                             {% for genre in view.get_genres %}
-                                {% if genre.movies_count > 0 %}
-                                    <li><a class="dropdown-item" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
-                                {% endif %}
-                             {% endfor %}
+                            {% for genre in view.NOT_EMPTY_GENRES %}
+                                <li><a class="dropdown-item" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
+                            {% endfor %}
                         </ul>
                     </li>
-                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'about' %}">About Us</a>
                     </li>
