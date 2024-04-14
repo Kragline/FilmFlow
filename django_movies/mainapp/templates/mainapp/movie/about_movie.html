@@ -12,6 +12,17 @@
             <div class="card-header text-center">
                 <h2 class="card-title movie-bold">{{ movie.title }}</h2>
                 <p class="card-text">{{ movie.tagline }}</p>
+                
+                {% if rated %}
+                    {% colored_stars_range number=avg_rating as rating_range %}
+                    {% for star in rating_range %}
+                        <i style="font-size: 2rem; color: rgb(235, 192, 52);" class="bi bi-star-fill"></i>
+                    {% endfor %}
+
+                    <p class="card-text">
+                        <b class="movie-bold">{{ avg_rating }}</b> / 10
+                    </p>
+                {% endif %}
             </div>
             <div class="card-body">
                 <div class="all-info-div">
@@ -21,7 +32,8 @@
                                 <small class="text-body-secondary">
                                     <b class="movie-bold">About</b>
                                 </small>
-                            </h4>
+                            </h4><br>
+
                             <p class="card-text">
                                 <b class="movie-bold">World premiere</b> {{ movie.world_premiere }}
                             </p>
@@ -39,21 +51,20 @@
                             <p class="card-text">
                                 <b class="movie-bold">Genres</b>
                                 {% for genre in movie.genres.all %}
-                                <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
+                                    <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
                                 {% endfor %}
                             </p>
                             
                             <p class="card-text">
                                 <b class="movie-bold">Director</b>
                                 {% for director in movie.directors.all %}
-                                <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+                                    <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
                                 {% endfor %}
                             </p>
-                            {% if rated %}
-                                <p class="card-text">
-                                    <b class="movie-bold">Users rating</b> {{ avg_rating }}
-                                </p>
-                            {% endif %}
+
+                            <p class="card-text">
+                                <b class="movie-bold">Was added</b> {{ movie.create_time|date:"d/m/Y" }}
+                            </p>
                         </div>
                     </div>
                 
