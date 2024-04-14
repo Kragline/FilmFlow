@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <div class="centered-content">
                             <h4 class="card-title"><a class="movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h4>
-                            <div class="not-centered">
+                            {% comment %} <div class="not-centered">
                                 {% colored_stars_range number=movie.rating as rating_range %}
                                 {% for star in rating_range %}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="rgb(235, 192, 52)" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -29,7 +29,7 @@
                                     </svg>
                                 {% endfor %}
                             </div>
-                            <p class="card-text"><b class="movie-bold">{{ movie.rating }}</b> / 10</p>
+                            <p class="card-text"><b class="movie-bold">{{ movie.rating }}</b> / 10</p> {% endcomment %}
                         </div>
                     </div>
                 </div>

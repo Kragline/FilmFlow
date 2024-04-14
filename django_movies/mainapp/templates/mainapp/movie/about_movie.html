@@ -10,20 +10,8 @@
         </div>
         <div class="col-md-8">
             <div class="card-header text-center">
-
                 <h2 class="card-title movie-bold">{{ movie.title }}</h2>
                 <p class="card-text">{{ movie.tagline }}</p>
-
-                {% colored_stars_range number=movie.rating as rating_range %}
-                {% for star in rating_range %}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="rgb(235, 192, 52)" class="bi bi-star-fill" viewBox="0 0 16 16">
-                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                    </svg>
-                {% endfor %}
-
-                <p class="card-text">
-                    <b class="movie-bold">{{ movie.rating }}</b> / 10
-                </p>
             </div>
             <div class="card-body">
                 <div class="all-info-div">
@@ -61,6 +49,11 @@
                                 <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
                                 {% endfor %}
                             </p>
+                            {% if rated %}
+                                <p class="card-text">
+                                    <b class="movie-bold">Users rating</b> {{ avg_rating }}
+                                </p>
+                            {% endif %}
                         </div>
                     </div>
                 
@@ -101,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                   
+                </div>
                     {% if current_user.is_superuser %}
                         <a class="btn btn-outline-primary" role="button" href="{{ movie.get_absolute_url_for_update }}">Update</a>
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -136,6 +129,24 @@
 
                     <p class="card-text">{{ movie.about|linebreaks }}</p>
 
+                    
+                    <h4 class="card-text">
+                        <small class="text-body-secondary">
+                            <b class="movie-bold">Rate this movie</b>
+                        </small>
+                    </h4>
+                    <form action="{{ movie.rate_absolute_url }}" id="rating_form" method="post">
+                        {% csrf_token %}
+                        {% colored_stars_range number=10 as rating_range %}
+                        {% for number in rating_range %}
+                            <div class="form-check form-check-inline mx-0 me-2 px-0">
+                                <input class="form-check-input movie-rating" value="{{ number }}" onclick="submitRatingForm()" type="radio" name="rating_radio" id="radio_{{ number }}">
+                                <label class="form-check-label movie-rating-label" for="radio_{{ number }}">
+                                    <i class="bi bi-star"></i>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </form>
                     <iframe class="mb-3" width="100%" height="400px" src="{{ movie.video }}" frameborder="0" scrolling="no" allowfullscreen></iframe>
 
                     {% if other_movies %}

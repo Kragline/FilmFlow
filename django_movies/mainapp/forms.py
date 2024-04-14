@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import *
 
 
@@ -57,7 +56,7 @@ class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
         fields = ('title', 'tagline', 'about', 'year', 'country', 'world_premiere', 'poster', 'video',
-                  'actors', 'directors', 'genres', 'saga', 'rating', 'budget', 'fees', 'slug')
+                  'actors', 'directors', 'genres', 'saga', 'budget', 'fees', 'slug')
 
         widgets = {
             'title': forms.TextInput(attrs=text_attrs),
@@ -72,7 +71,6 @@ class MovieForm(forms.ModelForm):
             'directors': forms.SelectMultiple(attrs=select_multiple),
             'genres': forms.SelectMultiple(attrs=select_multiple),
             'saga': forms.Select(attrs=form_control),
-            'rating': forms.NumberInput(attrs=number_attrs),
             'budget': forms.NumberInput(attrs=number_attrs),
             'fees': forms.NumberInput(attrs=number_attrs),
             'slug': forms.TextInput(attrs=text_attrs)

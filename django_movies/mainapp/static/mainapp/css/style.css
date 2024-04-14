@@ -178,6 +178,20 @@ body {
     width: 50%;
 }
 
+.movie-rating {
+    display: none;
+}
+
+.movie-rating-label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: rgb(235, 192, 52);
+}
+
+.movie-rating-label:hover {
+    color: rgb(255, 204, 38);
+}
+
 .actors-card {
     width: 50%;
     margin-left: 10px;

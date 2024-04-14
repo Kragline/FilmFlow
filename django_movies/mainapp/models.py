@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 import datetime
@@ -95,7 +96,6 @@ class Movie(models.Model):
     directors = models.ManyToManyField(Director, related_name='movies')
     genres = models.ManyToManyField(Genre, related_name='movies')
     saga = models.ForeignKey(Saga, on_delete=models.SET_NULL, null=True, blank=True, related_name='movies')
-    rating = models.PositiveSmallIntegerField(default=1, blank=True)
     budget = models.PositiveIntegerField(default=0, help_text='Budget in US dollars')
     fees = models.PositiveIntegerField(default=0)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
@@ -113,12 +113,31 @@ class Movie(models.Model):
     def get_absolute_url_for_delete(self):
         return reverse('delete_movie', kwargs={'movie_slug': self.slug})
 
+    def rate_absolute_url(self):
+        return reverse('rate_movie', kwargs={'movie_slug': self.slug})
+
     def add_comment_absolute_url(self):
         return reverse('add_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
 
     class Meta:
         verbose_name = 'Movie'
         verbose_name_plural = 'Movies'
+
+
+class Rating(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
+    score = models.IntegerField(validators=[
+        MaxValueValidator(10),
+        MinValueValidator(1),
+    ])
+
+    def __str__(self) -> str:
+        return f'By {self.user} on {self.movie}: {self.score}'
+    
+    class Meta:
+        verbose_name = 'Rating'
+        verbose_name_plural = 'Ratings'
 
 
 class Comment(models.Model):

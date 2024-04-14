@@ -5,7 +5,7 @@ from django.views.generic import View, ListView, DetailView, CreateView, UpdateV
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Count
-
+from .models import Rating
 from .forms import *
 
 
@@ -83,6 +83,15 @@ class AboutMovieView(SidebarData, DetailView):
     context_object_name = 'movie'
     slug_url_kwarg = 'movie_slug'
 
+    def rate_movie(self):
+        rating_score = int(self.request.POST.get('rating_radio'))
+        rating, created = Rating.objects.update_or_create(
+            movie=self.get_object(),
+            user=self.request.user, defaults={
+                'score': rating_score
+            })
+        print(rating)
+
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             comment_form = CommentForm(request.POST)
@@ -92,11 +101,22 @@ class AboutMovieView(SidebarData, DetailView):
                 new_comment.author = request.user
                 new_comment.save()
 
-                return redirect(self.get_object().get_absolute_url())
+                return redirect(self.get_object())
+            else:
+                self.rate_movie()
+                return redirect(self.get_object())
         else:
             comment_form = CommentForm()
 
         return reverse_lazy('about_movie', kwargs={'movie_slug': self.get_object().slug})
+    
+    def get_avg_rating(self, queryset):
+        rating_sum = 0
+        for rating in queryset:
+            rating_sum += rating.score
+
+        return round(rating_sum / len(queryset), 1)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -111,7 +131,13 @@ class AboutMovieView(SidebarData, DetailView):
         
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
-        context['current_user'] = self.request.user
+
+        current_user = self.request.user
+        context['current_user'] = current_user
+
+        if movie_ratings:=Rating.objects.filter(movie=self.object):
+            context['rated'] = True
+            context['avg_rating'] = self.get_avg_rating(movie_ratings)
 
         return context
 

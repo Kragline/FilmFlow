@@ -22,8 +22,8 @@ class ActorAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'get_html_photo', 'create_time', 'rating')
-    list_display_links = ('id', 'title', 'rating')
+    list_display = ('id', 'title', 'get_html_photo', 'create_time')
+    list_display_links = ('id', 'title')
 
     search_fields = ('title',)
     list_filter = ('create_time',)
@@ -74,6 +74,7 @@ admin.site.register(Director, ActorAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Saga, SagaAdmin)
+admin.site.register(Rating)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Troubleshoot, TroubleshootAdmin)
 

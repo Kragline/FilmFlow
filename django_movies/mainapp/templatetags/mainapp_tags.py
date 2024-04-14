@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.simple_tag()
 def colored_stars_range(number):
-    return range(number)
+    return range(1, number+1)
 
 
 @register.filter(name='format_money')
