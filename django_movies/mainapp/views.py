@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import Count
+from django.db.models.query import QuerySet
+from django.db.models import Count, Q
 from .models import Rating
 from .forms import *
 
@@ -13,11 +14,12 @@ from .forms import *
 
 
 class SidebarData():
-    NOT_EMPTY_GENRES = Genre.objects.annotate(movies_count=Count('movies')).filter(movies_count__gt=0)
+    NOT_EMPTY_GENRES = list(enumerate(Genre.objects.annotate(movies_count=Count('movies')).filter(movies_count__gt=0), start=1))
 
     ALL_MOVIES = Movie.objects.all()
-    ALL_YEARS = ALL_MOVIES.values('year').order_by('-year').distinct()
-    ALL_COUNTRIES = ALL_MOVIES.values('country').order_by().distinct()
+    ALL_YEARS = list(enumerate(ALL_MOVIES.values('year').order_by('-year').distinct(), start=1))
+    ALL_COUNTRIES = list(enumerate(ALL_MOVIES.values('country').order_by().distinct(), start=1))
+    
     LASTEST_PREMIERES = ALL_MOVIES.order_by('-world_premiere')[:4]
     RECENTLY_ADDED = ALL_MOVIES.order_by('-pk')[:10]
 
@@ -57,13 +59,22 @@ class MovieListView(SidebarData, ListView):
         context['title'] = 'FilmFlow - Online cinema'
 
         return context
+    
+    def search_by_query(self, search_query: str, queryset: QuerySet[Movie]) -> QuerySet[Movie]:
+        keywords = [word for word in search_query.split() if len(word) > 2]
+        q_objects = Q()
+
+        for keyword in keywords:
+            q_objects |= Q(title__icontains=keyword)
+
+        return queryset.filter(q_objects)
 
     def get_queryset(self):
         queryset = SidebarData.ALL_MOVIES.order_by('id')
 
         if self.request.method == 'GET':
             if query := self.request.GET.get('movie-search'):
-                queryset = queryset.filter(title__icontains=query)
+                queryset = self.search_by_query(query, queryset)
 
             if years := self.request.GET.getlist('year'):
                 queryset = queryset.filter(year__in=years)
@@ -90,7 +101,6 @@ class AboutMovieView(SidebarData, DetailView):
             user=self.request.user, defaults={
                 'score': rating_score
             })
-        print(rating)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':

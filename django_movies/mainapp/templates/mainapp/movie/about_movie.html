@@ -33,38 +33,68 @@
                                     <b class="movie-bold">About</b>
                                 </small>
                             </h4><br>
+                            
+                            <div class="d-flex">
+                                <p class="card-text">
+                                    <b class="movie-bold">Country</b>
+                                </p>
+                                <a class="link-body-emphasis link-offset-1 ms-auto" role="button" id="movieCountry" onclick="findMovieByCountry()">{{ movie.country }}</a>
+                            </div>
+                            <div class="d-flex">
+                                <p class="card-text">
+                                    <b class="movie-bold">Year</b>
+                                </p>
+                                <a class="link-body-emphasis link-offset-1 ms-auto" role="button" id="movieYear" onclick="findMovieByYear()">{{ movie.year }}</a>
+                            </div>
+                            <div class="d-flex">
+                                <p class="card-text">
+                                    <b class="movie-bold">World premiere</b>
+                                </p>
+                                <p class="ms-auto">{{ movie.world_premiere }}</p>
+                            </div>
+                            <div class="text-secondary">
+                                <hr class="mt-0">
+                            </div>
+                            <div class="d-flex">
+                                <p class="card-text"><b class="movie-bold">Budget</b></p>
+                                <p class="ms-auto">{{ movie.budget|format_money }}</p>
+                            </div>
+                            <div class="d-flex">    
+                                <p class="card-text"><b class="movie-bold">Fees</b></p>
+                                <p class="ms-auto">{{ movie.fees|format_money }}</p>
+                            </div>
+                            <div class="text-secondary">
+                                <hr class="mt-0">
+                            </div>
+                            
+                            <div class="d-flex">
+                                <p class="card-text">
+                                    <b class="movie-bold">Genres</b>
+                                </p>
+                                <p class="ms-auto">
+                                    {% for genre in movie.genres.all %}
+                                        <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
+                                    {% endfor %}
+                                </p>    
+                            </div>    
+                            
+                            <div class="d-flex">
+                                <p class="card-text">
+                                    <b class="movie-bold">Director</b>
+                                </p>
+                                <p class="ms-auto">
+                                    {% for director in movie.directors.all %}
+                                        <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+                                    {% endfor %}
+                                </p>    
+                            </div>
 
-                            <p class="card-text">
-                                <b class="movie-bold">World premiere</b> {{ movie.world_premiere }}
-                            </p>
-                            
-                            <p class="card-text">
-                                <b class="movie-bold">Country</b> <a class="hover-movie-link" id="movieCountry" onclick="findMovieByCountry()">{{ movie.country }}</a>
-                            </p>
-                            <p class="card-text">
-                                <b class="movie-bold">Year</b> <span class="hover-movie-link" id="movieYear" onclick="findMovieByYear()">{{ movie.year }}</span>
-                            </p>
-                            
-                            <p class="card-text"><b class="movie-bold">Budget</b> {{ movie.budget|format_money }}</p>
-                            <p class="card-text"><b class="movie-bold">Fees</b> {{ movie.fees|format_money }}</p>
-                            
-                            <p class="card-text">
-                                <b class="movie-bold">Genres</b>
-                                {% for genre in movie.genres.all %}
-                                    <a class="hover-movie-link" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a>
-                                {% endfor %}
-                            </p>
-                            
-                            <p class="card-text">
-                                <b class="movie-bold">Director</b>
-                                {% for director in movie.directors.all %}
-                                    <a class="hover-movie-link" href="{{ director.get_absolute_url }}">{{ director.name }}</a>
-                                {% endfor %}
-                            </p>
-
-                            <p class="card-text">
-                                <b class="movie-bold">Was added</b> {{ movie.create_time|date:"d/m/Y" }}
-                            </p>
+                            <div class="d-flex">
+                                <p class="card-text mb-0">
+                                    <b class="movie-bold">Was added at</b>
+                                </p>
+                                <p class="ms-auto mb-0">{{ movie.create_time|date:"d/m/Y" }}</p>
+                            </div>
                         </div>
                     </div>
                 
@@ -196,9 +226,9 @@
                     <div class="card-group media-scroller mb-3">
                         {% for rec_movie in recomendations %}
                             <div class="card text-center media-element">
-                                <div class="fixed-div-small">
+                                <div class="fixed-div-recomendation">
                                     <a href="{{ rec_movie.get_absolute_url }}">
-                                        <img class="card-img-top" src="{{ rec_movie.poster.url }}" alt="{{ rec_movie.title }}">
+                                        <img class="card-img-top recomendation-img" src="{{ rec_movie.poster.url }}" alt="{{ rec_movie.title }}">
                                     </a>
                                 </div>    
                                 <div class="card-body">
