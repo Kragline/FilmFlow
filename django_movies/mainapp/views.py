@@ -1,45 +1,15 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import View, ListView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models.query import QuerySet
-from django.db.models import Count, Q
+from django.db.models import Q
 from .models import Rating
 from .forms import *
 
-
-'''                 ****    Base Classes   ****                   '''
-
-
-class SidebarData():
-    NOT_EMPTY_GENRES = list(enumerate(Genre.objects.annotate(movies_count=Count('movies')).filter(movies_count__gt=0), start=1))
-
-    ALL_MOVIES = Movie.objects.all()
-    ALL_YEARS = list(enumerate(ALL_MOVIES.values('year').order_by('-year').distinct(), start=1))
-    ALL_COUNTRIES = list(enumerate(ALL_MOVIES.values('country').order_by().distinct(), start=1))
-    
-    LASTEST_PREMIERES = ALL_MOVIES.order_by('-world_premiere')[:4]
-    RECENTLY_ADDED = ALL_MOVIES.order_by('-pk')[:10]
-
-
-class BaseObjectView(SidebarData, LoginRequiredMixin):
-    login_url = reverse_lazy('home')
-    template_name = 'mainapp/add_update_object.html'
-    context_object_name = 'form'
-
-
-class AddObjectView(BaseObjectView, CreateView):
-    pass
-
-
-class UpdateObjectView(BaseObjectView, UpdateView):
-    pass
-
-
-class DeleteObjectView(BaseObjectView, DeleteView):
-    success_url = reverse_lazy('home')
+from utils.utils_data import SidebarData, AddObjectView, UpdateObjectView, DeleteObjectView
 
 
 '''                 ****    Movie   ****                   '''
@@ -50,7 +20,6 @@ class MovieListView(SidebarData, ListView):
     template_name = 'mainapp/movie/movies_list.html'
     context_object_name = 'movies'
     context_title = 'Select your favorite'
-    search_mode = 'pk'
     paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):

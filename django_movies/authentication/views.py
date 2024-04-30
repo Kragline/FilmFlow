@@ -3,14 +3,13 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import RegisterUserForm, LoginUserForm, UpdateUserForm, CustomProfileForm
 from .models import CustomProfile
 
-from mainapp.views import SidebarData
+from utils.utils_data import SidebarData
 
 
 class RegisterUserView(SidebarData, CreateView):
@@ -62,6 +61,7 @@ class ProfilePageView(SidebarData, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['change_profile_pic_form'] = CustomProfileForm()
+        context['title'] = 'Welcome back ' + self.get_object().username
 
         return context
 

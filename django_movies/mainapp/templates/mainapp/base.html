@@ -12,8 +12,10 @@
     </head>
     <body>
         {% include 'mainapp/includes/header.html' %}
+
         {% block wallpaper %}
         {% endblock %}
+
         <div class="main-div">
             {% include 'mainapp/includes/sidebar.html' %}
             <div class="column content">
@@ -22,15 +24,20 @@
             </div>
             {% include 'mainapp/includes/latest_premieres.html' %}
         </div>
+
         <footer id="footer">
             {% include 'mainapp/includes/footer.html' %}
         </footer>
+
         {% if movie %}
-            <script src="{% static 'mainapp/js/movies_search.js' %}"></script>
+            <script src="{% static 'mainapp/js/movieSearch.js' %}"></script>
             <script src="{% static 'mainapp/js/rating.js' %}"></script>
         {% endif %}
+
         {% if request.user.is_authenticated %}
-            <script src="{% static 'mainapp/js/theme_change.js' %}"></script>
+            <script src="{% static 'mainapp/js/changeTheme.js' %}"></script>
         {% endif %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="{% static 'mainapp/js/jQueryForSearch.js' %}"></script>
     </body>
 </html>
