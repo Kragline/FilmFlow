@@ -7,6 +7,7 @@ urlpatterns = [
     path('', MovieListView.as_view(), name='home'),
     path('filter/', MovieListView.as_view(), name='filter'),
     path('movie/add/', AddMovieView.as_view(), name='add_movie'),
+    path('movie/rate/', RateMovieView.as_view(), name='rate_movie'),
     path('movie/<slug:movie_slug>/', AboutMovieView.as_view(), name='about_movie'),
     path('movie/<slug:movie_slug>/rate/', AboutMovieView.as_view(), name='rate_movie'),
     path('movie/<slug:movie_slug>/update/', UpdateMovieView.as_view(), name='update_movie'),
@@ -29,9 +30,10 @@ urlpatterns = [
     path('movie/genre/add/', AddGenreView.as_view(), name='add_genre'),
 
     # Comment
-    path('movie/<slug:movie_slug>/comment/<int:comment_id>/update/', UpdateCommentView.as_view(), name='update_comment'),
-    path('movie/<slug:movie_slug>/comment/<int:comment_id>/delete/', DeleteCommentView.as_view(), name='delete_comment'),
-    path('movie/<slug:movie_slug>/comment/<int:comment_id>/like/', LikeCommentView.as_view(), name='like_comment'),
+    path('comment/add/', AddCommentView.as_view(), name='add_comment'),
+    path('comment/<slug:movie_slug>/<int:comment_id>/update/', UpdateCommentView.as_view(), name='update_comment'),
+    path('comment/<slug:movie_slug>/<int:comment_id>/delete/', DeleteCommentView.as_view(), name='delete_comment'),
+    path('comment/<slug:movie_slug>/<int:comment_id>/like/', LikeCommentView.as_view(), name='like_comment'),
 
     # Other
     path('about-us/', AboutUsView.as_view(), name='about'),

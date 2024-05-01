@@ -176,8 +176,9 @@
                             <b class="movie-bold">Rate this movie</b>
                         </small>
                     </h4>
-                    <form action="{{ movie.rate_absolute_url }}" id="rating_form" method="post">
+                    <form action="{% url 'rate_movie' %}" id="rating_form" method="post">
                         {% csrf_token %}
+                        <input type="hidden" value="{{ movie.id }}" name="movie_id">
                         {% colored_stars_range number=10 as rating_range %}
                         {% for number in rating_range %}
                             <div class="form-check form-check-inline mx-0 me-2 px-0">
@@ -242,131 +243,7 @@
                         {% endfor %}
                     </div>
                     
-                    {% if current_user.is_authenticated %}
-                        <form method="post">
-                            {% csrf_token %}
-                            {% if form.non_field_errors %}
-                            <div class="alert alert-warning post mt-2" role="alert">
-                                {{ form.non_field_errors }}
-                            </div>
-                            {% endif %}
-                            <div class="input-group mb-3">
-                                {{ form.text }}
-                                <button type="submit" class="btn btn-outline-primary">Send</button>
-                                {% if form.errors %}
-                                <div class="alert alert-warning post mt-2" role="alert">
-                                    {{ form.errors }}
-                                </div>
-                                {% endif %}
-                            </div>
-                        </form>
-                    {% else %}
-                        <p><a class="movie-link" href="{% url 'login' %}">Login</a> to add a comment</p>
-                    {% endif %}
-
-                    {% if comments %}
-                        {% for comment in comments %}
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <div class="profile-info">
-                                    <div class="comment-profile-div">
-                                        <img class="profile-pic"
-                                        src="{{ comment.author.custom_profile.profile_pic.url }}">
-                                    </div>
-                                    <h5 class="card-title username-in-comment">
-                                        <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">
-                                            {% if not comment.author.first_name and not comment.author.last_name %}
-                                                {{ comment.author.username }}
-                                            {% else %}
-                                                {% if comment.author.first_name %}
-                                                    {{ comment.author.first_name }}
-                                                {% endif %}
-                                                {% if comment.author.last_name %}
-                                                    {{ comment.author.last_name }}
-                                                {% endif %}
-                                            {% endif %}
-                                            {% if comment.author.is_superuser %}
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                                                    <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
-                                                </svg>
-                                            {% endif %}
-                                        </a>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">{{ comment.text }}</p>
-                                <div class="d-flex">
-                                    {% if current_user.is_authenticated %}
-                                        <form class="like-form" action="{{ comment.get_absolute_url_for_like }}" method="post">
-                                            {% csrf_token %}
-                                            <button class="btn btn-outline-primary btn-sm" type="submit">
-                                                {% if current_user in comment.likes.all %}
-                                                    Disagree
-                                                {% else %}
-                                                    Agree
-                                                {% endif %}
-                                                {{ comment.likes.count }}
-                                            </button>
-                                        </form>
-                                        {% if current_user == comment.author %}
-                                            <a class="btn btn-outline-primary btn-sm ms-1" role="button" href="{{ comment.get_absolute_url_for_update }}">Update</a>
-                                            <button type="button" class="btn btn-outline-danger btn-sm ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                                Delete
-                                            </button>
-
-                                            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5 movie-bold" id="exampleModalLabel2">Delete comment</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <h5>Are you sure you want to delete this comment?</h5>
-                                                            <div class="card">
-                                                                <div class="card-header">
-                                                                    <div class="comment-profile-info">
-                                                                        {% if comment.author.custom_profile.profile_pic %}
-                                                                        <div class="comment-profile-div">
-                                                                            <img class="comment-profile-pic" src="{{ comment.author.custom_profile.profile_pic.url }}">
-                                                                        </div>
-                                                                        {% endif %}
-                                                                        <h5 class="card-title username-in-comment">
-                                                                            <a class="movie-link" href="{% url 'profile_page' comment.author.username %}">{{ comment.author }}</a>
-                                                                        </h5>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-body">
-                                                                    {{ comment.text }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                                Close
-                                                            </button>
-                                                            <form method="post" action="{{ comment.get_absolute_url_for_delete }}">
-                                                                {% csrf_token %}
-                                                                <button type="submit" class="btn btn-outline-danger" value="Yes">
-                                                                    Yes, delete
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="card-footer text-end">
-                                <small class="text-body-secondary">{{ comment.create_time|date:"d.m.Y" }}</small>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    {% endif %}
+                    {% include 'mainapp/includes/comment_section.html' %}
             </div>
         </div>
     </div>

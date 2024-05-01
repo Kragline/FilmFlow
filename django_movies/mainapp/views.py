@@ -63,32 +63,6 @@ class AboutMovieView(SidebarData, DetailView):
     context_object_name = 'movie'
     slug_url_kwarg = 'movie_slug'
 
-    def rate_movie(self):
-        rating_score = int(self.request.POST.get('rating_radio'))
-        rating, created = Rating.objects.update_or_create(
-            movie=self.get_object(),
-            user=self.request.user, defaults={
-                'score': rating_score
-            })
-
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            comment_form = CommentForm(request.POST)
-            if comment_form.is_valid():
-                new_comment = comment_form.save(commit=False)
-                new_comment.movie = self.get_object()
-                new_comment.author = request.user
-                new_comment.save()
-
-                return redirect(self.get_object())
-            else:
-                self.rate_movie()
-                return redirect(self.get_object())
-        else:
-            comment_form = CommentForm()
-
-        return reverse_lazy('about_movie', kwargs={'movie_slug': self.get_object().slug})
-    
     def get_avg_rating(self, queryset):
         rating_sum = 0
         for rating in queryset:
@@ -107,7 +81,7 @@ class AboutMovieView(SidebarData, DetailView):
         context['movie_actors'] = self.object.actors.order_by('name')
 
         context['recomendations'] = SidebarData.ALL_MOVIES.filter(genres__in=SidebarData.NOT_EMPTY_GENRES).order_by('?').distinct()[:15]
-        
+
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
 
@@ -119,6 +93,20 @@ class AboutMovieView(SidebarData, DetailView):
             context['avg_rating'] = self.get_avg_rating(movie_ratings)
 
         return context
+
+
+class RateMovieView(SidebarData, LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        rating_score = int(request.POST.get('rating_radio'))
+        rated_movie = SidebarData.ALL_MOVIES.get(id=request.POST.get('movie_id'))
+
+        rating, created = Rating.objects.update_or_create(
+            movie=rated_movie,
+            user=request.user, defaults={
+                'score': rating_score
+            })
+        
+        return redirect(rated_movie.get_absolute_url())
 
 
 class AddMovieView(AddObjectView):
@@ -280,6 +268,25 @@ class AddGenreView(AddObjectView):
 
 
 '''                 ****    Comment   ****                   '''
+
+
+class AddCommentView(SidebarData, LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                commented_movie = SidebarData.ALL_MOVIES.get(id=request.POST.get('movie_id'))
+
+                new_comment = comment_form.save(commit=False)
+                new_comment.movie = commented_movie
+                new_comment.author = request.user
+                new_comment.save()
+
+            return redirect(commented_movie.get_absolute_url())
+        else:
+            comment_form = CommentForm()
+
+        return reverse_lazy('about_movie', kwargs={'movie_slug': commented_movie.slug})
 
 
 class UpdateCommentView(UpdateObjectView):
