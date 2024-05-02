@@ -5,11 +5,13 @@ from django.views.generic import View, ListView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models.query import QuerySet
+from django.http import JsonResponse
 from django.db.models import Q
 from .models import Rating
 from .forms import *
+import json
 
-from utils.utils_data import SidebarData, AddObjectView, UpdateObjectView, DeleteObjectView
+from utils.utils_data import SidebarData, AddObjectView, UpdateObjectView, DeleteObjectView, get_avg_rating
 
 
 '''                 ****    Movie   ****                   '''
@@ -63,14 +65,6 @@ class AboutMovieView(SidebarData, DetailView):
     context_object_name = 'movie'
     slug_url_kwarg = 'movie_slug'
 
-    def get_avg_rating(self, queryset):
-        rating_sum = 0
-        for rating in queryset:
-            rating_sum += rating.score
-
-        return round(rating_sum / len(queryset), 1)
-
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -90,14 +84,14 @@ class AboutMovieView(SidebarData, DetailView):
 
         if movie_ratings:=Rating.objects.filter(movie=self.object):
             context['rated'] = True
-            context['avg_rating'] = self.get_avg_rating(movie_ratings)
+            context['avg_rating'] = get_avg_rating(movie_ratings)
 
         return context
 
 
 class RateMovieView(SidebarData, LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        rating_score = int(request.POST.get('rating_radio'))
+        rating_score = int(request.POST.get('rating_score'))
         rated_movie = SidebarData.ALL_MOVIES.get(id=request.POST.get('movie_id'))
 
         rating, created = Rating.objects.update_or_create(
@@ -106,7 +100,10 @@ class RateMovieView(SidebarData, LoginRequiredMixin, View):
                 'score': rating_score
             })
         
-        return redirect(rated_movie.get_absolute_url())
+        return JsonResponse({'newAvgRating': get_avg_rating(Rating.objects.filter(movie=rated_movie))})
+
+    def get(self, request, *args, **kwargs):
+        return redirect('home')
 
 
 class AddMovieView(AddObjectView):

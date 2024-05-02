@@ -14,13 +14,15 @@
                 <p class="card-text">{{ movie.tagline }}</p>
                 
                 {% if rated %}
-                    {% colored_stars_range number=avg_rating as rating_range %}
-                    {% for star in rating_range %}
-                        <i style="font-size: 2rem; color: rgb(235, 192, 52);" class="bi bi-star-fill"></i>
-                    {% endfor %}
+                    <div id="avgRatingBlock">
+                        {% colored_stars_range number=avg_rating as rating_range %}
+                        {% for star in rating_range %}
+                            <i style="font-size: 2rem; color: rgb(235, 192, 52);" class="bi bi-star-fill avgRatingStar"></i>
+                        {% endfor %}
 
+                    </div>
                     <p class="card-text">
-                        <b class="movie-bold">{{ avg_rating }}</b> / 10
+                        <b class="movie-bold" id="avgRating">{{ avg_rating }}</b> / 10
                     </p>
                 {% endif %}
             </div>
@@ -169,26 +171,26 @@
                     {% endif %}
 
                     <p class="card-text">{{ movie.about|linebreaks }}</p>
-
                     
                     <h4 class="card-text">
                         <small class="text-body-secondary">
                             <b class="movie-bold">Rate this movie</b>
                         </small>
                     </h4>
-                    <form action="{% url 'rate_movie' %}" id="rating_form" method="post">
+                    <div class="mb-2" id="ratingDiv">
                         {% csrf_token %}
-                        <input type="hidden" value="{{ movie.id }}" name="movie_id">
                         {% colored_stars_range number=10 as rating_range %}
                         {% for number in rating_range %}
                             <div class="form-check form-check-inline mx-0 me-2 px-0">
-                                <input class="form-check-input movie-rating" value="{{ number }}" onclick="submitRatingForm()" type="radio" name="rating_radio" id="radio_{{ number }}">
-                                <label class="form-check-label movie-rating-label" for="radio_{{ number }}">
-                                    <i class="bi bi-star"></i>
-                                </label>
+                                <input class="form-check-input movie-rating" value="{{ number }}" type="radio" name="rating_radio" id="radio_{{ number }}">
+                                <a class="rate-movie" data-rating-score="{{ number }}" data-moive-id="{{ movie.id }}" href="{% url 'rate_movie' %}">
+                                    <label class="form-check-label movie-rating-label" for="radio_{{ number }}">
+                                        <i class="bi bi-star"></i>
+                                    </label>
+                                </a>
                             </div>
                         {% endfor %}
-                    </form>
+                    </div>    
                     <iframe class="mb-3" width="100%" height="400px" src="{{ movie.video }}" frameborder="0" scrolling="no" allowfullscreen></iframe>
 
                     {% if other_movies %}

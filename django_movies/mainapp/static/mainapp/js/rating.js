@@ -1,14 +1,8 @@
-const ratingForm = document.getElementById('rating_form');
-
-function submitRatingForm() {
-    ratingForm.submit();
-}
-
-const labels = document.querySelectorAll('.movie-rating-label');
+const labels = document.querySelectorAll('.rate-movie');
 
 labels.forEach(label => {
     label.addEventListener('mouseover', () => {
-        const rating = parseInt(label.previousElementSibling.value);
+        const rating = parseInt(label.dataset.ratingScore);
 
         for (let i = 0; i <= rating - 1; i++) {
             const previousLabel = labels[i];
@@ -20,7 +14,7 @@ labels.forEach(label => {
     });
 
     label.addEventListener('mouseout', () => {
-        const rating = parseInt(label.previousElementSibling.value);
+        const rating = parseInt(label.dataset.ratingScore);
 
         for (let i = 0; i <= rating - 1; i++) {
             const previousLabel = labels[i];

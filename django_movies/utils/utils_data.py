@@ -33,3 +33,11 @@ class UpdateObjectView(BaseObjectView, UpdateView):
 
 class DeleteObjectView(BaseObjectView, DeleteView):
     success_url = reverse_lazy('home')
+
+
+def get_avg_rating(queryset):
+        rating_sum = 0
+        for rating in queryset:
+            rating_sum += rating.score
+
+        return round(rating_sum / len(queryset), 1)
