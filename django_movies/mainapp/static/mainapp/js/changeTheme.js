@@ -13,25 +13,25 @@ function checkThemeOnLoad() {
 }
 
 function checkThemeByBtn() {
-    if (theme_btn.value == 'light') {
+    if (themeBtn.value == 'light') {
         setLightTheme();
-    } else if (theme_btn.value == 'dark') {
+    } else if (themeBtn.value == 'dark') {
         setDarkTheme();
     }
 }
 
-const theme_btn = document.getElementById('themeBtn');
-theme_btn.addEventListener('click', setThemeByButton);
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.addEventListener('click', setThemeByButton);
 
 function setThemeByButton() {
-    localStorage.setItem('theme', JSON.stringify(theme_btn.value));
+    localStorage.setItem('theme', JSON.stringify(themeBtn.value));
     checkThemeByBtn();
 }
 
 function setDarkTheme() {
     doc.setAttribute("data-bs-theme", "dark");
-    theme_btn.value = 'light';
-    theme_btn.innerText = 'Light mode';
+    themeBtn.value = 'light';
+    themeBtn.innerText = 'Light mode';
     
     document.getElementById('header-nav').classList.add('nav-dark-shadow');
     document.getElementById('footer').classList.add('footer-dark-shadow');
@@ -57,8 +57,8 @@ function setDarkTheme() {
 
 function setLightTheme() {
     doc.setAttribute("data-bs-theme", "light");
-    theme_btn.value = 'dark';
-    theme_btn.innerText = 'Dark mode';
+    themeBtn.value = 'dark';
+    themeBtn.innerText = 'Dark mode';
 
     document.getElementById('header-nav').classList.remove('nav-dark-shadow');
     document.getElementById('footer').classList.remove('footer-dark-shadow');

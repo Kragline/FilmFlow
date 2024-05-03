@@ -16,7 +16,7 @@
                             Genres
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            {% for genre in view.NOT_EMPTY_GENRES %}
+                            {% for number, genre in view.NOT_EMPTY_GENRES %}
                                 <li><a class="dropdown-item" href="{{ genre.get_absolute_url }}">{{ genre.name }}</a></li>
                             {% endfor %}
                         </ul>

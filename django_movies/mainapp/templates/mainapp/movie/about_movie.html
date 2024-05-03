@@ -13,18 +13,21 @@
                 <h2 class="card-title movie-bold">{{ movie.title }}</h2>
                 <p class="card-text">{{ movie.tagline }}</p>
                 
-                {% if rated %}
-                    <div id="avgRatingBlock">
+                <div id="avgRatingBlock">
+                    <div id="ratingStarsDiv">
+                    {% if rated %}
                         {% colored_stars_range number=avg_rating as rating_range %}
                         {% for star in rating_range %}
                             <i style="font-size: 2rem; color: rgb(235, 192, 52);" class="bi bi-star-fill avgRatingStar"></i>
                         {% endfor %}
-
+                    {% endif %}
                     </div>
-                    <p class="card-text">
-                        <b class="movie-bold" id="avgRating">{{ avg_rating }}</b> / 10
-                    </p>
-                {% endif %}
+                    {% if rated %}
+                        <p class="card-text">
+                            <b class="movie-bold" id="avgRating">{{ avg_rating }}</b> / 10
+                        </p>
+                    {% endif %}
+                </div>
             </div>
             <div class="card-body">
                 <div class="all-info-div">
