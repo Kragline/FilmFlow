@@ -7,7 +7,7 @@ select_multiple = {'class': 'form-select', 'size': 10}
 
 text_attrs = {'type': 'text', 'class': 'form-control'}
 url_attrs = {'type': 'url', 'class': 'form-control'}
-text_box_attrs = {'type': 'text', 'class': 'form-control', 'cols': 70}
+text_box_attrs = {'type': 'text', 'class': 'form-control', 'cols': 70, 'rows': 15}
 file_attrs = {'type': 'file', 'class': 'form-control'}
 
 date_attrs = {'type': 'date', 'class': 'form-control'}

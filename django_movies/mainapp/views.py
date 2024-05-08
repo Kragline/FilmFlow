@@ -7,10 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.db.models import Q
-from .models import Rating
-from .forms import *
-import json
 
+from .models import Movie, Genre, Comment, Actor, Director, Rating
+from .forms import MovieForm, CommentForm, GenreForm, ActorForm, DirectorForm, TroubleshootForm
 from utils.utils_data import SidebarData, AddObjectView, UpdateObjectView, DeleteObjectView, get_avg_rating
 
 
@@ -72,7 +71,6 @@ class AboutMovieView(SidebarData, DetailView):
             context['other_movies'] = SidebarData.ALL_MOVIES.filter(saga=movie_saga).order_by('world_premiere')
 
         context['title'] = 'Watch ' + self.object.title + ' online'
-        context['movie_actors'] = self.object.actors.order_by('name')
 
         context['recomendations'] = SidebarData.ALL_MOVIES.filter(genres__in=SidebarData.NOT_EMPTY_GENRES).order_by('?').distinct()[:15]
 
@@ -100,7 +98,8 @@ class RateMovieView(SidebarData, LoginRequiredMixin, View):
                 'score': rating_score
             })
         
-        return JsonResponse({'newAvgRating': get_avg_rating(Rating.objects.filter(movie=rated_movie))})
+        new_avg_rating = get_avg_rating(Rating.objects.filter(movie=rated_movie))
+        return JsonResponse({'newAvgRating': new_avg_rating})
 
     def get(self, request, *args, **kwargs):
         return redirect('home')

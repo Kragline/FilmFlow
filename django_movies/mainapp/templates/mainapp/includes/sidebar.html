@@ -1,69 +1,69 @@
 <div class="column search">
-        <h3 class="search-heading movie-bold">Search for movies</h3>
+        <h3 class="search-heading movie-bold mb-3">Search for movies</h3>
         <form action="{% url 'filter' %}" id="movieSearchForm" method="GET">
-            <div class="text-secondary">
-                <hr>
-            </div>
-            <div class="hstack gap-3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseYears" aria-expanded="false" aria-controls="collapseExample">
-                <h5 class="movie-bold">
-                    Choose any year
-                </h5>
-                <i class="ms-auto movie-bold ms-1 my-auto bi bi-caret-down-fill"></i>
-            </div>
-            <div class="collapse mb-2" id="collapseYears">
-                <div class="card card-body">
-                    {% for index, year_dict in view.ALL_YEARS %}
-                        <div class="form-check">
-                            <input class="form-check-input movie-year-checkbox" id="year_{{ index }}" type="checkbox" value="{{ year_dict.year }}" name="year">
-                            <label class="form-check-label" for="year_{{ index }}">
-                                {{ year_dict.year }}
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="hstack gap-3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseGenres" aria-expanded="false" aria-controls="collapseGenres">
-                <h5 class="movie-bold">
-                    Preferable genre
-                </h5>
-                <i class="ms-auto movie-bold ms-1 my-auto bi bi-caret-down-fill"></i>
-            </div>  
-            <div class="collapse mb-2" id="collapseGenres">
-                <div class="card card-body">
-                    {% for index, genre in view.NOT_EMPTY_GENRES %}
-                        <div class="form-check">
-                            <input class="form-check-input" id="genre_{{ index }}" type="checkbox" value="{{ genre.pk }}" name="genre">
-                            <label class="form-check-label" for="genre_{{ index }}">
-                                {{ genre.name }}
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="hstack gap-3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseCountries" aria-expanded="false" aria-controls="collapseCountries">
-                <h5 class="movie-bold">
-                    Filter by countries
-                </h5>
-                <i class="ms-auto movie-bold ms-1 my-auto bi bi-caret-down-fill"></i>
-            </div>  
-            <div class="collapse mb-2" id="collapseCountries">
-                <div class="card card-body">
-                    {% for index, country in view.ALL_COUNTRIES %}
-                        <div class="form-check">
-                            <input class="form-check-input movie-country-checkbox" id="country_{{ index }}" type="checkbox" value="{{ country.country }}" name="country">
-                            <label class="form-check-label" for="country_{{ index }}">
-                                {{ country.country }}
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
             <div class="my-2">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="movie-search">
+                <input class="form-control mt-2" type="search" placeholder="Type something..." aria-label="Search" name="movie-search">
             </div>
-            <div class="d-flex">
+            <div class="accordion accordion-flush" id="filterAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Choose any year
+                    </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            {% for index, year_dict in view.ALL_YEARS %}
+                                <div class="form-check">
+                                    <input class="form-check-input movie-year-checkbox" id="year_{{ index }}" type="checkbox" value="{{ year_dict.year }}" name="year">
+                                    <label class="form-check-label" for="year_{{ index }}">
+                                        {{ year_dict.year }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Preferable genre
+                    </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            {% for index, genre in view.NOT_EMPTY_GENRES %}
+                                <div class="form-check">
+                                    <input class="form-check-input" id="genre_{{ index }}" type="checkbox" value="{{ genre.pk }}" name="genre">
+                                    <label class="form-check-label" for="genre_{{ index }}">
+                                        {{ genre.name }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Filter by countries
+                    </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            {% for index, country in view.ALL_COUNTRIES %}
+                                <div class="form-check">
+                                    <input class="form-check-input movie-country-checkbox" id="country_{{ index }}" type="checkbox" value="{{ country.country }}" name="country">
+                                    <label class="form-check-label" for="country_{{ index }}">
+                                        {{ country.country }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex mt-2">
                 <button class="btn btn-outline-secondary filter-item" type="reset">Reset</button>
                 <button class="btn btn-outline-primary filter-item second-item" type="submit">Find movie</button>
             </div>
