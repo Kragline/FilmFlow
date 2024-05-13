@@ -7,14 +7,29 @@ from mainapp.models import Genre, Movie
 
 
 class SidebarData():
-    NOT_EMPTY_GENRES = list(enumerate(Genre.objects.annotate(movies_count=Count('movies')).filter(movies_count__gt=0), start=1))
+    @classmethod
+    def not_empty_genres(cls):
+        return list(enumerate(Genre.objects.annotate(movies_count=Count('movies')).filter(movies_count__gt=0), start=1))
 
-    ALL_MOVIES = Movie.objects.all()
-    ALL_YEARS = list(enumerate(ALL_MOVIES.values('year').order_by('-year').distinct(), start=1))
-    ALL_COUNTRIES = list(enumerate(ALL_MOVIES.values('country').order_by().distinct(), start=1))
+    @classmethod
+    def all_movies(cls):
+        return Movie.objects.all()
     
-    LASTEST_PREMIERES = ALL_MOVIES.order_by('-world_premiere')[:4]
-    RECENTLY_ADDED = ALL_MOVIES.order_by('-pk')[:10]
+    @classmethod
+    def all_years(cls):
+        return list(enumerate(cls.all_movies().values('year').order_by('-year').distinct(), start=1))
+    
+    @classmethod
+    def all_countries(cls):
+        return list(enumerate(cls.all_movies().values('country').order_by().distinct(), start=1))
+    
+    @classmethod
+    def latest_premieres(cls):
+        return cls.all_movies().order_by('-world_premiere')[:4]
+    
+    @classmethod
+    def recently_added(cls):
+        return cls.all_movies().order_by('-pk')[:10]
 
 
 class BaseObjectView(SidebarData, LoginRequiredMixin):

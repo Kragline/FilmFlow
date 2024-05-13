@@ -1,1 +1,110 @@
-[{"model": "mainapp.genre", "pk": 1, "fields": {"name": "Action", "description": "Movies in the action genre are fast-paced and include a lot of action like fight scenes, chase scenes, and slow-motion shots. They can feature superheroes, martial arts, or exciting stunts. These high-octane films are more about the execution of the plot rather than the plot itself. Action movies are thrilling to watch and leave audience members on the edge of their seats. Cop movies, disaster films, and some spy films fall under the action category", "slug": "action"}}, {"model": "mainapp.genre", "pk": 2, "fields": {"name": "Adventure", "description": "The adventure genre is so similar to the action genre that the billing for adventure films is sometimes action/adventure movies. Films in the adventure genre usually contain the same basic genre elements as an action movie, with the setting as the critical difference. Adventure movies are typically set in an exotic, far away, or unfamiliar locale. This category can include swashbuckler films and survival films.", "slug": "adventure"}}, {"model": "mainapp.genre", "pk": 3, "fields": {"name": "Comedy", "description": "Comedy films are funny and entertaining. The films in this genre center around a comedic premise—usually putting someone in a challenging, amusing, or humorous situation they’re not prepared to handle. Good comedy movies are less about making constant jokes and more about presenting a universally relatable, real-life story with complex characters who learn an important lesson. Mockumentary, dark comedy (or black comedy), romantic comedy, parody/spoof, and slapstick comedy are all examples of comedy subgenres.", "slug": "comedy"}}, {"model": "mainapp.genre", "pk": 4, "fields": {"name": "Fantasy", "description": "Films in the fantasy genre feature magical and supernatural elements that do not exist in the real world. Although some films juxtapose a real-world setting with fantastical elements, many create entirely imaginary universes with their own laws, logic, and populations of imaginary races and creatures. Like science fiction films, fantasy films are speculative but unrelated to reality or scientific fact. High fantasy, fairy tales, and magical realism are all fantasy subgenres.", "slug": "fantasy"}}, {"model": "mainapp.genre", "pk": 5, "fields": {"name": "Horror", "description": "Horror films feature elements that leave people with an overwhelming sense of fear and dread. Horror movies often include serial killers or monsters as persistent, evil antagonists to play on viewers’ fears or nightmares. Audiences who love the horror genre seek out these movies specifically for the adrenaline rush produced by ghosts, gore, monsters, and jump scares. Films that fall into the horror sub-genres include macabre, ghost stories, gothic horror movies, science fiction horror movies, supernatural movies, dark fantasy movies, psychological horror movies, and slasher movies.", "slug": "horror"}}, {"model": "mainapp.genre", "pk": 6, "fields": {"name": "Musical", "description": "Musical films weave songs or musical numbers into the narrative to progress the story or further develop the characters. Musicals are often tied to romance films but are not limited to that genre. Musical movies involve big stage-like productions, integrating necessary premises or character elements into the sequences.", "slug": "musical"}}, {"model": "mainapp.genre", "pk": 7, "fields": {"name": "Romance", "description": "Romance films are love stories. They center around two protagonists exploring some of the elements of love like relationships, sacrifice, marriage, obsession, or destruction. Romance movies sometimes feature hardships like illness, infidelity, tragedy, or other obstacles for the love interests to overcome", "slug": "romance"}}, {"model": "mainapp.genre", "pk": 8, "fields": {"name": "Science Fiction", "description": "The sci-fi genre builds worlds and alternate realities filled with imagined elements that don’t exist in the real world. Science fiction spans a wide range of themes that often explore time travel, space travel, are set in the future, and deal with the consequences of technological and scientific advances. Sci-fi movies typically involve meticulous world-building with strong attention to detail for the audience to believe the story and universe.", "slug": "science-fiction"}}, {"model": "mainapp.genre", "pk": 9, "fields": {"name": "Thriller", "description": "Thrillers expertly blend mystery, tension, and anticipation into one exciting story. Successful thrillers are well-paced, often introducing red herrings, divulging plot twists, and revealing information at the exact right moments to keep the audience intrigued. Thrillers often include a “ticking clock” aspect, where the stakes are against a finite amount of time. Crime films, political thrillers, and techno-thrillers are all featured in the thriller genre.", "slug": "thriller"}}, {"model": "mainapp.genre", "pk": 10, "fields": {"name": "Western", "description": "Westerns tell the tale of a cowboy or gunslinger pursuing an outlaw in the Wild West. The main character often seeks revenge and will face the criminal in a duel or shootout at the end. Westerns are vivid productions set in the American West—such as the desert, mountains, or plains—that can inspire and inform the characters and the action. Spaghetti westerns, space westerns, and sci-fi westerns are all subgenres within the Western category.", "slug": "western"}}, {"model": "mainapp.genre", "pk": 11, "fields": {"name": "Drama", "description": "The drama genre features stories with high stakes and many conflicts. They’re plot-driven and demand that every character and scene move the story forward. Dramas follow a clearly defined narrative plot structure, portraying real-life scenarios or extreme situations with emotionally-driven characters. Films that fall into drama sub-genres include historical drama or costume drama, romantic drama, teen drama, medical drama, docudrama, film noir, and neo-noir.", "slug": "drama"}}, {"model": "mainapp.genre", "pk": 12, "fields": {"name": "Crime", "description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection. Stylistically, the genre may overlap and combine with many other genres, such as drama or gangster film, but also include comedy, and, in turn, is divided into many sub-genres, such as mystery, suspense or noir.", "slug": "crime"}}]
+[
+    {
+        "model": "mainapp.genre",
+        "pk": 1,
+        "fields": {
+            "name": "Action",
+            "description": "Movies in the action genre are fast-paced and include a lot of action like fight scenes, chase scenes, and slow-motion shots. They can feature superheroes, martial arts, or exciting stunts. These high-octane films are more about the execution of the plot rather than the plot itself. Action movies are thrilling to watch and leave audience members on the edge of their seats. Cop movies, disaster films, and some spy films fall under the action category",
+            "slug": "action"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 2,
+        "fields": {
+            "name": "Adventure",
+            "description": "The adventure genre is so similar to the action genre that the billing for adventure films is sometimes action/adventure movies. Films in the adventure genre usually contain the same basic genre elements as an action movie, with the setting as the critical difference. Adventure movies are typically set in an exotic, far away, or unfamiliar locale. This category can include swashbuckler films and survival films.",
+            "slug": "adventure"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 3,
+        "fields": {
+            "name": "Comedy",
+            "description": "Comedy films are funny and entertaining. The films in this genre center around a comedic premise—usually putting someone in a challenging, amusing, or humorous situation they’re not prepared to handle. Good comedy movies are less about making constant jokes and more about presenting a universally relatable, real-life story with complex characters who learn an important lesson. Mockumentary, dark comedy (or black comedy), romantic comedy, parody/spoof, and slapstick comedy are all examples of comedy subgenres.",
+            "slug": "comedy"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 4,
+        "fields": {
+            "name": "Fantasy",
+            "description": "Films in the fantasy genre feature magical and supernatural elements that do not exist in the real world. Although some films juxtapose a real-world setting with fantastical elements, many create entirely imaginary universes with their own laws, logic, and populations of imaginary races and creatures. Like science fiction films, fantasy films are speculative but unrelated to reality or scientific fact. High fantasy, fairy tales, and magical realism are all fantasy subgenres.",
+            "slug": "fantasy"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 5,
+        "fields": {
+            "name": "Horror",
+            "description": "Horror films feature elements that leave people with an overwhelming sense of fear and dread. Horror movies often include serial killers or monsters as persistent, evil antagonists to play on viewers’ fears or nightmares. Audiences who love the horror genre seek out these movies specifically for the adrenaline rush produced by ghosts, gore, monsters, and jump scares. Films that fall into the horror sub-genres include macabre, ghost stories, gothic horror movies, science fiction horror movies, supernatural movies, dark fantasy movies, psychological horror movies, and slasher movies.",
+            "slug": "horror"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 6,
+        "fields": {
+            "name": "Musical",
+            "description": "Musical films weave songs or musical numbers into the narrative to progress the story or further develop the characters. Musicals are often tied to romance films but are not limited to that genre. Musical movies involve big stage-like productions, integrating necessary premises or character elements into the sequences.",
+            "slug": "musical"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 7,
+        "fields": {
+            "name": "Romance",
+            "description": "Romance films are love stories. They center around two protagonists exploring some of the elements of love like relationships, sacrifice, marriage, obsession, or destruction. Romance movies sometimes feature hardships like illness, infidelity, tragedy, or other obstacles for the love interests to overcome",
+            "slug": "romance"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 8,
+        "fields": {
+            "name": "Science Fiction",
+            "description": "The sci-fi genre builds worlds and alternate realities filled with imagined elements that don’t exist in the real world. Science fiction spans a wide range of themes that often explore time travel, space travel, are set in the future, and deal with the consequences of technological and scientific advances. Sci-fi movies typically involve meticulous world-building with strong attention to detail for the audience to believe the story and universe.",
+            "slug": "science-fiction"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 9,
+        "fields": {
+            "name": "Thriller",
+            "description": "Thrillers expertly blend mystery, tension, and anticipation into one exciting story. Successful thrillers are well-paced, often introducing red herrings, divulging plot twists, and revealing information at the exact right moments to keep the audience intrigued. Thrillers often include a “ticking clock” aspect, where the stakes are against a finite amount of time. Crime films, political thrillers, and techno-thrillers are all featured in the thriller genre.",
+            "slug": "thriller"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 10,
+        "fields": {
+            "name": "Western",
+            "description": "Westerns tell the tale of a cowboy or gunslinger pursuing an outlaw in the Wild West. The main character often seeks revenge and will face the criminal in a duel or shootout at the end. Westerns are vivid productions set in the American West—such as the desert, mountains, or plains—that can inspire and inform the characters and the action. Spaghetti westerns, space westerns, and sci-fi westerns are all subgenres within the Western category.",
+            "slug": "western"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 11,
+        "fields": {
+            "name": "Drama",
+            "description": "The drama genre features stories with high stakes and many conflicts. They’re plot-driven and demand that every character and scene move the story forward. Dramas follow a clearly defined narrative plot structure, portraying real-life scenarios or extreme situations with emotionally-driven characters. Films that fall into drama sub-genres include historical drama or costume drama, romantic drama, teen drama, medical drama, docudrama, film noir, and neo-noir.",
+            "slug": "drama"
+        }
+    },
+    {
+        "model": "mainapp.genre",
+        "pk": 12,
+        "fields": {
+            "name": "Crime",
+            "description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection. Stylistically, the genre may overlap and combine with many other genres, such as drama or gangster film, but also include comedy, and, in turn, is divided into many sub-genres, such as mystery, suspense or noir.",
+            "slug": "crime"
+        }
+    }
+]

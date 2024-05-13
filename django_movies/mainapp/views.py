@@ -40,7 +40,7 @@ class MovieListView(SidebarData, ListView):
         return queryset.filter(q_objects)
 
     def get_queryset(self):
-        queryset = SidebarData.ALL_MOVIES.order_by('id')
+        queryset = SidebarData.all_movies().order_by('id')
 
         if self.request.method == 'GET':
             if query := self.request.GET.get('movie-search'):
@@ -66,13 +66,14 @@ class AboutMovieView(SidebarData, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        
+        ALL_MOVIES = SidebarData.all_movies()
         if movie_saga:=self.object.saga:
-            context['other_movies'] = SidebarData.ALL_MOVIES.filter(saga=movie_saga).order_by('world_premiere')
+            context['other_movies'] = ALL_MOVIES.filter(saga=movie_saga).order_by('world_premiere')
 
         context['title'] = 'Watch ' + self.object.title + ' online'
 
-        context['recomendations'] = SidebarData.ALL_MOVIES.filter(genres__in=SidebarData.NOT_EMPTY_GENRES).order_by('?').distinct()[:15]
+        context['recomendations'] = ALL_MOVIES.filter(genres__in=SidebarData.not_empty_genres()).order_by('?').distinct()[:15]
 
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
@@ -90,7 +91,7 @@ class AboutMovieView(SidebarData, DetailView):
 class RateMovieView(SidebarData, LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         rating_score = int(request.POST.get('rating_score'))
-        rated_movie = SidebarData.ALL_MOVIES.get(id=request.POST.get('movie_id'))
+        rated_movie = SidebarData.all_movies().get(id=request.POST.get('movie_id'))
 
         rating, created = Rating.objects.update_or_create(
             movie=rated_movie,
@@ -271,7 +272,7 @@ class AddCommentView(SidebarData, LoginRequiredMixin, View):
         if request.method == 'POST':
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
-                commented_movie = SidebarData.ALL_MOVIES.get(id=request.POST.get('movie_id'))
+                commented_movie = SidebarData.all_movies().get(id=request.POST.get('movie_id'))
 
                 new_comment = comment_form.save(commit=False)
                 new_comment.movie = commented_movie

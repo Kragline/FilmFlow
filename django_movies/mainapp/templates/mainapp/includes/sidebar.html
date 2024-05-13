@@ -13,7 +13,7 @@
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
                         <div class="accordion-body">
-                            {% for index, year_dict in view.ALL_YEARS %}
+                            {% for index, year_dict in view.all_years %}
                                 <div class="form-check">
                                     <input class="form-check-input movie-year-checkbox" id="year_{{ index }}" type="checkbox" value="{{ year_dict.year }}" name="year">
                                     <label class="form-check-label" for="year_{{ index }}">
@@ -32,7 +32,7 @@
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
                         <div class="accordion-body">
-                            {% for index, genre in view.NOT_EMPTY_GENRES %}
+                            {% for index, genre in view.not_empty_genres %}
                                 <div class="form-check">
                                     <input class="form-check-input" id="genre_{{ index }}" type="checkbox" value="{{ genre.pk }}" name="genre">
                                     <label class="form-check-label" for="genre_{{ index }}">
@@ -51,7 +51,7 @@
                     </h2>
                     <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
                         <div class="accordion-body">
-                            {% for index, country in view.ALL_COUNTRIES %}
+                            {% for index, country in view.all_countries %}
                                 <div class="form-check">
                                     <input class="form-check-input movie-country-checkbox" id="country_{{ index }}" type="checkbox" value="{{ country.country }}" name="country">
                                     <label class="form-check-label" for="country_{{ index }}">
@@ -74,7 +74,7 @@
         </h4>
         <table class="table">
             <tbody>
-                {% for movie in view.RECENTLY_ADDED %}
+                {% for movie in view.recently_added %}
                     <tr>
                         <td>
                             <a class="hover-movie-link" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>

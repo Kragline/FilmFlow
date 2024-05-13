@@ -62,7 +62,7 @@ function createStars(newStarsCount) {
         avgRatingBlock.appendChild(starIcon);
     }
 
-    addTextToBlock(avgRatingBlock, newStarsCount)
+    addTextToBlock(avgRatingBlock, String(newStarsCount))
 }
 
 function addTextToBlock(block, text) {
