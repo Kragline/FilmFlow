@@ -186,7 +186,7 @@
                         {% for number in rating_range %}
                             <div class="form-check form-check-inline mx-0 me-2 px-0">
                                 <input class="form-check-input movie-rating" value="{{ number }}" type="radio" name="rating_radio" id="radio_{{ number }}">
-                                <a class="rate-movie" data-rating-score="{{ number }}" data-moive-id="{{ movie.id }}" href="{% url 'rate_movie' %}">
+                                <a href="{% url 'rate_movie' %}" class="rate-movie" data-rating-score="{{ number }}" data-moive-id="{{ movie.id }}">
                                     <label class="form-check-label movie-rating-label" for="radio_{{ number }}">
                                         <i class="bi bi-star"></i>
                                     </label>

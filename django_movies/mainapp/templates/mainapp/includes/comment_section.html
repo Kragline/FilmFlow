@@ -56,17 +56,17 @@
             <p class="card-text">{{ comment.text }}</p>
             <div class="d-flex">
                 {% if current_user.is_authenticated %}
-                    <form class="like-form" action="{{ comment.get_absolute_url_for_like }}" method="post">
                         {% csrf_token %}
-                        <button class="btn btn-outline-primary btn-sm" type="submit">
-                            {% if current_user in comment.likes.all %}
-                                Disagree
-                            {% else %}
-                                Agree
-                            {% endif %}
-                            {{ comment.likes.count }}
-                        </button>
-                    </form>
+                        <a href="{% url 'like_comment' %}" class="btn btn-outline-primary btn-sm like-comm-btn" role="button" data-moive-id="{{ movie.id }}" data-comment-id="{{ comment.id }}">
+                            <span id="commentBtnText_{{ comment.id }}">
+                                {% if current_user in comment.likes.all %}
+                                    Disagree
+                                {% else %}
+                                    Agree
+                                {% endif %}
+                            </span>    
+                            <span id="commentLikesCount_{{ comment.id }}">{{ comment.likes.count }}</span>
+                        </a>
                     {% if current_user == comment.author %}
                         <a class="btn btn-outline-primary btn-sm ms-1" role="button" href="{{ comment.get_absolute_url_for_update }}">Update</a>
                         <button type="button" class="btn btn-outline-danger btn-sm ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal2">

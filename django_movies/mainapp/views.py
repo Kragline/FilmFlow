@@ -311,17 +311,28 @@ class DeleteCommentView(DeleteObjectView):
 
 
 class LikeCommentView(SidebarData, LoginRequiredMixin, View):
-    def post(self, request, movie_slug, comment_id, *args, **kwargs):
-        movie = Movie.objects.get(slug=movie_slug)
-        comment = movie.comments.get(pk=comment_id)
+    def post(self, request, *args, **kwargs):
+        movie_id = request.POST.get('movie_id')
+        comment_id = request.POST.get('comment_id')
+
+        movie = SidebarData.all_movies().get(pk=movie_id)
+        comment = movie.comments.get(id=comment_id)
         current_user = self.request.user
 
+        new_button_text = 'Disagree'
         if current_user in comment.likes.all():
             comment.likes.remove(current_user)
+            new_button_text = 'Agree'
         else:
             comment.likes.add(current_user)
 
-        return redirect(movie.get_absolute_url())
+        return JsonResponse({
+            'newLikesCount': comment.likes.count(),
+            'newButtonText': new_button_text,
+        })
+    
+    def get(self, request, *args, **kwargs):
+        return redirect('home')
 
 
 '''                 ****    Other   ****                   '''

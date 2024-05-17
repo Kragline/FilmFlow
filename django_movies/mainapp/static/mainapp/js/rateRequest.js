@@ -16,8 +16,8 @@ $(document).ready(function () {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
             },
             success: function (data) {
-                newAvgRating = data.newAvgRating;
-                $('#avgRating').html(parseFloat(newAvgRating));
+                var newAvgRating = data.newAvgRating;
+                $('#avgRating').html(String(newAvgRating));
 
                 var avgRatingStars = $('.avgRatingStar');
                 if (avgRatingStars.length === 0) {
@@ -52,14 +52,15 @@ function addStars(count, set) {
 }
 
 function createStars(newStarsCount) {
-    var avgRatingBlock = document.getElementById('ratingStarsDiv');
+    var avgRatingBlock = document.getElementById('avgRatingBlock');
+    var ratingStarsDiv = document.getElementById('ratingStarsDiv');
 
     for (let index = 0; index < newStarsCount; index++) {
         var starIcon = document.createElement('i');
         starIcon.className = 'bi bi-star-fill avgRatingStar';
         starIcon.style.fontSize = '2rem';
         starIcon.style.color = 'rgb(235, 192, 52)';
-        avgRatingBlock.appendChild(starIcon);
+        ratingStarsDiv.appendChild(starIcon);
     }
 
     addTextToBlock(avgRatingBlock, String(newStarsCount))

@@ -150,9 +150,6 @@ class Comment(models.Model):
     def __str__(self):
         return f'Comment by {self.author} on {self.movie}: {self.text}'
 
-    def get_absolute_url_for_like(self):
-        return reverse('like_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
-
     def get_absolute_url_for_update(self):
         return reverse('update_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})
 
