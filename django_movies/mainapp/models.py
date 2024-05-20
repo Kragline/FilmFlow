@@ -58,7 +58,6 @@ class Director(Person):
 
 class Genre(models.Model):
     name = models.CharField(max_length=150)
-    description = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
 
     def __str__(self):
@@ -112,9 +111,6 @@ class Movie(models.Model):
 
     def get_absolute_url_for_delete(self):
         return reverse('delete_movie', kwargs={'movie_slug': self.slug})
-
-    def rate_absolute_url(self):
-        return reverse('rate_movie', kwargs={'movie_slug': self.slug})
 
     def add_comment_absolute_url(self):
         return reverse('add_comment', kwargs={'comment_id': self.pk, 'movie_slug': self.movie.slug})

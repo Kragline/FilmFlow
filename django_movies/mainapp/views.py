@@ -247,7 +247,7 @@ class GenreListView(SidebarData, ListView):
         return context
 
     def get_queryset(self):
-        return Movie.objects.filter(genres__slug=self.kwargs['genre_slug']).order_by('create_time')
+        return SidebarData.all_movies().filter(genres__slug=self.kwargs['genre_slug']).order_by('create_time')
 
 
 class AddGenreView(AddObjectView):
@@ -284,6 +284,9 @@ class AddCommentView(SidebarData, LoginRequiredMixin, View):
             comment_form = CommentForm()
 
         return reverse_lazy('about_movie', kwargs={'movie_slug': commented_movie.slug})
+    
+    def get(self, request, *args, **kwargs):
+        return redirect('home')
 
 
 class UpdateCommentView(UpdateObjectView):

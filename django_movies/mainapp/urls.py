@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 
 
+# !!! WARNING !!! urls without slugs must be always higher than those without slugs
+
 urlpatterns = [
     # Movie
     path('', MovieListView.as_view(), name='home'),
@@ -25,8 +27,8 @@ urlpatterns = [
     path('director/<slug:director_slug>/delete/', DeleteDirectorView.as_view(), name='delete_director'),
 
     # Genre
-    path('movie/genre/<slug:genre_slug>/', GenreListView.as_view(), name='genre'),
     path('movie/genre/add/', AddGenreView.as_view(), name='add_genre'),
+    path('movie/genre/<slug:genre_slug>/', GenreListView.as_view(), name='genre'),
 
     # Comment
     path('comment/add/', AddCommentView.as_view(), name='add_comment'),

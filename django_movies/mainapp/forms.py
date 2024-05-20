@@ -80,11 +80,10 @@ class MovieForm(forms.ModelForm):
 class GenreForm(forms.ModelForm):
     class Meta:
         model = Genre
-        fields = ('name', 'description', 'slug')
+        fields = ('name', 'slug')
 
         widgets = {
             'name': forms.TextInput(attrs=text_attrs),
-            'description': forms.Textarea(attrs=text_box_attrs),
             'slug': forms.TextInput(attrs=text_attrs)
         }
 
