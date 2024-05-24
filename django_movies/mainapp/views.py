@@ -73,7 +73,7 @@ class AboutMovieView(SidebarData, DetailView):
 
         context['title'] = 'Watch ' + self.object.title + ' online'
 
-        context['recomendations'] = ALL_MOVIES.filter(genres__in=SidebarData.not_empty_genres()).order_by('?').distinct()[:15]
+        context['recomendations'] = set(ALL_MOVIES.filter(genres__in=SidebarData.not_empty_genres()).order_by('?').distinct()[:15])
 
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.order_by('-create_time')
