@@ -1,0 +1,14 @@
+{
+    "breadcrumbs.enabled": true,
+
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+    
+    "files.associations": {
+        "**/*.html": "html",
+        "**/templates/*/*.html": "django-html",
+        "**/templates/*/*/*.html": "django-html",
+        "**/templates/*/*/*/*.html": "django-html",
+    }
+}
